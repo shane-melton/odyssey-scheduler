@@ -1,0 +1,34 @@
+<div class="frow height-100 items-center">
+  <div class="col-xs-9-10">
+    <div class="header mt-30 text-center">
+      <h1>Hello, Shane!</h1>
+      <h4>Please select the class you would like to makeup below</h4>
+      <hr class="mt-25">
+    </div>
+  </div>
+  <div class=" col-xs-9-10">
+    <div class="block-container">
+      <div class="frow justify-center">
+        <div class="col-lg-1-5 col-md-1-3 col-sm-1-2 col-xs-1-1" *ngFor="let day of schoolDays">
+          <div class="date-block text-center">
+            <div class="date">
+              <h1>{{moment(day.classDate, 'dddd')}}</h1>
+              <h4>{{moment(day.classDate, 'MMMM D, YYYY')}}</h4>
+            </div>
+            <div class="blocks">
+              <div class="block p-30" *ngFor="let block of day.blocks" (click)="selectClass(block, day.classDate)">
+                <h3>{{block.name}}</h3>
+                <h4>{{moment(block.startTime, 'h:mm a')}} - {{moment(block.endTime, 'h:mma')}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-9-10">
+    <div class="footer my-30 text-center">
+      <button class="btn-white" (click)="signOut()">Not Shane?</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+@import "../../../sass/helpers";
+
+ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  z-index: -1;
+
+  background :#50a3a2;
+  background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
+  background: -moz-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
+  background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
+  background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+
+  li {
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: fade_out(white, .85);
+    bottom: -160px;
+
+    -webkit-animation: square 30s infinite;
+    -o-animation: square 30s infinite;
+    animation: square 30s infinite;
+
+    -webkit-transition-timing-function: linear;
+    -moz-transition-timing-function: linear;
+    -ms-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+
+    @for $item from 1 through 20 {
+      $size: randomNum(20,160);
+      &:nth-child(#{$item}) {
+        animation-delay: #{randomNum(0, 20)}s;
+        animation-duration: #{randomNum(20, 45)}s;
+        left: percentage(randomPercentage(.02,.98));
+        width: #{$size}px;
+        height: #{$size}px;
+        background-color: fade_out(white, randomPercentage(.5, .9));
+      }
+    }
+
+  }
+
+}
+
+@-webkit-keyframes square {
+  0%   { transform: translateY(-300px); opacity: 0;}
+  25%  { opacity: 1; }
+  100% { transform: translateY(-1400px) rotate(600deg); }
+}
+@keyframes square {
+  0%   { transform: translateY(-300px); opacity: 0;}
+  25%  { opacity: 1; }
+  100% { transform: translateY(-1400px) rotate(600deg); }
+}

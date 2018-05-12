@@ -1,0 +1,23 @@
+$prim: #53e3a6;
+
+
+// HTML basics (Minor styling/resets of anchor links, h1-h6, etc.)
+$frow-enable-html-basics:                true;
+
+// Columns/Grid functionality
+$frow-enable-columns:                    true;
+
+// Button styling
+$frow-enable-buttons:                    false;
+
+// Form elements
+$frow-enable-forms:                      true;
+
+// Responsive design rules
+$frow-enable-responsive-design-classes:  true;
+
+// Margin/Padding classes (.mb-10, .p-15, .mx-auto)
+$frow-enable-box-model-shorcuts:         true;
+
+// Miscellaneous utilities
+$frow-enable-utilities:                  true;

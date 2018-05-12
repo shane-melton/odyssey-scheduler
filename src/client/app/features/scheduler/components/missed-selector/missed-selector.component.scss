@@ -1,0 +1,44 @@
+$borders: false;
+
+@mixin debug($override: false) {
+  @if ($borders or $override) {
+    border: 1px solid black;
+  }
+}
+
+.header, .footer {
+  //background: fade_out(green, .8);
+  height: auto;
+  //padding-bottom: 25px;
+  //border-bottom: 1px solid fade_out(white, .9);
+
+  @include debug;
+}
+
+.block-container {
+  //background: blue;
+  height: auto;
+  @include debug;
+
+  .date-block {
+    height: auto;
+    margin: 30px 10px;
+    @include debug(false);
+
+    .date {
+      //margin-top: -45px;
+    }
+
+    .block {
+      cursor: pointer;
+      transition: background-color .25s ease-out;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: fade_out(white, .7);
+      }
+    }
+  }
+}
+
+

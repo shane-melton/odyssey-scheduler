@@ -1,0 +1,13 @@
+@function randomNum($min, $max) {
+  $rand: random();
+  $randomNum: $min + floor($rand * (($max - $min) + 1));
+
+  @return $randomNum;
+}
+
+@function randomPercentage($min, $max) {
+  $rand: random();
+  $randomNum: $min + $rand * ($max - $min);
+
+  @return $randomNum;
+}

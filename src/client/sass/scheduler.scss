@@ -1,0 +1,146 @@
+.scheduler.scheduler-override {
+  height: 100%;
+
+  // region Typography
+  color: white;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 300;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 300;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  h4 {
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+
+  h5 {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  p {
+    font-size: 1.3rem;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  // endregion
+
+  // region Forms
+    .white-input {
+      display: block;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      outline: 0;
+      color: white;
+      border: 1px solid fade_out(white, .6);
+      background-color: fade_out(white, 1);
+
+      width: 300px;
+      border-radius: 3px;
+      padding: 10px 15px;
+      margin: 0 auto 10px auto;
+      text-align: center;
+      font-size: 18px;
+
+      transition: width .25s ease-out;
+      font-weight: 300;
+
+      &:hover {
+        background-color: fade_out(white, .6);
+        transition: background-color .2s linear;
+      }
+
+      &:focus {
+        background-color: white;
+        color: $prim;
+      }
+
+      &::-webkit-input-placeholder { /* WebKit browsers */
+        color:    white;
+        font-weight: 300;
+      }
+      &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    white;
+        opacity:  1;
+        font-weight: 300;
+      }
+      &::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    white;
+        opacity:  1;
+        font-weight: 300;
+      }
+      &:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color:    white;
+        font-weight: 300;
+      }
+
+    }
+
+    .focus-expand {
+      transition: width .25s ease-out;
+
+      &:focus {
+        width: 350px;
+        transition: width .25s ease-out;
+      }
+    }
+
+    .btn-white {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: 0;
+      background-color: white;
+      border: 0;
+      padding: 10px 15px;
+      color: $prim;
+      border-radius: 3px;
+      width: 350px;
+      cursor: pointer;
+      font-size: 18px;
+      transition-duration: 0.25s;
+      margin-bottom: 25px;
+
+      &:hover{
+        background-color: rgb(245, 247, 249);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    .btn-lg {
+      font-size: 22pt;
+      padding: 20px 30px;
+    }
+
+  // endregion
+
+  // region Other
+  hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0));
+  }
+  // endregion
+}
+
+
+.scheduler {
+  @import "~frow";
+}

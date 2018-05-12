@@ -1,0 +1,6 @@
+<div class="scheduler scheduler-override">
+  <div [@schedulerRouterTransitions]="getRouteAnimation(route)" class="height-100">
+    <router-outlet #route="outlet"></router-outlet>
+  </div>
+  <app-bubble-background></app-bubble-background>
+</div>
