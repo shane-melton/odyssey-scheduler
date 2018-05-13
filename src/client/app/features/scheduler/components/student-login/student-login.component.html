@@ -1,17 +1,15 @@
-<div class="container frow centered height-100" [ngClass]="{'submitted': submitted}">
-  <div class="col-md-1-3 text-center">
-    <div class="heading">
-      <h1>
-        Odyssey Scheduler
-      </h1>
-      <h4 id="error" [ngClass]="{'show': (!submitted && errorMsg)}">
-        {{errorMsg}}
-      </h4>
-    </div>
+<div class="container center-content center-align" [ngClass]="{'submitted': submitted}">
+  <div class="animate-me">
+    <h1>
+      Odyssey Scheduler
+    </h1>
+    <h4 id="error" [ngClass]="{'show': (!submitted && errorMsg)}">
+      {{errorMsg}}
+    </h4>
     <form class="form" (ngSubmit)="loginSubmit(); loginForm.reset()" #loginForm="ngForm" name="loginForm">
-      <input class="white-input" [(ngModel)]="studentNumber" type="text" placeholder="Student number" required name="studentNumber" id="studentNumber" autocomplete="off" />
+      <input class="white-input focus-expand browser-default" [(ngModel)]="studentNumber" type="text" placeholder="enter student number..." required name="studentNumber" id="studentNumber" autocomplete="off" />
+      <br>
       <button class="btn-white" type="submit" id="login-button" [disabled]="!loginForm.valid">Login</button>
     </form>
   </div>
 </div>
-

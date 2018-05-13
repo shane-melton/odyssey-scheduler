@@ -36,7 +36,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "core-js": "^2.4.1",
     "dotenv": "^4.0.0",
-    "frow": "^3.0.3",
+    "frow": "^3.0.4",
     "jsonwebtoken": "^8.2.1",
     "materialize-css": "^1.0.0-rc.1",
     "moment": "^2.22.1",

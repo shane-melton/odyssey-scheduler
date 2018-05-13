@@ -1,8 +1,8 @@
 $prim: #53e3a6;
 
 
-// HTML basics (Minor styling/resets of anchor links, h1-h6, etc.)
-$frow-enable-html-basics:                true;
+//// HTML basics (Minor styling/resets of anchor links, h1-h6, etc.)
+$frow-enable-html-basics:                false;
 
 // Columns/Grid functionality
 $frow-enable-columns:                    true;
@@ -11,7 +11,7 @@ $frow-enable-columns:                    true;
 $frow-enable-buttons:                    false;
 
 // Form elements
-$frow-enable-forms:                      true;
+$frow-enable-forms:                      false;
 
 // Responsive design rules
 $frow-enable-responsive-design-classes:  true;
@@ -20,4 +20,4 @@ $frow-enable-responsive-design-classes:  true;
 $frow-enable-box-model-shorcuts:         true;
 
 // Miscellaneous utilities
-$frow-enable-utilities:                  true;
+$frow-enable-utilities:                  false;

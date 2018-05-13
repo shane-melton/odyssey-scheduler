@@ -6,11 +6,9 @@
 }
 
 html, body {
-  height: 100% !important;
+  height: 100%;
 }
 
 @import "scheduler";
 
-//.admin {
-//  @import "../../../node_modules/materialize-css/sass/materialize";
-//}
+@import "../../../node_modules/materialize-css/sass/materialize";

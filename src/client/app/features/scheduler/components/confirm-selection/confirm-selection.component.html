@@ -1,25 +1,23 @@
-<div class="frow height-100 items-center">
-  <div class="col-xs-9-10">
-    <div class="header mt-30 text-center">
-      <h1>Confirm Makeup Day Selection:</h1>
+<div class="container">
+  <div class="header mt-30 center-align">
+    <h2>Confirm Makeup Day Selection:</h2>
+    <br>
+    <h1>{{moment(makeupClass.classDate, 'dddd')}}</h1>
+    <h4>{{moment(makeupClass.classDate, 'MMMM D, YYYY')}}</h4>
+    <h5>{{moment(makeupClass.block.startTime, 'h:mm a')}} - {{moment(makeupClass.block.endTime, 'h:mma')}}</h5>
+    <hr class="my-25">
+    <p class="text-center frow-container bold">
+      You are scheduling a makeup session for Shane Melton at the date and time specified above.
       <br>
-      <h1>{{moment(makeupClass.classDate, 'dddd')}}</h1>
-      <h4>{{moment(makeupClass.classDate, 'MMMM D, YYYY')}}</h4>
-      <h5>{{moment(makeupClass.block.startTime, 'h:mm a')}} - {{moment(makeupClass.block.endTime, 'h:mma')}}</h5>
-      <hr class="my-25">
-      <p class="text-center frow-container bold">
-        You are scheduling a makeup session for Shane Melton at the date and time specified above.
-        <br>
-        This makeup session will act as a one time substitute for Shane's normally scheduled class on
-        {{moment(missedClass.classDate, 'dddd, MMMM D, YYYY')}}
-      </p>
-      <button class="btn-white btn-lg" (click)="confirmSelection()">Confirm Selection</button>
-    </div>
+      This makeup session will act as a one time substitute for Shane's normally scheduled class on
+      {{moment(missedClass.classDate, 'dddd, MMMM D, YYYY')}}
+    </p>
+    <button class="btn-white btn-lg" (click)="confirmSelection()">Confirm Selection</button>
   </div>
-  <div class="col-xs-9-10">
-    <div class="footer my-30 text-center">
-      <button class="btn-white" (click)="signOut()">Not Shane?</button>
-      <button class="btn-white" routerLink="../missed">Wrong Dates?</button>
-    </div>
+</div>
+<div class="container">
+  <div class="footer my-30 center-align">
+    <button class="btn-white" (click)="signOut()">Not Shane?</button>
+    <button class="btn-white" routerLink="../missed">Wrong Dates?</button>
   </div>
 </div>

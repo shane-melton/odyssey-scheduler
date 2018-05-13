@@ -16,7 +16,8 @@ $borders: false;
 }
 
 .block-container {
-  //background: blue;
+  width: 97%;
+  margin: 0 auto;
   height: auto;
   @include debug;
 

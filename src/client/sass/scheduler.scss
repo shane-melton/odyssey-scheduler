@@ -1,5 +1,12 @@
-.scheduler.scheduler-override {
+.scheduler {
   height: 100%;
+
+  // region Flex Helpers
+
+  @import "variables";
+  @import "~frow";
+
+  // endregion
 
   // region Typography
   color: white;
@@ -50,7 +57,7 @@
       border: 1px solid fade_out(white, .6);
       background-color: fade_out(white, 1);
 
-      width: 300px;
+      width: 300px !important;
       border-radius: 3px;
       padding: 10px 15px;
       margin: 0 auto 10px auto;
@@ -61,7 +68,7 @@
       font-weight: 300;
 
       &:hover {
-        background-color: fade_out(white, .6);
+        background-color: fade_out(white, .9);
         transition: background-color .2s linear;
       }
 
@@ -95,7 +102,7 @@
       transition: width .25s ease-out;
 
       &:focus {
-        width: 350px;
+        width: 350px !important;
         transition: width .25s ease-out;
       }
     }
@@ -137,10 +144,13 @@
     height: 2px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0));
   }
+
+  .center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
   // endregion
-}
-
-
-.scheduler {
-  @import "~frow";
 }
