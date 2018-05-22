@@ -1,0 +1,66 @@
+<div #modal class="modal modal-fixed-footer">
+  <form [formGroup]="blockForm" (ngSubmit)="submitForm()">
+    <div class="modal-content">
+      <h4>Create a New Block</h4>
+      <div class="row">
+
+        <div class="input-field col s12 m6">
+          <input id="name" type="text" class="validate" formControlName="name">
+          <label for="name">Block Name *</label>
+        </div>
+
+        <div class="input-field col s12 m6">
+          <select id="grades" multiple class="validate" formControlName="grades" >
+            <option [value]="null" disabled selected>Select Grades</option>
+            <option *ngFor="let g of grades" [value]="g.value">{{g.text}}</option>
+          </select>
+          <label for="grades">Grades *</label>
+        </div>
+
+        <div class="input-field col s12 m4">
+          <input id="startTime" type="text" class="timepicker" formControlName="startTime">
+          <label for="startTime">Start Time</label>
+        </div>
+
+        <div class="input-field col s12 m4">
+          <input id="endTime" type="text" class="timepicker" formControlName="endTime">
+          <label for="endTime">End Time</label>
+        </div>
+
+        <div class="input-field col s12 m4">
+          <input id="maxStudents" type="number" class="validate" formControlName="maxStudents" min="0">
+          <label for="maxStudents">Max Makeup Students</label>
+          <span class="helper-text">Use 0 for no limit</span>
+        </div>
+
+        <div class="input-field col s12 m6">
+          <select id="days" multiple class="validate" formControlName="days">
+            <option [value]="null" disabled selected>Select Class Days</option>
+            <option *ngFor="let d of days" [value]="d.value">{{d.text}}</option>
+          </select>
+          <label for="days">Class Days</label>
+        </div>
+
+        <div class="input-field col s12 m6">
+          <select id="makeupDays" multiple class="validate" formControlName="makeupDays">
+            <option [value]="null" disabled selected>Select Makeup Days</option>
+            <option *ngFor="let d of days" [value]="d.value">{{d.text}}</option>
+          </select>
+          <label for="makeupDays">Makeup Days</label>
+        </div>
+
+        <div class="input-field col s12">
+          <div class="chips">
+            <input id="rooms" class="custom-class">
+          </div>
+          <label for="rooms" class="active">Available Rooms</label>
+          <span class="helper-text">Type a room name and press enter to add</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect btn-flat">Cancel</a>
+      <button type="submit" class="waves-effect waves-light btn accent" [disabled]="!blockForm.valid">Save</button>
+    </div>
+  </form>
+</div>

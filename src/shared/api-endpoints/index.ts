@@ -14,3 +14,10 @@ export const SchedulingApi = {
   getAvailableClasses: schedulingBase + '/available-classes',
   postReservation: schedulingBase + '/reserve',
 };
+
+const blockBase = BaseApi + '/blocks';
+
+export const BlockApi = {
+  postCreateBlock: blockBase + '/create',
+  getListBlocks: blockBase + '/list'
+};

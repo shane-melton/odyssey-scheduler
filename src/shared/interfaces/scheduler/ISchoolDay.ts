@@ -4,10 +4,10 @@
  */
 export interface ISchoolDayDto {
   classDate: Date;
-  blocks: IBlockDto[];
+  blocks: IClassBlockDto[];
 }
 
-export interface IBlockDto {
+export interface IClassBlockDto {
   blockId: string;
   name: string;
   startTime: Date;
@@ -20,5 +20,5 @@ export interface IBlockDto {
  */
 export interface IClassDto {
   classDate: Date;
-  block: IBlockDto;
+  block: IClassBlockDto;
 }

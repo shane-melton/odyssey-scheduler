@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { IBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@client/core/auth/auth.service';
@@ -30,7 +30,7 @@ export class MissedSelectorComponent implements OnInit {
     });
   }
 
-  selectClass(block: IBlockDto, missedDate: Date) {
+  selectClass(block: IClassBlockDto, missedDate: Date) {
     this.scheduler.setMissedSelection(block, missedDate);
     return this.router.navigate(['../makeup']);
   }

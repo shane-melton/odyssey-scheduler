@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -29,14 +29,14 @@ export class SchedulerService {
 
   // region Public Methods
 
-  setMissedSelection(block: IBlockDto, classDate: Date) {
+  setMissedSelection(block: IClassBlockDto, classDate: Date) {
     this._selectedMissedClass = {
       block,
       classDate
     };
   }
 
-  setMakeupSelection(block: IBlockDto, classDate: Date) {
+  setMakeupSelection(block: IClassBlockDto, classDate: Date) {
     this._selectedMakeupClass = {
       block,
       classDate

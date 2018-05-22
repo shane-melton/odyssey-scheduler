@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { IBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { AuthService } from '@client/core/auth/auth.service';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 
@@ -37,7 +37,7 @@ export class MakeupSelectorComponent implements OnInit {
     });
   }
 
-  async selectClass(block: IBlockDto, classDate: Date) {
+  async selectClass(block: IClassBlockDto, classDate: Date) {
     this.scheduler.setMakeupSelection(block, classDate);
     await this.router.navigate(['../confirm']);
   }

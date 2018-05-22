@@ -1,0 +1,111 @@
+<div class="dash-container">
+  <div class="frow justify-start mb-0 gutters">
+    <div class="col-sm-1-1 col-md-1-3 col-lg-1-4">
+      <div class="card">
+       <div class="card-content center-align">
+         <span class="card-title">Today's Makeups</span>
+         <div class="frow">
+           <div class="col-sm-1-2">
+             <span class="makeup-label">Scheduled</span> <br>
+             <span class="makeup-count">50</span>
+           </div>
+           <div class="col-sm-1-2">
+             <span class="makeup-label">Checked-in</span>
+             <br>
+             <span class="makeup-count">24</span>
+           </div>
+         </div>
+         <!--<p class="makeup-count">50</p>-->
+       </div>
+        <div class="card-action">
+          <a [routerLink]="" class="btn waves-effect waves-light accent">Check-in Students</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1-1 col-md-1-3 col-lg-1-4">
+      <div class="card">
+        <div class="card-content center-align">
+          <span class="card-title">Number of Students</span>
+          <p class="makeup-count">4,327</p>
+        </div>
+        <div class="card-action">
+          <a [routerLink]="" class="btn waves-effect waves-light theme">Manage Students</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1-1 col-md-1-4 col-lg-1-6">
+      <div class="card">
+        <div class="card-content center-align">
+          <span class="card-title">Active Users</span>
+          <p class="makeup-count">3</p>
+        </div>
+        <div class="card-action">
+          <a [routerLink]="" class="btn waves-effect waves-light theme">Manage Users</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="frow justify-start mb-0 gutters">
+    <div class="col-sm-1-1 col-lg-1-2">
+      <div class="card">
+        <div class="card-content pb-10">
+          <span class="card-title">Recent Activity</span>
+        </div>
+        <ul class="collection scroll">
+          <li class="collection-item">
+            <p class="m-0">
+              John Doe scheduled a makeup for May 28th
+              <span class="info">a few moments ago</span>
+            </p></li>
+          <li class="collection-item">
+            <p class="m-0">
+              Sarah checked-in Michael Jackson
+              <span class="info">2 minutes ago</span>
+            </p>
+          </li>
+          <li class="collection-item">
+            <p class="m-0">
+              Bruce Banner scheduled a makeup for May 25th
+              <span class="info">5 minutes ago</span>
+            </p>
+          </li>
+          <li class="collection-item">
+            <p class="m-0">
+              Joann checked-in John Doe
+              <span class="info">10 minutes ago</span>
+            </p>
+          </li>
+          <li class="collection-item">
+            <p class="m-0">
+              Tony Stark scheduled a makeup for May 30th
+              <span class="info">34 minutes</span>
+            </p>
+          </li>
+          <li class="collection-item">
+            <p class="m-0">
+              Sam Smith scheduled a makeup for June 1st
+              <span class="info">1 hour ago</span>
+            </p>
+          </li>
+          <li class="collection-item">
+            <p class="m-0">
+              Sam Smith scheduled a makeup for June 1st
+              <span class="info">1 hour ago</span>
+            </p>
+          </li>
+        </ul>
+        <!--<div class="card-action">-->
+        <!--<a [routerLink]="" class="btn waves-effect waves-light theme">Manage Students</a>-->
+        <!--</div>-->
+      </div>
+    </div>
+    <div class="col-sm-1-1 col-lg-1-2">
+      <div class="card">
+        <div class="card-content pb-10">
+          <span class="card-title">Makeups This Week</span>
+        </div>
+        <canvas id="week-chart" #weekChart></canvas>
+      </div>
+    </div>
+  </div>
+</div>

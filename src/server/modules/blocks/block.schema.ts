@@ -10,7 +10,10 @@ export interface IBlock {
   readonly startTime: Date;
   readonly endTime: Date;
   readonly maxStudents: number;
+  readonly rooms: string[];
+}
 
+export interface BlockDocument extends IBlock, Document {
   /**
    * Counts the number of reservations for this block and provided class date
    * @param {Date} classDate
@@ -19,16 +22,31 @@ export interface IBlock {
   ReservationCount(classDate: Date): Promise<number>;
 }
 
-export interface BlockDocument extends IBlock, Document { }
-
 export const BlockSchema = new Schema({
-  name: String,
-  days: [Number],
-  makeupDays: [Number],
-  grades: [Number],
-  startTime: Date,
-  endTime: Date,
-  maxStudents: Number
+  name: {
+    type: String, required: true
+  },
+  days: {
+    type: [Number], required: true
+  },
+  makeupDays: {
+    type: [Number], required: true
+  },
+  grades: {
+    type: [Number], required: true
+  },
+  startTime: {
+    type: Date, required: true
+  },
+  endTime: {
+    type: Date, required: true
+  },
+  maxStudents: {
+    type: Number, required: true, min: 0
+  },
+  rooms: {
+    type: [String], required: true
+  }
 });
 
 

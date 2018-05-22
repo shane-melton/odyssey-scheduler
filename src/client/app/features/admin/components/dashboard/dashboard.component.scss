@@ -1,0 +1,34 @@
+@import "../../../../../sass/colors";
+
+.makeup-count {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 500;
+  color: $accent-color;
+}
+
+.makeup-label {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.info {
+  font-size: .9rem;
+  color: #535353;
+  float:right;
+}
+
+.collection.scroll {
+  overflow-y: auto;
+  max-height: 305px;
+}
+
+.dash-container {
+  width: 85%;
+  margin: 0 auto;
+}
+
+#week-chart {
+  height: 305px;
+  width: 100%;
+}

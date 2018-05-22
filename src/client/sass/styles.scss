@@ -9,6 +9,13 @@ html, body {
   height: 100%;
 }
 
+a {
+  cursor: pointer;
+}
+
+@import "colors";
+
 @import "scheduler";
+@import "admin";
 
 @import "../../../node_modules/materialize-css/sass/materialize";

@@ -1,14 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminContainerComponent } from './components/admin-container/admin-container.component';
+import { SharedModule } from '@client/shared/shared.module';
+
+import {
+  AdminContainerComponent,
+  AdminLoginComponent,
+  DashboardComponent,
+  AdminSettingsComponent
+} from '@client/features/admin/components';
+import { NewBlockModalComponent } from './components/admin-settings/new-block-modal/new-block-modal.component';
 
 const adminRoutes: Routes = [
   {
     path: 'admin', component: AdminContainerComponent,
     children: [
-      { path: '', component: AdminLoginComponent }
+      {path: '', component: AdminLoginComponent, data: {hideNav: true}},
+      {path: 'dash', component: DashboardComponent, data: {}},
+      {path: 'settings', component: AdminSettingsComponent, data: {}},
     ]
   }
 ];
@@ -16,8 +25,10 @@ const adminRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     RouterModule.forChild(adminRoutes)
   ],
-  declarations: [AdminLoginComponent, AdminContainerComponent]
+  declarations: [AdminLoginComponent, AdminContainerComponent, DashboardComponent, AdminSettingsComponent, NewBlockModalComponent]
 })
-export class AdminModule { }
+export class AdminModule {
+}

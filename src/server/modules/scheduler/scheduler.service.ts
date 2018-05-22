@@ -8,7 +8,7 @@ import { IStudent } from '@server/modules/students/student.schema';
 import { StudentService } from '@server/modules/students/student.service';
 import { BlockService } from '@server/modules/blocks/block.service';
 import { IReservation, ReservationDocument } from '@server/modules/reservations/reservation.schema';
-import { IBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
 
 @Component()
@@ -66,7 +66,7 @@ export class SchedulerService {
 
     while (count <= maxDays) {
       const dayOfWeek = mCurrentDay.isoWeekday();
-      const blockDtos: IBlockDto[] = [];
+      const blockDtos: IClassBlockDto[] = [];
 
       for (const block of blocks) {
         // Is this block scheduled for the loops current day of the week?
@@ -246,7 +246,7 @@ export class SchedulerService {
    * @param {IBlock} block
    * @returns {Promise<boolean>}
    */
-  async validateReservation(student: IStudent, missedDate: moment.Moment, makeupDate: moment.Moment, block: IBlock): Promise<boolean> {
+  async validateReservation(student: IStudent, missedDate: moment.Moment, makeupDate: moment.Moment, block: BlockDocument): Promise<boolean> {
 
     if (!_.contains(block.grades, student.grade)) {
       return false;

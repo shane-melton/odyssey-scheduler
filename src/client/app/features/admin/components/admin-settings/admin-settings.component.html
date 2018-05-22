@@ -1,0 +1,127 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m10">
+
+      <div id="general" class="section scrollspy">
+        <h5>General Settings</h5>
+        <p>
+          This will contains settings like Max Future Days, Allow Future Scheduling, etc...
+          <br>
+          <br>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur eligendi facilis laboriosam nam odit
+          pariatur placeat quaerat quis rem sit tempora, unde veritatis voluptatibus. Aspernatur assumenda consectetur
+          deserunt eligendi eos facilis fugit, labore neque, nesciunt quaerat sed soluta suscipit temporibus?
+          Accusamus consequuntur eius id obcaecati possimus quaerat sunt ullam voluptates?
+
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consequatur delectus distinctio dolore eum
+          id illum incidunt iste minima, molestias necessitatibus nobis, obcaecati, odit porro quam quasi quos ratione
+          rem repudiandae sequi. Eius facere fuga pariatur. Aliquam, aut, blanditiis deleniti dignissimos doloremque
+          doloribus dolorum ex exercitationem hic ipsam magni pariatur quasi quisquam quod reiciendis rem, reprehenderit
+          rerum sit ut vitae? Distinctio earum et, impedit ipsum magnam magni mollitia neque, nihil quisquam ratione
+          repudiandae sed sunt veritatis. Aperiam autem, beatae blanditiis cupiditate eligendi, iste iure laborum
+          laudantium maiores neque nesciunt nihil nostrum nulla provident quam quia quos, reprehenderit similique
+          suscipit voluptatibus.
+        </p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="blocks" class="section scrollspy">
+        <h5>Blocks</h5>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur debitis fuga modi nobis nulla
+          quas. Assumenda consectetur culpa cumque delectus deserunt distinctio dolore doloribus ducimus earum et ipsum,
+          iusto maiores molestiae molestias mollitia neque obcaecati odio officiis quae quam quas quia reprehenderit
+          sequi sunt vel veniam veritatis voluptas, voluptate.</p>
+        <table class="centered mb-10">
+          <thead>
+          <tr>
+            <th>Block Name</th>
+            <th>Grades</th>
+            <th>Time</th>
+            <th>Rooms</th>
+            <th></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr class="center-align" *ngIf="!blocks">
+            <td colspan="5">
+              <em>There are currently no blocks!</em>
+            </td>
+          </tr>
+          <tr *ngFor="let block of blocks">
+            <td>{{block.name}}</td>
+            <td>{{block.grades | grades}}</td>
+            <td>{{block.timeRange()}}</td>
+            <td>{{block.rooms}}</td>
+          </tr>
+          <!--<tr>-->
+          <!--<td>Morning A</td>-->
+          <!--<td>9th, 10th</td>-->
+          <!--<td>07:30 - 12:00</td>-->
+          <!--<td>A, B, C</td>-->
+          <!--<td>-->
+          <!--<a><i class="material-icons theme-text">delete</i></a>-->
+          <!--<span class="pl-5"></span>-->
+          <!--<a><i class="material-icons theme-text">edit</i></a>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+          <!--<td>Afternoon A</td>-->
+          <!--<td>9th, 10th</td>-->
+          <!--<td>12:00 - 16:30</td>-->
+          <!--<td>A, B, C</td>-->
+          <!--<td>-->
+          <!--<a><i class="material-icons theme-text">delete</i></a>-->
+          <!--<span class="pl-5"></span>-->
+          <!--<a><i class="material-icons theme-text">edit</i></a>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+          <!--<td>Morning B</td>-->
+          <!--<td>11th, 12th</td>-->
+          <!--<td>7:30 - 12:00</td>-->
+          <!--<td>D, E, F</td>-->
+          <!--<td>-->
+          <!--<a><i class="material-icons theme-text">delete</i></a>-->
+          <!--<span class="pl-5"></span>-->
+          <!--<a><i class="material-icons theme-text">edit</i></a>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+          <!--<td>Afternoon B</td>-->
+          <!--<td>11th, 12th</td>-->
+          <!--<td>12:00 - 16:30</td>-->
+          <!--<td>D, E, F</td>-->
+          <!--<td>-->
+          <!--<a><i class="material-icons theme-text">delete</i></a>-->
+          <!--<span class="pl-5"></span>-->
+          <!--<a><i class="material-icons theme-text">edit</i></a>-->
+          <!--</td>-->
+          <!--</tr>-->
+          </tbody>
+        </table>
+
+        <button (click)="modal.open()" class="btn waves-effect waves-light theme">New Block</button>
+
+        <app-new-block-modal #modal></app-new-block-modal>
+      </div>
+
+
+      <div class="divider"></div>
+
+      <div id="dangerous" class="section scrollspy">
+        <h5>Dangerous</h5>
+        <p>Stuff</p>
+      </div>
+    </div>
+    <div class="col hide-on-small-only m2">
+      <ul class="section table-of-contents pinned">
+        <li><a appToc="general">General Settings</a></li>
+        <li><a appToc="blocks">Blocks</a></li>
+        <li><a appToc="dangerous">Dangerous</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>

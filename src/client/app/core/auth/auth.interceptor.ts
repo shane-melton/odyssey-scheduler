@@ -9,6 +9,7 @@ import { AUTH_TOKEN_KEY } from '@client/constants/auth.constants';
 import 'rxjs/add/operator/catch';
 import { Router } from '@angular/router';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

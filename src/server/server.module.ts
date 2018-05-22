@@ -10,6 +10,7 @@ import { SchedulerController } from '@server/modules/scheduler/scheduler.control
 import { StudentModule } from '@server/modules/students/students.module';
 import { ReservationsModule } from '@server/modules/reservations/reservations.module';
 import { BlocksModule } from '@server/modules/blocks/blocks.module';
+import { BlockController } from '@server/modules/blocks/block.controller';
 
 
 @Module({
@@ -27,6 +28,6 @@ import { BlocksModule } from '@server/modules/blocks/blocks.module';
 export class ApplicationModule implements NestModule {
   configure(consumer: MiddlewaresConsumer): void {
     consumer.apply(TokenMiddleware)
-      .forRoutes(AuthController, StudentController, SchedulerController);
+      .forRoutes(AuthController, StudentController, SchedulerController, BlockController);
   }
 }

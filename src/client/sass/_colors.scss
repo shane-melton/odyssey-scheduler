@@ -1,0 +1,42 @@
+@import "../../../node_modules/materialize-css/sass/components/color-variables";
+@import "../../../node_modules/materialize-css/sass/components/color-classes";
+@import "../../../node_modules/materialize-css/sass/components/variables";
+
+$theme: (
+  "base": #50a3a2,
+  "lighten-2": #7EC8C8,
+  "lighten-1": #7EC8C8,
+  "darken-1": #338989,
+  "darken-2": #1C7878
+);
+
+@each $color_type, $color_value in $theme {
+  @if $color_type == "base" {
+    .theme {
+      background-color: $color_value !important;
+    }
+    .theme-text {
+      color: $color_value !important;
+    }
+  } @else {
+    .theme.#{$color_type} {
+      background-color: $color_value !important;
+    }
+    .theme-text.text-#{$color_type} {
+      color: $color_value !important;
+    }
+  }
+}
+$primary-color: #50a3a2;
+$primary-color-light: lighten($primary-color, 15%);
+$primary-color-dark: darken($primary-color, 15%);
+
+$accent-color: #617AB3;
+
+.accent {
+  background-color: $accent-color !important;
+}
+
+.accent-text {
+  color: $accent-color !important;
+}
