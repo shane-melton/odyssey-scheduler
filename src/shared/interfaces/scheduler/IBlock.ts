@@ -1,10 +1,11 @@
 import { BlockDocument } from '@server/modules/blocks/block.schema';
 import * as moment from 'moment';
 
-export interface ICreateBlockDto {
+export interface IBlockDto {
+  id?: string;
   name: string;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   maxStudents: number;
   grades: number[];
   rooms: string[];
@@ -12,7 +13,8 @@ export interface ICreateBlockDto {
   makeupDays: number[];
 }
 
-export class IBlockDto {
+export class BlockDto implements IBlockDto {
+  id?: string;
   name: string;
   startTime: Date;
   endTime: Date;
@@ -22,9 +24,10 @@ export class IBlockDto {
   days: number[];
   makeupDays: number[];
 
-  static fromBlockDoc(doc: BlockDocument): IBlockDto {
-    const newBlock = new IBlockDto();
+  static fromBlockDoc(doc: BlockDocument): BlockDto {
+    const newBlock = new BlockDto();
     Object.assign(newBlock, doc);
+    newBlock.id = doc._id;
     return newBlock;
   }
 

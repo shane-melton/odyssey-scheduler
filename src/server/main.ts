@@ -10,7 +10,7 @@ dotenv.config();
 
 import { join } from 'path';
 
-import { FOLDER_CLIENT, FOLDER_DIST } from '../shared/constants';
+import { FOLDER_CLIENT, FOLDER_DIST } from '@shared/constants';
 
 import { ApplicationModule } from './server.module';
 
@@ -24,7 +24,7 @@ async function bootstrap() {
 
   const server = await NestFactory.create(ApplicationModule, app);
 
-  await server.listen(process.env.PORT || 3666);
+  await server.listen(process.env.PORT || 5400);
 }
 
 bootstrap();

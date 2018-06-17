@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import { Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { Modal, FormSelect, Timepicker, Chips, ChipData } from 'materialize-css';
 import * as _ from 'underscore';
-import { BlockApi } from '@shared/api-endpoints';
 import { IApiResult } from '@shared/interfaces/api';
-import { HttpClient } from '@angular/common/http';
 import { BlockService } from '@client/core/blocks/block.service';
+import {IBlockDto} from '@shared/interfaces/scheduler/IBlock';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-new-block-modal',
@@ -14,6 +14,7 @@ import { BlockService } from '@client/core/blocks/block.service';
 })
 export class NewBlockModalComponent implements OnInit, AfterViewInit {
 
+  @Output() saved = new EventEmitter<void>();
   @ViewChild('modal') private _modalRef: ElementRef;
   private _modal: Modal;
 
@@ -49,6 +50,10 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
    * After the view initial renders (including the <option />'s) initialize materialize inputs
    */
   ngAfterViewInit() {
+    this.initFormControls();
+  }
+
+  private initFormControls() {
     const self = this;
     // Select Inputs
     FormSelect.init(document.querySelectorAll('select'), {});
@@ -66,12 +71,17 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
       }
     });
 
+    const rooms: ChipData[] = _.map(this.blockForm.value.rooms, (room: string): ChipData => {
+        return {tag: room};
+      });
+
     // Chips
     Chips.init(document.querySelectorAll('.chips'), {
       placeholder: 'Enter rooms',
       secondaryPlaceholder: 'add new room',
       onChipDelete: updateRooms,
-      onChipAdd: updateRooms
+      onChipAdd: updateRooms,
+      data: rooms
     });
 
     // Function to update room selections since Chips do not automatically update form values
@@ -84,25 +94,75 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
     M.updateTextFields();
   }
 
-  public open() {
+  public open(existingBlock: IBlockDto) {
+    if (existingBlock) {
+      this.createForm(existingBlock);
+    } else {
+      this.createForm();
+    }
     this._modal.open();
   }
 
   public submitForm() {
-    this.blockService.createBlock(this.blockForm.value);
+    if (this.blockForm.value.id) {
+      this.blockService.updateBlock(this.blockForm.value).subscribe((result: IApiResult) => {
+        if (result.success) {
+          M.toast({html: 'Block saved successfully!'});
+          this.saved.emit();
+          this._modal.close();
+        } else {
+          M.toast({html: result.errorMsg});
+        }
+      });
+    } else {
+      this.blockService.createBlock(this.blockForm.value).subscribe((result: IApiResult) => {
+        if (result.success) {
+          M.toast({html: 'Block created successfully!'});
+          this.saved.emit();
+          this._modal.close();
+        } else {
+          M.toast({html: result.errorMsg});
+        }
+      });
+    }
   }
 
-  private createForm() {
+  private createForm(block: IBlockDto = null) {
+    if (!block) {
+      block = {
+        name: '',
+        grades: [],
+        startTime: null,
+        endTime: null,
+        maxStudents: 0,
+        days: [],
+        makeupDays: [],
+        rooms: []
+      };
+    }
+
+    console.log(block.id);
+
+    function getInitTime(time: Date): string {
+      if (!time) {
+        return '';
+      }
+      return moment(time).format('HH:mm A');
+    }
+
     this.blockForm = this.fb.group({
-      name: ['', Validators.required],
-      grades: [null, Validators.required],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
-      maxStudents: [0, [Validators.required, Validators.min(0)]],
-      days: [[], Validators.required],
-      makeupDays: [[], Validators.required],
-      rooms: [[], Validators.required],
+      name: [block.name, Validators.required],
+      grades: [block.grades, Validators.required],
+      startTime: [getInitTime(block.startTime), Validators.required],
+      endTime: [getInitTime(block.endTime), Validators.required],
+      maxStudents: [block.maxStudents, [Validators.required, Validators.min(0)]],
+      days: [block.days, Validators.required],
+      makeupDays: [block.makeupDays, Validators.required],
+      rooms: [block.rooms, Validators.required],
+      id: [block.id]
     });
+
+    setTimeout(() => { this.initFormControls(); }, 0);
   }
 
 }

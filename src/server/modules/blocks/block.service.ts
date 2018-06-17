@@ -2,7 +2,7 @@ import { Component, Inject } from '@nestjs/common';
 import { ProviderTokens } from '@server/constants';
 import { BlockDocument, IBlock } from './block.schema';
 import { Model } from 'mongoose';
-import { ICreateBlockDto } from '@shared/interfaces/scheduler/IBlock';
+import {IBlockDto} from '@shared/interfaces/scheduler/IBlock';
 import * as moment from 'moment';
 
 @Component()
@@ -33,15 +33,23 @@ export class BlockService {
     return await this.blockModel.find().lean().exec();
   }
 
-  async createBlock(newBlockDto: ICreateBlockDto): Promise<boolean> {
+  async updateBlock(blockDto: IBlockDto): Promise<boolean> {
+    return this.blockModel.updateOne({_id: blockDto.id}, blockDto);
+  }
+
+  async deleteBlock(blockId: string): Promise<boolean> {
+    return this.blockModel.deleteOne({_id: blockId});
+  }
+
+  async createBlock(newBlockDto: IBlockDto): Promise<boolean> {
     const newBlock: IBlock = {
       maxStudents: newBlockDto.maxStudents,
       name: newBlockDto.name,
       makeupDays: newBlockDto.makeupDays,
       days: newBlockDto.days,
       grades: newBlockDto.grades,
-      startTime: moment(newBlockDto.startTime, 'HH:mm a').toDate(),
-      endTime: moment(newBlockDto.endTime, 'HH:mm a').toDate(),
+      startTime: newBlockDto.startTime,
+      endTime: newBlockDto.endTime,
       rooms: newBlockDto.rooms
     };
 

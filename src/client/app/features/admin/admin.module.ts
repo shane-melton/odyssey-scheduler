@@ -16,8 +16,8 @@ const adminRoutes: Routes = [
     path: 'admin', component: AdminContainerComponent,
     children: [
       {path: '', component: AdminLoginComponent, data: {hideNav: true}},
-      {path: 'dash', component: DashboardComponent, data: {}},
-      {path: 'settings', component: AdminSettingsComponent, data: {}},
+      {path: 'dash', component: DashboardComponent, data: {hideNav: false}},
+      {path: 'settings', component: AdminSettingsComponent, data: {hideNav: false}},
     ]
   }
 ];

@@ -19,5 +19,9 @@ const blockBase = BaseApi + '/blocks';
 
 export const BlockApi = {
   postCreateBlock: blockBase + '/create',
-  getListBlocks: blockBase + '/list'
+  getListBlocks: blockBase + '/list',
+  postUpdateBlock: blockBase + '/update',
+  deleteBlock: function(blockId: string) {
+    return blockBase + '/delete/' + blockId;
+  }
 };

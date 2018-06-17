@@ -44,67 +44,35 @@
           </thead>
 
           <tbody>
-          <tr class="center-align" *ngIf="!blocks">
-            <td colspan="5">
-              <em>There are currently no blocks!</em>
-            </td>
-          </tr>
-          <tr *ngFor="let block of blocks">
+            <tr class="center-align" *ngIf="loadingBlocks">
+              <td colspan="5">
+                <div class="progress">
+                  <div class="indeterminate"></div>
+                </div>
+              </td>
+            </tr>
+            <tr class="center-align" *ngIf="!loadingBlocks && blocks.length == 0">
+              <td colspan="5">
+                <em>There are currently no blocks!</em>
+              </td>
+            </tr>
+            <tr *ngFor="let block of blocks">
             <td>{{block.name}}</td>
             <td>{{block.grades | grades}}</td>
             <td>{{block.timeRange()}}</td>
             <td>{{block.rooms}}</td>
+            <td>
+              <a (click)="deleteBlock(block)"><i class="material-icons theme-text">delete</i></a>
+              <span class="pl-5"></span>
+              <a (click)="modal.open(block)"><i class="material-icons theme-text">edit</i></a>
+            </td>
           </tr>
-          <!--<tr>-->
-          <!--<td>Morning A</td>-->
-          <!--<td>9th, 10th</td>-->
-          <!--<td>07:30 - 12:00</td>-->
-          <!--<td>A, B, C</td>-->
-          <!--<td>-->
-          <!--<a><i class="material-icons theme-text">delete</i></a>-->
-          <!--<span class="pl-5"></span>-->
-          <!--<a><i class="material-icons theme-text">edit</i></a>-->
-          <!--</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-          <!--<td>Afternoon A</td>-->
-          <!--<td>9th, 10th</td>-->
-          <!--<td>12:00 - 16:30</td>-->
-          <!--<td>A, B, C</td>-->
-          <!--<td>-->
-          <!--<a><i class="material-icons theme-text">delete</i></a>-->
-          <!--<span class="pl-5"></span>-->
-          <!--<a><i class="material-icons theme-text">edit</i></a>-->
-          <!--</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-          <!--<td>Morning B</td>-->
-          <!--<td>11th, 12th</td>-->
-          <!--<td>7:30 - 12:00</td>-->
-          <!--<td>D, E, F</td>-->
-          <!--<td>-->
-          <!--<a><i class="material-icons theme-text">delete</i></a>-->
-          <!--<span class="pl-5"></span>-->
-          <!--<a><i class="material-icons theme-text">edit</i></a>-->
-          <!--</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-          <!--<td>Afternoon B</td>-->
-          <!--<td>11th, 12th</td>-->
-          <!--<td>12:00 - 16:30</td>-->
-          <!--<td>D, E, F</td>-->
-          <!--<td>-->
-          <!--<a><i class="material-icons theme-text">delete</i></a>-->
-          <!--<span class="pl-5"></span>-->
-          <!--<a><i class="material-icons theme-text">edit</i></a>-->
-          <!--</td>-->
-          <!--</tr>-->
           </tbody>
         </table>
 
         <button (click)="modal.open()" class="btn waves-effect waves-light theme">New Block</button>
 
-        <app-new-block-modal #modal></app-new-block-modal>
+        <app-new-block-modal #modal (saved)="loadData()"></app-new-block-modal>
       </div>
 
 

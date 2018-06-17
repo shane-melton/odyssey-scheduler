@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ScrollSpy} from 'materialize-css';
-import { IBlockDto } from '@shared/interfaces/scheduler/IBlock';
+import { BlockDto } from '@shared/interfaces/scheduler/IBlock';
 import { BlockService } from '@client/core/blocks/block.service';
+import { IApiResult } from '@shared/interfaces/api';
 
 @Component({
   selector: 'app-admin-settings',
@@ -10,7 +11,8 @@ import { BlockService } from '@client/core/blocks/block.service';
 })
 export class AdminSettingsComponent implements OnInit {
 
-  blocks: IBlockDto[];
+  blocks: BlockDto[] = [];
+  loadingBlocks = true;
 
   constructor(private blockService: BlockService) { }
 
@@ -25,7 +27,24 @@ export class AdminSettingsComponent implements OnInit {
   }
 
   loadData() {
-    this.blockService.listBlocks().subscribe(blocks => this.blocks = blocks);
+    this.loadingBlocks = true;
+    this.blockService.listBlocks().subscribe(blocks => {
+      this.blocks = blocks;
+      this.loadingBlocks = false;
+    });
+  }
+
+  deleteBlock(block: BlockDto) {
+    if (!confirm(`Are you sure you want to delete the block '${block.name}'?`)) {
+      return;
+    }
+    this.blockService.deleteBlock(block.id).subscribe((result: IApiResult) => {
+      if (result.success) {
+        this.loadData();
+      } else {
+        alert(result.errorMsg);
+      }
+    });
   }
 
 }
