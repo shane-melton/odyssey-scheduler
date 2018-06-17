@@ -108,15 +108,20 @@ export class SchedulerService {
    * @private
    */
   private _canBlockBeMadeupOnDate(block: BlockDocument, mDate: moment.Moment): boolean {
-    // Minimum eligible day is 1 week in the past so start there
-    const mMinEligibleDay = moment().subtract(1, 'week');
+    const mMinEligibleDay = moment();
+    const mNextOccurrence = moment(mDate).add(1, 'week');
 
     // Calculate the blocks min eligible day
     // i.e. Ensure the first makeup is before the next normal occurrence
     const mBlockMinDay = moment(mMinEligibleDay);
 
-    while (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday())) {
+    while (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday()) && mBlockMinDay.isBefore(mNextOccurrence, 'day')) {
       mBlockMinDay.add(1, 'day');
+    }
+
+    // If the minimum eligible day is the same or after the max then its not possible to be made up
+    if (mBlockMinDay.isSameOrAfter(mNextOccurrence, 'day')) {
+      return false;
     }
 
     const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat);
@@ -124,7 +129,7 @@ export class SchedulerService {
     // Ensure we haven't passed this block's time on the minimum eligible day
     // e.g. If the first day the block can be made up is Today, then make sure the block
     // hasn't already started (its start time is before now)
-    return !(mBlockMinDay.isSame(mDate, 'day')
+    return !(mBlockMinDay.isSame(moment(), 'day')
       && MinutesOfDay(mBlockStartTime) <= MinutesOfDay(moment()));
   }
 
@@ -152,9 +157,7 @@ export class SchedulerService {
   private async _buildEligibleMakeupClasses(mMissedDate: moment.Moment, missedBlock: BlockDocument): Promise<ISchoolDayDto[]> {
     const mToday = moment();
     const eligibleDays: ISchoolDayDto[] = [];
-    const mCurrentDate = (mMissedDate.isSameOrAfter(mToday, 'day'))
-      ? moment(mMissedDate)
-      : moment(mToday).startOf('day');
+    const mCurrentDate = moment(mToday).startOf('day');
 
     const maxEligibleDate = moment(mMissedDate).add(1, 'week').subtract(1, 'day');
     const blockStartMinutes = MinutesOfDay(moment(missedBlock.startTime, Constants.BlockTimeFormat));
@@ -163,7 +166,7 @@ export class SchedulerService {
     while (mCurrentDate.isSameOrBefore(maxEligibleDate)) {
       const dayOfWeek = mCurrentDate.isoWeekday();
 
-      if (!_.contains(missedBlock.makeupDays, dayOfWeek)) {
+      if (!_.contains(missedBlock.makeupDays, dayOfWeek) || mCurrentDate.isSame(mMissedDate, 'day')) {
         mCurrentDate.add(1, 'day');
         continue;
       }
