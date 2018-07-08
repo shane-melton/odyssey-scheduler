@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import * as fast_csv from 'fast-csv';
 import * as _ from 'underscore';
 import {FailureException, FailureResult, IApiResult, SuccesResult} from '@shared/interfaces/api';
-import {map, toArray} from 'rxjs/operators';
+import { map, tap, toArray } from 'rxjs/operators';
 import {streamToRx} from '@server/helpers/fromReadableStream';
 import * as moment from 'moment';
 import {BlockService} from '@server/modules/blocks/block.service';
@@ -29,6 +29,56 @@ export class StudentService {
     }
   }
 
+  async importUpdateStudents(filePath: string): Promise<IApiResult> {
+    if (!filePath || filePath.length === 0) {
+      return new FailureResult('No input file!');
+    }
+
+    // See https://github.com/meanie/mongoose-upsert-many/blob/master/index.js
+
+    const blocks = await this.blockService.listBlocks();
+    const bulk = this.studentModel.collection.initializeUnorderedBulkOp();
+
+    try {
+      const stream = fs.createReadStream(filePath);
+      const csvStream = fast_csv.fromStream(stream, { headers: true })
+        .validate(this.validateCsvRow);
+
+      streamToRx<ICsvStudent>(csvStream).pipe(
+        tap((data: ICsvStudent) => {
+          const icSlug = data.courseSection.substr(3, 2);
+          const blockDayOfWeek = moment(data.courseSection.substr(0, 3), 'ddd').isoWeekday();
+          const grade = parseInt(data.grade, 10);
+
+          const block = _.find(blocks, (b: BlockDocument) => {
+            return b.icSlug === icSlug && _.contains(b.grades, grade);
+          });
+
+
+          bulk
+            .find({studentNumber: data.studentNumber})
+            .upsert()
+            .replaceOne({
+              studentNumber: data.studentNumber,
+              lastName: data.lastName,
+              firstName: data.firstName,
+              grade: grade,
+              birthDate: moment(data.birthdate, 'MM/DD/YYYY').toDate(),
+              block: (block) ? block._id : null,
+              blockDayOfWeek: blockDayOfWeek,
+              blockRoom: data.room
+            });
+        }),
+        toArray()
+      ).subscribe(async () => {
+        await bulk.execute();
+      });
+    } catch (e) {
+      return new FailureException(e);
+    }
+
+    return new SuccesResult();
+  }
 
 
   async importNewStudents(filePath: string): Promise<IApiResult> {

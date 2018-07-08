@@ -2,7 +2,7 @@
   "watch": ["./src/server"],
   "ext": "ts",
   "ignore": ["./src/server/**/*.spec.ts"],
-  "exec": "node %NODE_DEBUG_OPTION% ./index",
+  "exec": "node $NODE_DEBUG_OPTION ./index",
   "env": {
     "NODE_ENV": "development"
   }
