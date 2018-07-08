@@ -4,12 +4,17 @@
       <h4>Create a New Block</h4>
       <div class="row">
 
-        <div class="input-field col s12 m6">
+        <div class="input-field col s12 m4">
           <input id="name" type="text" class="validate" formControlName="name">
           <label for="name">Block Name *</label>
         </div>
 
-        <div class="input-field col s12 m6">
+        <div class="input-field col s12 m4">
+          <input id="icSlug" type="text" class="validate" formControlName="icSlug">
+          <label for="icSlug">Infinite Campus Slug *</label>
+        </div>
+
+        <div class="input-field col s12 m4">
           <select id="grades" multiple class="validate" formControlName="grades" >
             <option [value]="null" disabled selected>Select Grades</option>
             <option *ngFor="let g of grades" [value]="g.value">{{g.text}}</option>

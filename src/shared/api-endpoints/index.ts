@@ -25,3 +25,10 @@ export const BlockApi = {
     return blockBase + '/delete/' + blockId;
   }
 };
+
+const studentBase = BaseApi + '/students';
+
+export const StudentApi = {
+  getMe: studentBase + '/me',
+  postImport: studentBase + '/import'
+};

@@ -1,8 +1,8 @@
 <div class="container">
 
   <div class="header mt-30 center-align">
-    <h1>Hello, Shane!</h1>
-    <h4>Please select the class you would like to makeup below</h4>
+    <h1>Hello, {{student?.firstName}}!</h1>
+    <h4>Please select the day you missed or will miss in the future below</h4>
     <hr class="mt-25">
   </div>
 </div>
@@ -28,6 +28,6 @@
 
 <div class="container">
   <div class="footer my-30 center-align">
-    <button class="btn-white" (click)="signOut()">Not Shane?</button>
+    <button class="btn-white" (click)="signOut()">Not {{student?.firstName}}?</button>
   </div>
 </div>

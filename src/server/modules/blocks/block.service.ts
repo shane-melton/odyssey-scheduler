@@ -44,6 +44,7 @@ export class BlockService {
   async createBlock(newBlockDto: IBlockDto): Promise<boolean> {
     const newBlock: IBlock = {
       maxStudents: newBlockDto.maxStudents,
+      icSlug: newBlockDto.icSlug,
       name: newBlockDto.name,
       makeupDays: newBlockDto.makeupDays,
       days: newBlockDto.days,

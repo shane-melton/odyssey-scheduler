@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {httpInterceptorProviders} from '@client/core/core.interceptors';
 import { SchedulerService } from './scheduler/scheduler.service';
 import { BlockService } from '@client/core/blocks/block.service';
+import {StudentService} from '@client/core/student/student.service';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { BlockService } from '@client/core/blocks/block.service';
     httpInterceptorProviders,
     AuthService,
     BlockService,
-    SchedulerService
+    SchedulerService,
+    StudentService
   ],
   exports: [
     HttpClientModule

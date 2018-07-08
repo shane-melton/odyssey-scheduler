@@ -131,6 +131,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
     if (!block) {
       block = {
         name: '',
+        icSlug: '',
         grades: [],
         startTime: null,
         endTime: null,
@@ -152,6 +153,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
 
     this.blockForm = this.fb.group({
       name: [block.name, Validators.required],
+      icSlug: [block.icSlug, Validators.required],
       grades: [block.grades, Validators.required],
       startTime: [getInitTime(block.startTime), Validators.required],
       endTime: [getInitTime(block.endTime), Validators.required],

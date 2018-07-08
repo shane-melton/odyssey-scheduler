@@ -66,7 +66,10 @@ export class SchedulerService {
   }
 
   getRecentClasses(): Observable<ISchoolDayDto[]> {
-    return this.http.get<IApiResult<ISchoolDayDto[]>>(SchedulingApi.getRecentClasses)
+    const params = new HttpParams()
+      .set('future', '1');
+
+    return this.http.get<IApiResult<ISchoolDayDto[]>>(SchedulingApi.getRecentClasses, {params})
       .pipe(
         map(res => res.success ? res.data : [])
       );

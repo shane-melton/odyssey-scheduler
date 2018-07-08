@@ -7,9 +7,9 @@
     <h5>{{moment(makeupClass.block.startTime, 'h:mm a')}} - {{moment(makeupClass.block.endTime, 'h:mma')}}</h5>
     <hr class="my-25">
     <p class="text-center frow-container bold">
-      You are scheduling a makeup session for Shane Melton at the date and time specified above.
+      You are scheduling a makeup session for {{student?.firstName}} {{student?.lastName}} at the date and time specified above.
       <br>
-      This makeup session will act as a one time substitute for Shane's normally scheduled class on
+      This makeup session will act as a one time substitute for {{student?.firstName}}'s normally scheduled class on
       {{moment(missedClass.classDate, 'dddd, MMMM D, YYYY')}}
     </p>
     <button class="btn-white btn-lg" (click)="confirmSelection()">Confirm Selection</button>
@@ -17,7 +17,7 @@
 </div>
 <div class="container">
   <div class="footer my-30 center-align">
-    <button class="btn-white" (click)="signOut()">Not Shane?</button>
+    <button class="btn-white" (click)="signOut()">Not {{student?.firstName}}?</button>
     <button class="btn-white" routerLink="../missed">Wrong Dates?</button>
   </div>
 </div>

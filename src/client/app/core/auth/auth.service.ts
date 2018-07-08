@@ -6,16 +6,22 @@ import { decode } from 'jsonwebtoken';
 import * as moment from 'moment';
 import { AUTH_EXPIRES_KEY, AUTH_TOKEN_KEY } from '../../constants/auth.constants';
 import { AuthApi } from '@shared/api-endpoints';
-import { map, tap } from 'rxjs/operators';
-import { IApiResult } from '@shared/interfaces/api';
 import { Moment } from 'moment';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
 
   private _authToken: IAuthToken;
+  private _loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this._loadSavedSession();
+  }
+
+  get AuthStatus$(): BehaviorSubject<boolean> {
+    return this._loggedIn;
+  }
 
   // region Public Getters
   get studentNumber(): string {
@@ -66,10 +72,11 @@ export class AuthService {
   /**
    * Sends a request to the server to login as a student/parent using a student number
    * @param {string} studentNumber
+   * @param {Date} birthdate
    */
-  public loginStudent(studentNumber: string): Promise<void> {
+  public loginStudent(studentNumber: string, birthdate: Date): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.http.post<IAuthResult>(AuthApi.postAuthStudent, {studentNumber})
+      this.http.post<IAuthResult>(AuthApi.postAuthStudent, {studentNumber, birthdate})
         .subscribe(authResult => {
           if (authResult.success) {
             this._setSession(authResult);
@@ -88,6 +95,7 @@ export class AuthService {
     this._authToken = null;
     localStorage.removeItem(AUTH_EXPIRES_KEY);
     localStorage.removeItem(AUTH_TOKEN_KEY);
+    this._loggedIn.next(false);
   }
   // endregion
 
@@ -99,6 +107,19 @@ export class AuthService {
     localStorage.setItem(AUTH_EXPIRES_KEY, JSON.stringify(expiresAt.valueOf()));
 
     this._authToken = decode(authResult.token) as IAuthToken;
+
+    this._loggedIn.next(true);
+  }
+
+  private _loadSavedSession() {
+    if (this.sessionExpiration.isAfter(moment())) {
+      const tokenValue = localStorage.getItem(AUTH_TOKEN_KEY);
+
+      if (tokenValue) {
+        this._authToken = decode(tokenValue) as IAuthToken;
+        this._loggedIn.next(true);
+      }
+    }
   }
 
   private _getExpiration() {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@client/core/auth/auth.service';
+import {StudentService} from '@client/core/student/student.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-student-login',
@@ -9,10 +11,12 @@ import { AuthService } from '@client/core/auth/auth.service';
 })
 export class StudentLoginComponent implements OnInit {
   studentNumber: string;
+  birthday: string;
   errorMsg: string;
   submitted = false;
 
   constructor(private readonly authService: AuthService,
+              private readonly studentService: StudentService,
               private readonly router: Router) {
   }
 
@@ -23,8 +27,11 @@ export class StudentLoginComponent implements OnInit {
     this.submitted = true;
     this.errorMsg = '';
 
-    this.authService.loginStudent(this.studentNumber)
+    const birthdate = moment(this.birthday, 'MM/DD/YYYY').toDate();
+
+    this.authService.loginStudent(this.studentNumber, birthdate)
       .then(() => {
+        this.studentService.getStudent().subscribe();
         return this.router.navigate(['../missed']);
       })
       .catch((error) => {

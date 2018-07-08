@@ -4,6 +4,7 @@ import * as moment from 'moment';
 export interface IBlockDto {
   id?: string;
   name: string;
+  icSlug: string;
   startTime: Date;
   endTime: Date;
   maxStudents: number;
@@ -16,6 +17,7 @@ export interface IBlockDto {
 export class BlockDto implements IBlockDto {
   id?: string;
   name: string;
+  icSlug: string;
   startTime: Date;
   endTime: Date;
   maxStudents: number;

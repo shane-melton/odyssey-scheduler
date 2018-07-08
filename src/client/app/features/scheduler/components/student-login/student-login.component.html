@@ -7,7 +7,9 @@
       {{errorMsg}}
     </h4>
     <form class="form" (ngSubmit)="loginSubmit(); loginForm.reset()" #loginForm="ngForm" name="loginForm">
-      <input class="white-input focus-expand browser-default" [(ngModel)]="studentNumber" type="text" placeholder="enter student number..." required name="studentNumber" id="studentNumber" autocomplete="off" />
+      <input class="white-input focus-expand browser-default" [(ngModel)]="studentNumber" type="text" placeholder="Student Number" required name="studentNumber" id="studentNumber" autocomplete="off" />
+      <!--<br>-->
+      <input class="white-input focus-expand browser-default" [(ngModel)]="birthday" type="text" placeholder="Birthday (mm/dd/yyyy)" required name="birthday" id="birthday" >
       <br>
       <button class="btn-white" type="submit" id="login-button" [disabled]="!loginForm.valid">Login</button>
     </form>

@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 export interface IBlock {
   readonly name: string;
+  readonly icSlug: string;
   readonly days: number[];
   readonly makeupDays: number[];
   readonly grades: number[];
@@ -24,6 +25,9 @@ export interface BlockDocument extends IBlock, Document {
 
 export const BlockSchema = new Schema({
   name: {
+    type: String, required: true
+  },
+  icSlug: {
     type: String, required: true
   },
   days: {

@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m10">
+      <div id="overview" class="section scrollspy">
+        <h5>Student Overview</h5>
+        <p>
+          This section will contain details regarding student counts and grades
+        </p>
+      </div>
+
+      <div id="bulk" class="section scrollspy">
+        <h5>Bulk Operations</h5>
+        <p>
+          This section will contain settings for importing/updating batches of students from CSV's and clearing all
+          students.
+        </p>
+        <br>
+        <div class="row">
+          <div class="col s6 m4 center-align">
+            <a (click)="null" class="btn waves-effect waves-light orange darken-4">Import New Students</a>
+            <p>
+              Import a fresh set of students into the database and <strong>remove all</strong> existing students from
+              the system. This cannot be undone!
+            </p>
+          </div>
+          <div class="col s6 m4 center-align">
+            <a (click)="null" class="btn waves-effect waves-light theme">Update Students</a>
+            <p>
+              Import a subset of students which will update any existing students with the same student number. If a
+              student number is not found a new student will be created. This cannot be undone!
+            </p>
+          </div>
+          <div class="col s6 m4 center-align">
+            <a (click)="null" class="btn waves-effect waves-light red darken-4">Clear All Students</a>
+            <p>
+              Remove all student data from the system. This will also remove any makeup information and cannot be
+              undone!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col hide-on-small-only m2">
+      <ul class="section table-of-contents pinned">
+        <li><a appToc="overview">Overview</a></li>
+        <li><a appToc="bulk">Bulk Operations</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,20 +1,38 @@
-import { Component } from '@nestjs/common';
+import {Component, Inject} from '@nestjs/common';
 import { IAdminCredentials, IAuthResult, IAuthToken } from '@shared/interfaces/Auth';
-import { Constants } from '@server/constants';
+import {Constants, ProviderTokens} from '@server/constants';
 import * as jwt from 'jsonwebtoken';
 import { AvailableRoles } from '@server/helpers/roles';
+import {StudentService} from '@server/modules/students/student.service';
+import {FailureException, FailureResult, IApiResult} from '@shared/interfaces/api';
+import * as moment from 'moment';
+import {Model} from "mongoose";
+import {StudentDocument} from '@server/modules/students/student.schema';
 
 @Component()
 export class AuthService {
 
-  constructor() {}
+  constructor(@Inject(ProviderTokens.Student) private readonly studentModel: Model<StudentDocument>,) {}
 
   async authorizeAdmin(credentials: IAdminCredentials): Promise<IAuthResult> {
     return Promise.resolve(this._createToken(credentials.username, true));
   }
 
-  async authorizeStudent(studentNumber: string): Promise<IAuthResult> {
-    return Promise.resolve(this._createToken(studentNumber, false));
+  async authorizeStudent(studentNumber: string, birthdate: Date): Promise<IApiResult> {
+    if (await this.verifyStudent(studentNumber, birthdate)) {
+      return this._createToken(studentNumber, false);
+    } else {
+      return new FailureResult('Student not found!');
+    }
+  }
+
+  async verifyStudent(studentNumber: string, birthDate: Date): Promise<boolean> {
+
+    birthDate = moment(birthDate).startOf('day').toDate();
+
+    const student = await this.studentModel.findOne({studentNumber, birthDate}).exec();
+
+    return !!student;
   }
   /**
    * Determines if a user has the any of the {@link roles} specified. If no roles are provided then true is returned;

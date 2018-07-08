@@ -22,7 +22,7 @@ async function bootstrap() {
     app.use(express.static(join(FOLDER_DIST, FOLDER_CLIENT)));
   }
 
-  const server = await NestFactory.create(ApplicationModule, app);
+  const server = await NestFactory.create(ApplicationModule, app, {});
 
   await server.listen(process.env.PORT || 5400);
 }

@@ -10,6 +10,9 @@ import { BlockService } from '@server/modules/blocks/block.service';
 import { IReservation, ReservationDocument } from '@server/modules/reservations/reservation.schema';
 import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
+import Block = jasmine.Block;
+
+const RESTRICT_STUDENT_DAY = true;
 
 @Component()
 export class SchedulerService {
@@ -34,7 +37,13 @@ export class SchedulerService {
       return [];
     }
 
-    const blocks = await this.blockService.getBlocksForGrades([student.grade]);
+    let blocks: BlockDocument[] = [];
+
+    if (student.block) {
+      blocks.push(<BlockDocument>student.block);
+    } else {
+      blocks = await this.blockService.getBlocksForGrades([student.grade]);
+    }
 
     if (blocks.length === 0) {
       return [];
@@ -67,6 +76,12 @@ export class SchedulerService {
     while (count <= maxDays) {
       const dayOfWeek = mCurrentDay.isoWeekday();
       const blockDtos: IClassBlockDto[] = [];
+
+      if (student.blockDayOfWeek && dayOfWeek !== student.blockDayOfWeek) {
+        mCurrentDay.add(1, 'day');
+        count++;
+        continue;
+      }
 
       for (const block of blocks) {
         // Is this block scheduled for the loops current day of the week?
@@ -115,22 +130,47 @@ export class SchedulerService {
     // i.e. Ensure the first makeup is before the next normal occurrence
     const mBlockMinDay = moment(mMinEligibleDay);
 
-    while (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday()) && mBlockMinDay.isBefore(mNextOccurrence, 'day')) {
-      mBlockMinDay.add(1, 'day');
+    while (true) {
+      if (mBlockMinDay.isSameOrAfter(mNextOccurrence, 'day')) {
+        return false;
+      }
+
+      if (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday())) {
+        mBlockMinDay.add(1, 'day');
+        continue;
+      }
+
+      if (mBlockMinDay.isSame(moment(), 'day')) {
+        const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat)
+
+        if  (MinutesOfDay(mBlockStartTime) > MinutesOfDay(moment())) {
+          return true;
+        } else {
+          mBlockMinDay.add(1, 'day');
+          continue;
+        }
+      }
+
+      return true;
     }
+
+    // while (
+    //   (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday())) && mBlockMinDay.isBefore(mNextOccurrence, 'day')) {
+    //   mBlockMinDay.add(1, 'day');
+    // }
 
     // If the minimum eligible day is the same or after the max then its not possible to be made up
-    if (mBlockMinDay.isSameOrAfter(mNextOccurrence, 'day')) {
-      return false;
-    }
+    // if (mBlockMinDay.isSameOrAfter(mNextOccurrence, 'day')) {
+    //   return false;
+    // }
 
-    const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat);
+    // const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat);
 
     // Ensure we haven't passed this block's time on the minimum eligible day
     // e.g. If the first day the block can be made up is Today, then make sure the block
     // hasn't already started (its start time is before now)
-    return !(mBlockMinDay.isSame(moment(), 'day')
-      && MinutesOfDay(mBlockStartTime) <= MinutesOfDay(moment()));
+    // return !(mBlockMinDay.isSame(moment(), 'day')
+    //   && MinutesOfDay(mBlockStartTime) <= MinutesOfDay(moment()));
   }
 
   // endregion

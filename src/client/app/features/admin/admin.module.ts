@@ -10,6 +10,7 @@ import {
   AdminSettingsComponent
 } from '@client/features/admin/components';
 import { NewBlockModalComponent } from './components/admin-settings/new-block-modal/new-block-modal.component';
+import { ManageStudentsComponent } from './components/manage-students/manage-students.component';
 
 const adminRoutes: Routes = [
   {
@@ -18,6 +19,7 @@ const adminRoutes: Routes = [
       {path: '', component: AdminLoginComponent, data: {hideNav: true}},
       {path: 'dash', component: DashboardComponent, data: {hideNav: false}},
       {path: 'settings', component: AdminSettingsComponent, data: {hideNav: false}},
+      {path: 'students', component: ManageStudentsComponent, data: {hideNav: false}}
     ]
   }
 ];
@@ -28,7 +30,13 @@ const adminRoutes: Routes = [
     SharedModule,
     RouterModule.forChild(adminRoutes)
   ],
-  declarations: [AdminLoginComponent, AdminContainerComponent, DashboardComponent, AdminSettingsComponent, NewBlockModalComponent]
+  declarations: [
+    AdminLoginComponent,
+    AdminContainerComponent,
+    DashboardComponent,
+    AdminSettingsComponent,
+    NewBlockModalComponent,
+    ManageStudentsComponent]
 })
 export class AdminModule {
 }

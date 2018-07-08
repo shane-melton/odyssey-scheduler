@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import { IClassDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { AuthService } from '@client/core/auth/auth.service';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
+import {IStudent} from '@server/modules/students/student.schema';
+import {StudentService} from '@client/core/student/student.service';
 
 @Component({
   selector: 'app-confirm-selection',
@@ -14,11 +16,13 @@ export class ConfirmSelectionComponent implements OnInit {
 
   missedClass: IClassDto;
   makeupClass: IClassDto;
+  student: IStudent;
 
   constructor(
     private readonly router: Router,
     private readonly authService: AuthService,
-    private readonly scheduler: SchedulerService
+    private readonly scheduler: SchedulerService,
+    private readonly studentService: StudentService
   ) { }
 
   moment(d: Date, f: string): string {
@@ -46,6 +50,10 @@ export class ConfirmSelectionComponent implements OnInit {
       !this.makeupClass || this.makeupClass == null) {
       await this.router.navigate(['../missed']);
     }
+
+    this.studentService.getStudent().subscribe((student: IStudent) => {
+      this.student = student;
+    });
   }
 
 }

@@ -21,9 +21,9 @@ export class AuthController {
   }
 
   @Post(AuthApi.postAuthStudent)
-  async postAuthStudent(@Body('studentNumber') studentNumber: string): Promise<IAuthResult | IApiResult> {
+  async postAuthStudent(@Body('studentNumber') studentNumber: string, @Body('birthdate') birthdate: Date): Promise<IAuthResult | IApiResult> {
     try {
-      return this.authService.authorizeStudent(studentNumber);
+      return this.authService.authorizeStudent(studentNumber, birthdate);
     } catch (e) {
       return new FailureException(e);
     }
