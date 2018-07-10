@@ -33,7 +33,15 @@ export class BlockDto implements IBlockDto {
     return newBlock;
   }
 
-  timeRange() {
-    return moment(this.startTime).format('h:mm a') + ' - ' + moment(this.endTime).format('h:mm a');
+  static fromIBlock(i: IBlockDto): BlockDto {
+    const newBlock = new BlockDto();
+    Object.assign(newBlock, i);
+    return newBlock;
+  }
+
+  timeRange(short: boolean = false) {
+    const format = short ? 'h:mm' : 'h:mm a';
+
+    return moment(this.startTime).format(format) + ' - ' + moment(this.endTime).format(format);
   }
 }

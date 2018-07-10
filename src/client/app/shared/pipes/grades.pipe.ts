@@ -9,6 +9,10 @@ export class GradesPipe implements PipeTransform {
   transform(value: number[], args?: any): any {
     let output = '';
 
+    if (!_.isArray(value) && _.isNumber(value)) {
+      value = [value];
+    }
+
     _.each(value, (grade: number, index: number) => {
 
       output += this.ordinal_suffix(grade);

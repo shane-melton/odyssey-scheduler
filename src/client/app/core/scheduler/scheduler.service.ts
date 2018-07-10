@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import { IApiResult } from '@shared/interfaces/api';
 import { SchedulingApi } from '@shared/api-endpoints';
 import { map } from 'rxjs/operators';
+import { IReservation } from '@server/modules/reservations/reservation.schema';
+import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 
 @Injectable()
 export class SchedulerService {
@@ -95,6 +97,16 @@ export class SchedulerService {
     };
 
     return this.http.post<IApiResult>(SchedulingApi.postReservation, requestBody);
+  }
+
+  listReservations(makeupDate: Date): Observable<IReservationDto[]> {
+    const params = new HttpParams()
+      .set('date', moment(makeupDate).format('MM/DD/YYYY'));
+
+    return this.http.get<IApiResult<IReservationDto[]>>(SchedulingApi.getReservations, {params})
+      .pipe(
+        map(res => res.success ? res.data : [])
+      );
   }
 
   // endregion

@@ -58,7 +58,7 @@ BlockSchema.methods.ReservationCount = async function (classDate: Date): Promise
   const mDate = moment(classDate).startOf('day');
   const reservationModel = this.model(ProviderTokens.Reservation);
 
-  return await reservationModel.count({block: this._id, classDate: mDate.toDate()}).exec();
+  return await reservationModel.count({block: this._id, makeupDate: mDate.toDate()}).exec();
 };
 
 export const blockProviders = [

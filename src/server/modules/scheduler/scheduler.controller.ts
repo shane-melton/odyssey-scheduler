@@ -10,12 +10,14 @@ import { ErrorMsg } from '@server/constants';
 import { RoleGuard } from '@server/modules/auth/role.guard';
 import { Roles } from '@server/decorators/role.decorator';
 import { AvailableRoles } from '@server/helpers/roles';
+import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 
 
 @Controller()
 export class SchedulerController {
   constructor(private readonly schedulerService: SchedulerService) {}
 
+  // region Student Scheduling Routes
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.STUDENT)
   @Get(SchedulingApi.getRecentClasses)
@@ -76,6 +78,16 @@ export class SchedulerController {
     const result = await this.schedulerService.reserveMakeupClass(token.studentNumber, missedDate, makeupDate, blockId);
 
     return result ? new SuccesResult() : new FailureResult('There was a problem reserving that class!');
+  }
+  // endregion
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Get(SchedulingApi.getReservations)
+  async getReservations(@Query('date') makeupDate: string): Promise<IApiResult<IReservationDto[]>> {
+    const result = await this.schedulerService.getReservations(makeupDate);
+
+    return new SuccesResult(result);
   }
 
 }

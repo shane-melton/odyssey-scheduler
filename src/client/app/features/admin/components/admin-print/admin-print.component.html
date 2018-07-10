@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <div id="general" class="section">
+        <h5>
+          Print Student Make-up Slips for
+          <a id="date-display" (click)="openDatePicker()" title="Click to change the date">{{day}}</a>
+        </h5>
+        <input id="printDate" type="text" class="datepicker hide">
+        <div class="row mt-30">
+          <div class="col 12">
+            <button class="waves-effect waves-light accent btn mr-10" (click)="printMakeupSlips()">Print All</button>
+            <a class="waves-effect waves-light theme btn mr-10" [href]="sanitize(test)" target="_blank">Print Make-up Slips</a>
+            <button class="waves-effect waves-light theme btn">Print Class Rosters</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <h6>Below are the students that will have make-up slips printed and will be included in the make-up day
+              rosters for each room.</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12" id="hide-me">
+            <table class="centered">
+              <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Grade</th>
+                <th>Original Date</th>
+                <th>Block</th>
+                <th>Assigned Room</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr *ngFor="let r of res">
+                <td>{{r.student.firstName}} {{r.student.lastName}}</td>
+                <td>{{r.student.grade | grades}}</td>
+                <td>{{r.missedDate | date:'fullDate'}}</td>
+                <td>{{r.block.name}}</td>
+                <td>{{r.student.blockRoom}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--<editor-fold desc="Example Form">-->
+    <!--<div class="col-lg-1-2">-->
+    <div class="paper print-preview" id="print-me">
+      <div class="student-form" *ngFor="let r of res">
+        <h1 class="title">Odyssey Charter High School</h1>
+        <h2 class="sub-title">High School Make-up Form</h2>
+        <div class="student-details">
+          <div class="label">Name:</div>
+          <div class="value name">{{r.student.firstName}} {{r.student.lastName}}</div>
+          <div class="label">Grade:</div>
+          <div class="value grade">{{r.student.grade}}</div>
+          <div class="label">SID:</div>
+          <div class="value sid">{{r.student.studentNumber}}</div>
+        </div>
+        <div class="makeup-details">
+          <div class="label">Original Day: &nbsp;</div>
+          <div class="value day">{{formatOriginalDay(r)}}</div>
+          <div class="label">Room:</div>
+          <div class="value room">{{r.student.blockRoom}}</div>
+          <div class="label">Date:</div>
+          <div class="value date">{{r.missedDate | date:'shortDate'}}</div>
+          <br>
+          <br>
+          <div class="label">Make-up Day:</div>
+          <div class="value day">{{formatMakeupDay(r)}}</div>
+          <div class="label">Room:</div>
+          <div class="value room">{{r.student.blockRoom}}</div>
+          <div class="label">Date:</div>
+          <div class="value date">{{r.makeupDate | date:'shortDate'}}</div>
+        </div>
+        <div class="signature">
+          <div class="label">Student Signature:</div>
+          <div class="value sig">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+    <!--</div>-->
+    <!--</editor-fold>-->
+
+    <!--<div class="col-lg-1-2" style="height: 600px; padding: 10px;">-->
+    <!--<iframe id="embed" class="preview-pane" type="application/pdf" width="100%" height="650" frameborder="0" style="position:relative;z-index:999" src=""></iframe>-->
+    <!--&lt;!&ndash;<embed id="embed" src="http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf" alt="pdf" width="100%" height="100%" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">&ndash;&gt;-->
+    <!--</div>-->
+  </div>
+</div>

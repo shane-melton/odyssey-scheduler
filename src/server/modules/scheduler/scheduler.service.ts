@@ -11,6 +11,7 @@ import { IReservation, ReservationDocument } from '@server/modules/reservations/
 import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
 import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
 import Block = jasmine.Block;
+import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 
 const RESTRICT_STUDENT_DAY = true;
 
@@ -272,7 +273,8 @@ export class SchedulerService {
     const newRes: IReservation = {
       block,
       student,
-      classDate: mMakeupDate.toDate(),
+      makeupDate: mMakeupDate.toDate(),
+      missedDate: mMissedDate.toDate(),
       createdDate: new Date()
     };
 
@@ -289,7 +291,11 @@ export class SchedulerService {
    * @param {IBlock} block
    * @returns {Promise<boolean>}
    */
-  async validateReservation(student: IStudent, missedDate: moment.Moment, makeupDate: moment.Moment, block: BlockDocument): Promise<boolean> {
+  async validateReservation(
+    student: IStudent,
+    missedDate: moment.Moment,
+    makeupDate: moment.Moment,
+    block: BlockDocument): Promise<boolean> {
 
     if (!_.contains(block.grades, student.grade)) {
       return false;
@@ -308,6 +314,34 @@ export class SchedulerService {
     }
 
     return true;
+  }
+
+
+  async getReservations(makeupDate: string): Promise<IReservationDto[]> {
+
+    const mMakeupDate = moment(makeupDate, 'MM/DD/YYYY');
+
+    const resDocuments = await this.reservationModel
+      .find({makeupDate: mMakeupDate.toDate()})
+      .populate({
+        path: 'student',
+        populate: {path: 'block'}
+      })
+      .populate('block')
+      .exec();
+
+    console.log(resDocuments[0].student);
+
+    return resDocuments.map((doc: IReservation): IReservationDto => {
+      return {
+        block: <IBlock>doc.block,
+        student: <IStudent>doc.student,
+        missedDate: doc.missedDate,
+        makeupDate: doc.makeupDate,
+        createdDate: doc.createdDate
+      };
+    });
+
   }
 
   // endregion

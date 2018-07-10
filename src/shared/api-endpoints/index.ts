@@ -13,6 +13,7 @@ export const SchedulingApi = {
   getRecentClasses: schedulingBase + '/recent-classes',
   getAvailableClasses: schedulingBase + '/available-classes',
   postReservation: schedulingBase + '/reserve',
+  getReservations: schedulingBase + '/reservations'
 };
 
 const blockBase = BaseApi + '/blocks';
