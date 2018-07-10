@@ -330,8 +330,6 @@ export class SchedulerService {
       .populate('block')
       .exec();
 
-    console.log(resDocuments[0].student);
-
     return resDocuments.map((doc: IReservation): IReservationDto => {
       return {
         block: <IBlock>doc.block,

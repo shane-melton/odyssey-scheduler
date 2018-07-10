@@ -9,9 +9,8 @@
         <input id="printDate" type="text" class="datepicker hide">
         <div class="row mt-30">
           <div class="col 12">
-            <button class="waves-effect waves-light accent btn mr-10" (click)="printMakeupSlips()">Print All</button>
-            <a class="waves-effect waves-light theme btn mr-10" [href]="sanitize(test)" target="_blank">Print Make-up Slips</a>
-            <button class="waves-effect waves-light theme btn">Print Class Rosters</button>
+            <a class="waves-effect waves-light theme btn mr-10" (click)="printMakeupSlips()">Print Make-up Slips</a>
+            <a class="waves-effect waves-light theme btn" (click)="printRoster()">Print Class Rosters</a>
           </div>
         </div>
         <div class="row">
@@ -41,6 +40,9 @@
                 <td>{{r.block.name}}</td>
                 <td>{{r.student.blockRoom}}</td>
               </tr>
+              <tr *ngIf="res.length == 0">
+                <td colspan="5"><i>No Students Scheduled for {{moment(printDate).format('dddd, MMMM Do, YYYY')}}</i></td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -48,9 +50,7 @@
       </div>
     </div>
 
-    <!--<editor-fold desc="Example Form">-->
-    <!--<div class="col-lg-1-2">-->
-    <div class="paper print-preview" id="print-me">
+    <div class="paper" id="print-makeup">
       <div class="student-form" *ngFor="let r of res">
         <h1 class="title">Odyssey Charter High School</h1>
         <h2 class="sub-title">High School Make-up Form</h2>
@@ -84,12 +84,37 @@
         </div>
       </div>
     </div>
-    <!--</div>-->
-    <!--</editor-fold>-->
 
-    <!--<div class="col-lg-1-2" style="height: 600px; padding: 10px;">-->
-    <!--<iframe id="embed" class="preview-pane" type="application/pdf" width="100%" height="650" frameborder="0" style="position:relative;z-index:999" src=""></iframe>-->
-    <!--&lt;!&ndash;<embed id="embed" src="http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf" alt="pdf" width="100%" height="100%" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">&ndash;&gt;-->
-    <!--</div>-->
+    <div class="paper" id="print-roster">
+      <div class="class" *ngFor="let room of rooms">
+        <h1 class="title">ODYSSEY CHARTER HIGH SCHOOL</h1>
+        <h2 class="sub-title">Student Make-up Roster</h2>
+        <h3 class="date"><span class="day">{{moment(printDate).format('dddd')}}</span> <br> {{moment(printDate).format('MM/DD/YYYY')}}</h3>
+        <div class="block">{{room.blockName}}</div>
+        <div class="room">Room {{room.roomName}}</div>
+        <table border="1">
+          <thead>
+            <tr>
+              <th style="width: 25px;">#</th>
+              <th>Student Name</th>
+              <th>Signature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of room.students; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{s}}</td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let row of emptyRows()">
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>

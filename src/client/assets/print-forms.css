@@ -1,0 +1,136 @@
+.paper {
+  width: 800px; }
+
+.student-form {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed grey; }
+
+.student-form:nth-child(4n) {
+  border-bottom: none;
+  break-after: page; }
+
+.title {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10pt;
+  margin: 0; }
+
+#print-makeup .sub-title {
+  text-align: center;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0; }
+
+.student-details {
+  margin-top: 20px;
+  font-size: 14pt; }
+
+.makeup-details {
+  margin-top: 20px;
+  font-size: 12pt; }
+
+.signature {
+  margin-top: 20px;
+  font-size: 12pt; }
+
+.label {
+  display: inline-block; }
+
+.value {
+  border-bottom: 1px solid black;
+  text-align: center;
+  display: inline-block;
+  font-weight: bold; }
+.value.name {
+  width: 3.5in; }
+.value.grade {
+  width: .5in; }
+.value.sid {
+  width: 2in; }
+.value.day {
+  width: 3.1in; }
+.value.room {
+  width: .5in; }
+.value.date {
+  width: 2in; }
+.value.sig {
+  width: 6.3in; }
+
+
+
+.block {
+  position: absolute;
+  top: .25in;
+  left: .25in;
+  font-weight: bold;
+}
+
+#print-roster .room {
+  position: absolute;
+  top: .25in;
+  right: .25in;
+  font-weight: bold;
+}
+
+#print-roster .sub-title {
+  text-align: center;
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 0;
+}
+
+.date {
+  text-align: center;
+  font-size: 12pt;
+  margin: 10px;
+  font-weight: normal;
+}
+
+.date .day {
+  font-weight: bold;
+  font-size: 16pt;
+}
+
+.day-details {
+  margin-top: 10px;
+  text-align:center;
+}
+
+table {
+  width: 90%;
+  border-collapse: collapse;
+  margin: 10px auto 0;
+  table-layout:fixed;
+}
+
+td {
+  padding: 8px 6px 8px;
+}
+
+td:nth-child(1), th:nth-child(1) {
+  text-align: center;
+}
+
+th {
+  text-align: left;
+  padding: 6px 6px;
+}
+
+thead {
+  background: rgba(0,0,0,.1);
+  font-weight: bold;
+}
+
+thead {
+  border-bottom: 3px solid rgb(128,128,128);
+}
+
+tbody tr {
+  height: 36px;
+}
+
+.class {
+  break-after: page;
+  position: relative;
+}

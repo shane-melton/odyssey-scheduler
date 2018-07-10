@@ -3,13 +3,20 @@ import html2pdf from 'html2pdf.js';
 import Datepicker = M.Datepicker;
 import * as moment from 'moment';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
-import { IReservation } from '@server/modules/reservations/reservation.schema';
 import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import printJs from 'print-js';
-import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
 import { BlockDto, IBlockDto } from '@shared/interfaces/scheduler/IBlock';
+import * as _ from 'underscore';
+import { Moment } from 'moment';
+
+interface RoomRoster {
+  roomName: string;
+  blockName: string;
+
+  students: string[];
+}
 
 @Component({
   selector: 'app-admin-print',
@@ -21,7 +28,7 @@ export class AdminPrintComponent implements OnInit {
   printDate: Date;
   picker: Datepicker;
   res: IReservationDto[];
-  test: string;
+  rooms: RoomRoster[] = [];
 
   get day(): string {
     return moment(this.printDate).calendar(null, {
@@ -49,6 +56,37 @@ export class AdminPrintComponent implements OnInit {
 
     this.schedulerService.listReservations(this.printDate).subscribe((reservations: IReservationDto[]) => {
       this.res = reservations;
+      this.updateRosters();
+    });
+  }
+
+  emptyRows() {
+    return Array(5).fill(0);
+  }
+
+  moment(date: Date): Moment {
+    return moment(date);
+  }
+
+  updateRosters() {
+    this.rooms = [];
+    _.each(this.res, (r: IReservationDto) => {
+      let room = _.findWhere(this.rooms, {roomName: r.student.blockRoom});
+
+      if (!room) {
+        room = {
+          roomName: r.student.blockRoom,
+          blockName: r.block.name,
+          students: []
+        };
+
+        this.rooms.push(room);
+      }
+
+      const studentName = r.student.lastName + ', ' + r.student.firstName;
+      const index = _.sortedIndex(room.students, studentName);
+
+      room.students.splice(index, 0, studentName);
     });
   }
 
@@ -58,31 +96,17 @@ export class AdminPrintComponent implements OnInit {
 
   printMakeupSlips() {
 
-    document.getElementById('print-me').style.visibility = 'visible';
+    document.getElementById('print-makeup').style.visibility = 'visible';
 
     printJs({
-      printable: 'print-me',
+      printable: 'print-makeup',
       type: 'html',
-      documentTitle: 'Test',
-      css: 'http://localhost:4200/assets/print.css',
+      documentTitle: 'Makeup',
+      css: 'http://localhost:4200/assets/print-forms.css',
       scanStyles: false
-      // targetStyles: [
-      //   'border',
-      //   'width',
-      //   'margin',
-      //   'border',
-      //   'padding',
-      //   'text-align',
-      //   'text-transform',
-      //   'font-size',
-      //   'display',
-      //   'font-weight',
-      //   'page-break-after',
-      //   'break-after'
-      // ]
     });
 
-    document.getElementById('print-me').style.visibility = 'hidden';
+    document.getElementById('print-makeup').style.visibility = 'hidden';
   }
 
   formatOriginalDay(res: IReservationDto): string {
@@ -99,6 +123,21 @@ export class AdminPrintComponent implements OnInit {
     return dayOfWeek + ' ' + block.timeRange(true);
   }
 
+  printRoster() {
+    document.getElementById('print-roster').style.visibility = 'visible';
+
+    printJs({
+      printable: 'print-roster',
+      type: 'html',
+      documentTitle: 'Rosters',
+      css: 'http://localhost:4200/assets/print-forms.css',
+      scanStyles: false
+    });
+
+    document.getElementById('print-roster').style.visibility = 'hidden';
+
+  }
+
   ngOnInit() {
     this.picker = Datepicker.init(
       document.querySelector('.datepicker'),
@@ -111,22 +150,4 @@ export class AdminPrintComponent implements OnInit {
         onSelect: this.updatePrintDate.bind(this)
       });
   }
-
-
-
-  oldHtml2Pdf() {
-    const el = document.getElementById('print-me');
-
-    const opt = {
-      image: {type: 'jpeg', quality: 1.0}
-    };
-
-    html2pdf().from(el).set(opt).output('bloburi', {}, 'pdf').then(data => {
-      document.getElementById('embed').setAttribute('src', data);
-      setTimeout(() => {
-        window.URL.revokeObjectURL(data);
-      }, 5000);
-    });
-  }
-
 }

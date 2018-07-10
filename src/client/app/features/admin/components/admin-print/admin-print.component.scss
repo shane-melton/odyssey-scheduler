@@ -5,16 +5,6 @@
   margin: 0 auto;
 }
 
-@media print {
-  .print-container {
-    width: 100%;
-  }
-  * {
-    margin: 0;
-    padding: 0;
-  }
-}
-
 #date-display {
   border-bottom: $accent-color 1px solid;
   //text-decoration: underline;
@@ -31,109 +21,6 @@ thead {
   color: rgba(0,0,0,0.6);
 }
 
-#print-me {
+#print-makeup, #print-roster {
   visibility: hidden;
-}
-
-
-
-//.print-preview {
-//  overflow-y: scroll;
-//  height: 500px;
-//}
-
-//* {
-//  font-family: 'TimesNewRoman', sans-serif;
-//}
-
-div {
-  // border: 2px solid grey;
-}
-
-.paper {
-  width: 800px;
-  //border: 2px solid grey;
-}
-
-.student-form {
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-  border-bottom: 1px dashed grey;
-}
-
-.student-form:nth-child(4n) {
-  border-bottom: none;
-  break-after: page;
-}
-
-.title {
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 10pt;
-  //margin: 10px 0 0 0;
-  margin:0;
-}
-
-.sub-title {
-  text-align: center;
-  font-size: 14pt;
-  font-weight: bold;
-  margin: 0;
-}
-
-.student-details {
-  // margin: 20px 20px;
-  margin-top: 20px;
-  font-size: 14pt;
-}
-
-.makeup-details {
-  margin-top: 20px;
-  font-size: 12pt;
-}
-
-.signature {
-  margin-top: 20px;
-  font-size: 12pt;
-}
-
-.label {
-  display: inline-block;
-  //margin-left: 5px;
-}
-
-.value {
-  border-bottom: 1px solid black;
-  text-align: center;
-  display: inline-block;
-  font-weight: bold;
-
-  &.name {
-    width: 3.5in;
-  }
-
-  &.grade {
-    width: .5in;
-  }
-
-  &.sid {
-    width: 2in;
-  }
-
-  &.day {
-    width: 3.1in;
-  }
-
-  &.room {
-    width: .5in;
-  }
-
-  &.date {
-    width: 2in;
-  }
-
-  &.sig {
-    width: 6.3in;
-  }
-
 }
