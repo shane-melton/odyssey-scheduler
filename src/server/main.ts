@@ -17,12 +17,17 @@ import { ApplicationModule } from './server.module';
 const app = express();
 
 async function bootstrap() {
-
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(FOLDER_CLIENT));
   }
 
   const server = await NestFactory.create(ApplicationModule, app, {});
+
+  if (process.env.NODE_ENV === 'production') {
+    app.get('*', (req, res) => {
+      res.sendFile(join(FOLDER_CLIENT, 'index.html'));
+    });
+  }
 
   await server.listen(process.env.PORT || 5400);
 }
