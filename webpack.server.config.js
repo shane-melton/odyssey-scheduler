@@ -4,7 +4,14 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {  server: './src/server/main.ts' },
-  resolve: { extensions: ['.js', '.ts'] },
+  resolve: {
+    extensions: ['.js', '.ts'],
+    alias: {
+      "@client": path.resolve(__dirname, 'src/client/app/'),
+      "@server": path.resolve(__dirname, 'src/server/'),
+      "@shared": path.resolve(__dirname, 'src/shared/')
+    }
+  },
   target: 'node',
   // this makes sure we include node_modules and other 3rd party libraries
   externals: [/(node_modules|main\..*\.js)/, nodeExternals()],
