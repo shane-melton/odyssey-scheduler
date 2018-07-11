@@ -103,7 +103,7 @@ export class AdminPrintComponent implements OnInit {
       printable: 'print-makeup',
       type: 'html',
       documentTitle: 'Makeup',
-      css: 'http://localhost:4200/assets/print-forms.css',
+      css: `http://${window.location.host}/assets/print-forms.css`,
       scanStyles: false
     });
 
