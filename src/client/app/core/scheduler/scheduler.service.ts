@@ -109,6 +109,18 @@ export class SchedulerService {
       );
   }
 
+  updateReservationStatus(resId: string, status: boolean): Observable<boolean> {
+    const requestBody = {
+      id: resId,
+      status
+    };
+
+    return this.http.post<IApiResult>(SchedulingApi.updateReservationStatus, requestBody)
+      .pipe(
+        map(res => res.success)
+      );
+  }
+
   // endregion
 
 }

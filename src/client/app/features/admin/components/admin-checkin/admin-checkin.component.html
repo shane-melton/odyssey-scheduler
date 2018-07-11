@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <h5>
+        Manage Student Make-ups for
+        <a id="date-display" (click)="openDatePicker()" title="Click to change the date">{{day}}</a>
+        <input id="printDate" type="text" class="datepicker hide">
+      </h5>
+
+      <div class="row">
+        <div class="col s12 m6">
+          <p>
+            The table below shows the students that are scheduled to have a makeup class for the date above. You can
+            check students in whenever they arrive by clicking the checkbox in the Check-in column below. Additionally,
+            you can filter which students are displayed by typing the text box below and you can choose to show or hide
+            already checked in students for the date.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s8">
+          <div class="input-field" style="width: 95%; margin: 0 auto;">
+            <input placeholder="Filter students here..." id="searchText" type="text" [(ngModel)]="searchText">
+          </div>
+        </div>
+        <div class="col s2 center-align">
+          <label class="text-center">Checked-in Students</label>
+          <div class="switch"><label>Hide<input type="checkbox" [(ngModel)]="showCheckedIn" (change)="updateTable()">
+            <span class="lever"></span>Show</label></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <table class="centered">
+            <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Original Date</th>
+              <th>Block</th>
+              <th style="width: 160px;">Assigned Room</th>
+              <th style="width: 160px;">Check-in</th>
+              <th style="width: 80px;"></th>
+            </tr>
+            </thead>
+
+            <tbody #table>
+            <tr *ngFor="let r of filterReservations()">
+              <td>{{r.student.firstName}} {{r.student.lastName}}</td>
+              <td>{{r.missedDate | date:'fullDate'}}</td>
+              <td>{{r.block.name}}</td>
+              <td>{{r.student.blockRoom}}</td>
+              <td>
+                <label>
+                  <input type="checkbox" [(ngModel)]="r.checkedIn" (change)="checkInStudent(r)"/>
+                  <span style="padding-left: 18px;"></span>
+                </label>
+              </td>
+              <td>
+                <a (click)="null" title="Delete this make-up reservation">
+                  <i class="material-icons theme-text waves-effect">delete</i>
+                </a>
+                <a (click)="null" title="Not implemented">
+                  <i class="material-icons theme-text waves-effect">edit</i>
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="reservations.length == 0">
+              <td colspan="6"><i>No Students Scheduled for {{moment(date).format('dddd, MMMM Do, YYYY')}}</i></td>
+            </tr>
+            <tr *ngIf="reservations.length > 0 && badFilter && (!allCheckedIn || showCheckedIn)">
+              <td colspan="6"><i>No students match that filter</i></td>
+            </tr>
+            <tr *ngIf="allCheckedIn && !showCheckedIn">
+              <td colspan="6"><i>All Students Checked In</i></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import Datepicker = M.Datepicker;
+import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
+import { SchedulerService } from '@client/core/scheduler/scheduler.service';
+import { Moment } from 'moment';
+import * as _ from 'underscore';
+
+@Component({
+  selector: 'app-admin-checkin',
+  templateUrl: './admin-checkin.component.html',
+  styleUrls: ['./admin-checkin.component.scss']
+})
+export class AdminCheckinComponent implements OnInit {
+
+  date: Date;
+  picker: Datepicker;
+  searchText: string;
+  showCheckedIn = false;
+  reservations: IReservationDto[] = [];
+  shownReservations: IReservationDto[] = [];
+  badFilter = false;
+
+  constructor(private readonly schedulerService: SchedulerService) {
+    this.date = new Date();
+    this.updateDate(this.date);
+  }
+
+  moment(date: Date): Moment {
+    return moment(date);
+  }
+
+  updateTable() {
+
+    if (!this.showCheckedIn) {
+      this.shownReservations = _.filter(this.reservations, res => {
+        return !res.checkedIn;
+      });
+    } else {
+      this.shownReservations = this.reservations;
+    }
+
+    this.filterReservations();
+  }
+
+  checkInStudent(res: IReservationDto) {
+    const newStatus = res.checkedIn;
+
+    this.schedulerService.updateReservationStatus(res.id, res.checkedIn).subscribe((success) => {
+      if (success) {
+        M.toast(
+          {
+            html: newStatus ? 'Check-in successful!' : 'Check-out successful!'
+          });
+      } else {
+        res.checkedIn = !newStatus;
+        M.toast(
+          {
+            html: newStatus ? 'Check-in failed!!' : 'Check-out failed!!'
+          });
+        this.updateTable();
+      }
+    });
+
+    this.updateTable();
+  }
+
+  filterReservations() {
+
+    this.badFilter = false;
+    if (!this.searchText) {
+      return this.shownReservations;
+    }
+
+    const s = this.searchText.toLowerCase();
+
+    const result =  _.filter(this.shownReservations, (it: IReservationDto) => {
+      const name = (it.student.firstName + ' ' + it.student.lastName).toLowerCase();
+      return name.includes(s);
+    });
+
+    if (!result.length) {
+      this.badFilter = true;
+    }
+
+    return result;
+
+  }
+
+  ngOnInit() {
+    this.picker = Datepicker.init(
+      document.querySelector('.datepicker'),
+      {
+        defaultDate: this.date,
+        setDefaultDate: true,
+        minDate: moment().toDate(),
+        autoClose: true,
+        container: document.body,
+        onSelect: this.updateDate.bind(this)
+      });
+  }
+
+  updateDate(selectedDate: Date) {
+    this.date = selectedDate;
+
+    this.schedulerService.listReservations(this.date).subscribe((reservations: IReservationDto[]) => {
+      this.reservations = reservations;
+      this.updateTable();
+    });
+  }
+
+  openDatePicker() {
+    this.picker.open();
+  }
+
+  get day(): string {
+    return moment(this.date).calendar(null, {
+      sameDay: '[Today]',
+      nextDay: '[Tomorrow]',
+      nextWeek: '[this] dddd',
+      lastDay: '[Yesterday]',
+      lastWeek: '[Last] dddd',
+      sameElse: 'MMMM Do'
+    });
+  }
+
+  get allCheckedIn(): boolean {
+
+    if (this.reservations.length === 0) {
+      return false;
+    }
+
+
+    return _.reduce(this.reservations, (memo, res: IReservationDto) => {
+      return memo && res.checkedIn;
+    }, true);
+  }
+
+}

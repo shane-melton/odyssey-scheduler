@@ -7,18 +7,18 @@
          <div class="frow">
            <div class="col-sm-1-2">
              <span class="makeup-label">Scheduled</span> <br>
-             <span class="makeup-count">30</span>
+             <span class="makeup-count">{{todaysCounts.total}}</span>
            </div>
            <div class="col-sm-1-2">
              <span class="makeup-label">Checked-in</span>
              <br>
-             <span class="makeup-count">24</span>
+             <span class="makeup-count">{{todaysCounts.checkedIn}}</span>
            </div>
          </div>
          <!--<p class="makeup-count">50</p>-->
        </div>
         <div class="card-action">
-          <a [routerLink]="" class="btn waves-effect waves-light accent">Check-in Students</a>
+          <a routerLink="../checkin" class="btn waves-effect waves-light accent">Check-in Students</a>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
           <div class="frow">
             <div class="col-sm-2-5">
               <span class="makeup-label">Scheduled</span> <br>
-              <span class="makeup-count">26</span>
+              <span class="makeup-count">{{tomorrowsCounts.total}}</span>
             </div>
             <div class="col-sm-3-5">
               <span class="makeup-label">Schedule Cut-off</span>
@@ -62,7 +62,7 @@
           <p class="makeup-count">3</p>
         </div>
         <div class="card-action">
-          <a [routerLink]="" class="btn waves-effect waves-light theme">Manage Users</a>
+          <a [routerLink]="" class="btn waves-effect waves-light" disabled>Manage Users</a>
         </div>
       </div>
     </div>

@@ -1,0 +1,28 @@
+@import "../../../../../sass/colors";
+
+div.container {
+  width: 80%;
+  max-width: inherit;
+}
+
+#date-display {
+  border-bottom: $accent-color 1px solid;
+  //text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+  color: $accent-color;
+
+  &:hover {
+    border-bottom: $accent-color 3px solid;
+  }
+}
+
+
+thead {
+  color: rgba(0,0,0,0.6);
+  font-size: 16px;
+}
+
+table {
+  table-layout: fixed;
+}

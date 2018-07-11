@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import html2pdf from 'html2pdf.js';
 import Datepicker = M.Datepicker;
 import * as moment from 'moment';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';

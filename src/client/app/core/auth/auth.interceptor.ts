@@ -32,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
       .catch(
         (error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.router.navigateByUrl('/');
+            this.router.navigateByUrl('/admin');
             return Observable.of(error.message);
           }
           return Observable.throw(error);

@@ -10,6 +10,7 @@ export interface IReservation {
   readonly makeupDate: Date;
   readonly missedDate: Date;
   readonly createdDate: Date;
+  readonly checkedIn: boolean;
 }
 
 export interface ReservationDocument extends IReservation, mongoose.Document { }
@@ -23,7 +24,8 @@ export const ReservationSchema = new mongoose.Schema({
   },
   makeupDate: Date,
   missedDate: Date,
-  createdDate: Date
+  createdDate: Date,
+  checkedIn: Boolean
 });
 
 export const reservationProviders = [

@@ -142,7 +142,7 @@ export class SchedulerService {
       }
 
       if (mBlockMinDay.isSame(moment(), 'day')) {
-        const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat)
+        const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat);
 
         if  (MinutesOfDay(mBlockStartTime) > MinutesOfDay(moment())) {
           return true;
@@ -154,24 +154,6 @@ export class SchedulerService {
 
       return true;
     }
-
-    // while (
-    //   (!_.contains(block.makeupDays, mBlockMinDay.isoWeekday())) && mBlockMinDay.isBefore(mNextOccurrence, 'day')) {
-    //   mBlockMinDay.add(1, 'day');
-    // }
-
-    // If the minimum eligible day is the same or after the max then its not possible to be made up
-    // if (mBlockMinDay.isSameOrAfter(mNextOccurrence, 'day')) {
-    //   return false;
-    // }
-
-    // const mBlockStartTime = moment(block.startTime, Constants.BlockTimeFormat);
-
-    // Ensure we haven't passed this block's time on the minimum eligible day
-    // e.g. If the first day the block can be made up is Today, then make sure the block
-    // hasn't already started (its start time is before now)
-    // return !(mBlockMinDay.isSame(moment(), 'day')
-    //   && MinutesOfDay(mBlockStartTime) <= MinutesOfDay(moment()));
   }
 
   // endregion
@@ -275,7 +257,8 @@ export class SchedulerService {
       student,
       makeupDate: mMakeupDate.toDate(),
       missedDate: mMissedDate.toDate(),
-      createdDate: new Date()
+      createdDate: new Date(),
+      checkedIn: false
     };
 
     await this.reservationModel.create(newRes);
@@ -330,16 +313,30 @@ export class SchedulerService {
       .populate('block')
       .exec();
 
-    return resDocuments.map((doc: IReservation): IReservationDto => {
+    return resDocuments.map((doc: ReservationDocument): IReservationDto => {
       return {
+        id: doc._id,
         block: <IBlock>doc.block,
         student: <IStudent>doc.student,
         missedDate: doc.missedDate,
         makeupDate: doc.makeupDate,
-        createdDate: doc.createdDate
+        createdDate: doc.createdDate,
+        checkedIn: doc.checkedIn
       };
     });
 
+  }
+
+  /**
+   *
+   * @param {string} resId
+   * @param {boolean} status
+   * @returns {Promise<boolean>}
+   */
+  async updateReservationStatus(resId: string, status: boolean): Promise<boolean> {
+    const newRes = await this.reservationModel.findOneAndUpdate({_id: resId}, {checkedIn: status}, {new: true}).exec();
+
+    return newRes && newRes.checkedIn === status;
   }
 
   // endregion

@@ -14,20 +14,7 @@ import { ManageStudentsComponent } from './components/manage-students/manage-stu
 import { AdminPrintComponent } from './components/admin-print/admin-print.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
-
-
-@Injectable()
-export class PdfResolver implements Resolve<null> {
-  constructor(private router: Router) {}
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<null> {
-    const url = route.queryParamMap.get('url');
-    console.log(url);
-    this.router.navigateByUrl(url);
-    return Observable.empty();
-  }
-}
-
+import { AdminCheckinComponent } from './components/admin-checkin/admin-checkin.component';
 
 
 const adminRoutes: Routes = [
@@ -39,7 +26,7 @@ const adminRoutes: Routes = [
       {path: 'settings', component: AdminSettingsComponent, data: {hideNav: false}},
       {path: 'students', component: ManageStudentsComponent, data: {hideNav: false}},
       {path: 'print', component: AdminPrintComponent, data: {hideNav: false}},
-      {path: 'printer', component: AdminPrintComponent, data: {hideNav: false}, resolve: {download: PdfResolver}},
+      {path: 'checkin', component: AdminCheckinComponent, data: {hideNav: false}},
     ]
   }
 ];
@@ -57,10 +44,8 @@ const adminRoutes: Routes = [
     AdminSettingsComponent,
     NewBlockModalComponent,
     ManageStudentsComponent,
-    AdminPrintComponent],
-  providers: [
-    PdfResolver
-  ]
+    AdminPrintComponent,
+    AdminCheckinComponent],
 })
 export class AdminModule {
 }

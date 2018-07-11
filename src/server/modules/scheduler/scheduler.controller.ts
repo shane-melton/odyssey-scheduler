@@ -90,4 +90,13 @@ export class SchedulerController {
     return new SuccesResult(result);
   }
 
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Post(SchedulingApi.updateReservationStatus)
+  async updateReservation(@Body('id') resId: string, @Body('status') newStatus: boolean): Promise<IApiResult> {
+    const result = await this.schedulerService.updateReservationStatus(resId, newStatus);
+
+    return result ? new SuccesResult() : new FailureResult('Failed to update status!');
+  }
+
 }
