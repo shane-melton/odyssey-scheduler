@@ -6,18 +6,36 @@
     <h4>{{moment(makeupClass.classDate, 'MMMM D, YYYY')}}</h4>
     <h5>{{moment(makeupClass.block.startTime, 'h:mm a')}} - {{moment(makeupClass.block.endTime, 'h:mma')}}</h5>
     <hr class="my-25">
-    <p class="text-center frow-container bold">
-      You are scheduling a makeup session for {{student?.firstName}} {{student?.lastName}} at the date and time specified above.
-      <br>
-      This makeup session will act as a one time substitute for {{student?.firstName}}'s normally scheduled class on
-      {{moment(missedClass.classDate, 'dddd, MMMM D, YYYY')}}
-    </p>
-    <button class="btn-white btn-lg" (click)="confirmSelection()">Confirm Selection</button>
+    <div *ngIf="error">
+
+    </div>
+    <div *ngIf="!confirmed">
+      <p class="text-center frow-container bold">
+        You are scheduling a makeup session for {{student?.firstName}} {{student?.lastName}} for the date and time
+        specified above.
+        <br>
+        This makeup session will act as a one time substitute for {{student?.firstName}}'s normally scheduled class on
+        {{moment(missedClass.classDate, 'dddd, MMMM D, YYYY')}}
+      </p>
+      <button class="btn-white btn-lg" (click)="confirmSelection()">Confirm Selection</button>
+    </div>
+    <div *ngIf="confirmed">
+      <h1>Success!</h1>
+      <p class="text-center frow-container bold">
+        You have successfully scheduled a make up day for {{student?.firstName}} {{student?.lastName}} for the date
+        and time specified above!
+      </p>
+    </div>
   </div>
 </div>
 <div class="container">
   <div class="footer my-30 center-align">
-    <button class="btn-white" (click)="signOut()">Not {{student?.firstName}}?</button>
-    <button class="btn-white" routerLink="../missed">Wrong Dates?</button>
+    <div *ngIf="!confirmed">
+      <button class="btn-white" (click)="signOut()">Not {{student?.firstName}}?</button>
+      <button class="btn-white" routerLink="../missed">Wrong Dates?</button>
+    </div>
+    <div *ngIf="confirmed">
+      <button class="btn-white" (click)="signOut()">Exit</button>
+    </div>
   </div>
 </div>

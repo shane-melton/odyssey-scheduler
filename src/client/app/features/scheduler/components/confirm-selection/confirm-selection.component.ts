@@ -17,6 +17,8 @@ export class ConfirmSelectionComponent implements OnInit {
   missedClass: IClassDto;
   makeupClass: IClassDto;
   student: IStudent;
+  confirmed = false;
+  error = false;
 
   constructor(
     private readonly router: Router,
@@ -30,11 +32,12 @@ export class ConfirmSelectionComponent implements OnInit {
   }
 
   confirmSelection() {
-    this.scheduler.makeReservationForCurrentSelection().subscribe(result => {
-      if (result.success) {
-        alert(result.data);
-      }
-    });
+    // this.scheduler.makeReservationForCurrentSelection().subscribe(result => {
+    //   if (result.success) {
+    //
+    //   }
+    // });
+    this.confirmed = true;
   }
 
   async signOut() {

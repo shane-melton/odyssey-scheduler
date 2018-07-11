@@ -95,7 +95,9 @@ export class AdminPrintComponent implements OnInit {
 
   printMakeupSlips() {
 
-    document.getElementById('print-makeup').style.visibility = 'visible';
+    const title = document.title;
+
+    document.title = 'Makeup Slips';
 
     printJs({
       printable: 'print-makeup',
@@ -105,7 +107,9 @@ export class AdminPrintComponent implements OnInit {
       scanStyles: false
     });
 
-    document.getElementById('print-makeup').style.visibility = 'hidden';
+    setTimeout(() => {
+      document.title = title;
+    }, 50);
   }
 
   formatOriginalDay(res: IReservationDto): string {
