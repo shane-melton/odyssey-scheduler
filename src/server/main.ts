@@ -17,9 +17,9 @@ import { ApplicationModule } from './server.module';
 const app = express();
 
 async function bootstrap() {
-  if (process.env.NODE_ENV === 'production') {
 
-    app.use(express.static(join(FOLDER_DIST, FOLDER_CLIENT)));
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(FOLDER_CLIENT));
   }
 
   const server = await NestFactory.create(ApplicationModule, app, {});
