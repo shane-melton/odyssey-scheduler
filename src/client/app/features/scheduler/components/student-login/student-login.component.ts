@@ -31,7 +31,7 @@ export class StudentLoginComponent implements OnInit {
 
     this.authService.loginStudent(this.studentNumber, birthdate)
       .then(() => {
-        this.studentService.getStudent().subscribe();
+        this.studentService.getCurrentStudent().subscribe();
         return this.router.navigate(['../missed']);
       })
       .catch((error) => {

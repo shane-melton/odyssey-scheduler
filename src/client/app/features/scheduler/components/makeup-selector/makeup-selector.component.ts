@@ -40,7 +40,7 @@ export class MakeupSelectorComponent implements OnInit {
       this.schoolDays = days;
     });
 
-    this.studentService.getStudent().subscribe((student: IStudent) => {
+    this.studentService.getCurrentStudent().subscribe((student: IStudent) => {
       this.student = student;
     });
   }

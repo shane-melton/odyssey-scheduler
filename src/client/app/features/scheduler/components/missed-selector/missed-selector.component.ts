@@ -36,7 +36,7 @@ export class MissedSelectorComponent implements OnInit {
 
     console.log('Init Missed!');
 
-    this.studentService.getStudent().subscribe((student: IStudent) => {
+    this.studentService.getCurrentStudent().subscribe((student: IStudent) => {
       console.log('Student Loaded!', student);
       this.student = student;
     });

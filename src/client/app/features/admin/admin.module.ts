@@ -15,6 +15,7 @@ import { AdminPrintComponent } from './components/admin-print/admin-print.compon
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 import { AdminCheckinComponent } from './components/admin-checkin/admin-checkin.component';
+import { AdminEditStudentComponent } from '@client/features/admin/components/admin-edit-student/admin-edit-student.component';
 
 
 const adminRoutes: Routes = [
@@ -27,6 +28,7 @@ const adminRoutes: Routes = [
       {path: 'students', component: ManageStudentsComponent, data: {hideNav: false}},
       {path: 'print', component: AdminPrintComponent, data: {hideNav: false}},
       {path: 'checkin', component: AdminCheckinComponent, data: {hideNav: false}},
+      {path: 'students/:id/edit', component: AdminEditStudentComponent, data: {hideNav: false}},
     ]
   }
 ];
@@ -45,7 +47,8 @@ const adminRoutes: Routes = [
     NewBlockModalComponent,
     ManageStudentsComponent,
     AdminPrintComponent,
-    AdminCheckinComponent],
+    AdminCheckinComponent,
+    AdminEditStudentComponent],
 })
 export class AdminModule {
 }

@@ -1,4 +1,4 @@
-import {Controller, Get, UseGuards, UploadedFile, UseInterceptors, FileInterceptor, Post} from '@nestjs/common';
+import { Controller, Get, UseGuards, UploadedFile, UseInterceptors, FileInterceptor, Post, Query } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { Token } from '../../decorators/token.decorator';
 import { RoleGuard } from '@server/modules/auth/role.guard';
@@ -76,6 +76,9 @@ export class StudentController {
       }
     })
   }))
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
   @Post(StudentApi.postImportUpdate)
   async studentUpdate(@UploadedFile() file_upload: Express.Multer.File): Promise<IApiResult> {
     if (!file_upload) {
@@ -83,6 +86,18 @@ export class StudentController {
     }
 
     return await this.studentService.importUpdateStudents(file_upload.path);
+  }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Get(StudentApi.getStudent)
+  async getStudent(@Query('studentNumber') studentNumber: string): Promise<IApiResult<IStudent>> {
+    const student = await this.studentService.findByStudentNumber(studentNumber, true);
+    if (student !== null) {
+      return new SuccesResult(student);
+    } else {
+      return new FailureResult('Not found!');
+    }
   }
 
 

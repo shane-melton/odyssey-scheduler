@@ -54,7 +54,7 @@ export class ConfirmSelectionComponent implements OnInit {
       await this.router.navigate(['../missed']);
     }
 
-    this.studentService.getStudent().subscribe((student: IStudent) => {
+    this.studentService.getCurrentStudent().subscribe((student: IStudent) => {
       this.student = student;
     });
   }

@@ -32,6 +32,7 @@ const studentBase = BaseApi + '/students';
 
 export const StudentApi = {
   getMe: studentBase + '/me',
+  getStudent: studentBase + 'get',
   postImport: studentBase + '/import',
   postImportUpdate: studentBase + '/import-update'
 };
