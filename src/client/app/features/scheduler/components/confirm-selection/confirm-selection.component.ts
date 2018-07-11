@@ -32,12 +32,11 @@ export class ConfirmSelectionComponent implements OnInit {
   }
 
   confirmSelection() {
-    // this.scheduler.makeReservationForCurrentSelection().subscribe(result => {
-    //   if (result.success) {
-    //
-    //   }
-    // });
-    this.confirmed = true;
+    this.scheduler.makeReservationForCurrentSelection().subscribe(result => {
+      if (result.success) {
+        this.confirmed = true;
+      }
+    });
   }
 
   async signOut() {
