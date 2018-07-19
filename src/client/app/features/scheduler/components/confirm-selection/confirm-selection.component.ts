@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { IClassDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClass } from '@shared/interfaces/models/ISchoolDay';
 import { AuthService } from '@client/core/auth/auth.service';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
-import {IStudent} from '@server/modules/students/student.schema';
 import {StudentService} from '@client/core/student/student.service';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 @Component({
   selector: 'app-confirm-selection',
@@ -14,8 +14,8 @@ import {StudentService} from '@client/core/student/student.service';
 })
 export class ConfirmSelectionComponent implements OnInit {
 
-  missedClass: IClassDto;
-  makeupClass: IClassDto;
+  missedClass: IClass;
+  makeupClass: IClass;
   student: IStudent;
   confirmed = false;
   error = false;

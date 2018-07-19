@@ -1,0 +1,7 @@
+<div class="input-field">
+  <select #select [(ngModel)]="selectedValue">
+    <option [value]="null" disabled>{{placeHolder}}</option>
+    <option *ngFor="let o of options; trackBy: trackOptions" [value]="o.value">{{o.text}}</option>
+  </select>
+  <label *ngIf="label">{{label}}</label>
+</div>

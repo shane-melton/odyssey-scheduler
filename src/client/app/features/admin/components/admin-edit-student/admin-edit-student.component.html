@@ -1,43 +1,49 @@
 <div class="container">
   <div class="row">
     <div class="col s12 m10 offset-m1">
-      <form [formGroup]="studentForm" (ngSubmit)="submitForm()">
-        <h4>Edit {{studentName}}</h4>
-        <div class="row">
-          <div class="input-field col s12 m4">
-            <input id="firstName" type="text" class="validate" formControlName="firstName">
-            <label for="firstName">First Name *</label>
+      <h4>Edit {{studentName}}</h4>
+      <div class="card-panel">
+        <form [formGroup]="studentModel.Form" (ngSubmit)="submitForm()">
+          <div class="row">
+            <div class="input-field col s12 m4">
+              <input id="firstName" type="text" class="validate" formControlName="firstName">
+              <label for="firstName">First Name *</label>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="lastName" type="text" class="validate" formControlName="lastName">
+              <label for="lastName">Last Name *</label>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="studentNumber" type="text" class="validate" formControlName="studentNumber">
+              <label for="studentNumber">Student Number *</label>
+            </div>
           </div>
-          <div class="input-field col s12 m4">
-            <input id="lastName" type="text" class="validate" formControlName="lastName">
-            <label for="lastName">Last Name *</label>
+          <div class="row">
+            <div class="col s12 m4">
+              <app-material-select [options]="grades" label="Grade" formControlName="grade"
+                                   (change)="gradeChange($event)" placeHolder="Select a grade"></app-material-select>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="birthDate" type="text" placeholder="MM/DD/YYYY" class="validate" formControlName="birthDate">
+              <label for="birthDate">Birth Date *</label>
+            </div>
+            <div class="col s12 m4">
+              <app-material-select [options]="blockFilter()" label="Block" formControlName="blockId"
+                                   (change)="blockChange($event)" placeHolder="Select a block"></app-material-select>
+            </div>
           </div>
-          <div class="input-field col s12 m4">
-            <input id="studentNumber" type="text" class="validate" formControlName="studentNumber">
-            <label for="studentNumber">Student Number *</label>
+          <div class="row">
+            <div class="col s12 m4">
+              <app-material-select [options]="dayFilter()" label="Block Day of Week" formControlName="blockDayOfWeek"
+                                   placeHolder="Select a day of the week"></app-material-select>
+            </div>
+            <div class="col s12 m4">
+              <app-material-select [options]="roomFilter()" label="Block Room" formControlName="blockRoom"
+                                   placeHolder="Select a room"></app-material-select>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12 m4">
-            <select id="grade" class="validate" formControlName="grade" >
-              <option [value]="null" disabled selected>Select Grade</option>
-              <option *ngFor="let g of grades" [value]="g.value">{{g.text}}</option>
-            </select>
-            <label for="grade">Grade *</label>
-          </div>
-          <div class="input-field col s12 m4">
-            <input id="birthDate" type="text" placeholder="MM/DD/YYYY" class="validate" formControlName="birthDate">
-            <label for="birthDate">Birth Date *</label>
-          </div>
-          <div class="input-field col s12 m4">
-            <select id="block" class="validate" formControlName="block" >
-              <option [value]="null" disabled selected>Select Block</option>
-              <option *ngFor="let g of blocks" [value]="g.id">{{g.name}}</option>
-            </select>
-            <label for="block">Block *</label>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@nestjs/common';
 import { ProviderTokens } from '@server/constants';
-import { IStudent, StudentDocument } from './student.schema';
+import { StudentDocument } from './student.schema';
 import { Model } from 'mongoose';
 import {EmptyCsvStudent, ICsvStudent} from '@shared/interfaces/student/IStudentImportUpload';
 import * as fs from 'fs';
@@ -12,6 +12,7 @@ import {streamToRx} from '@server/helpers/fromReadableStream';
 import * as moment from 'moment';
 import {BlockService} from '@server/modules/blocks/block.service';
 import {BlockDocument} from '@server/modules/blocks/block.schema';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 
 @Component()

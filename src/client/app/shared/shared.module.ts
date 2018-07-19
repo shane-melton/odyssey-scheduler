@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TocDirective } from './toc.directive';
 import { GradesPipe } from './pipes/grades.pipe';
 import { ReservationFilterPipe } from './pipes/reservation-filter.pipe';
+import { MaterialSelectComponent } from './material-select/material-select.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { ReservationFilterPipe } from './pipes/reservation-filter.pipe';
     ReactiveFormsModule,
     FormsModule
   ],
-  declarations: [BubbleBackgroundComponent, TocDirective, GradesPipe, ReservationFilterPipe],
+  declarations: [BubbleBackgroundComponent, TocDirective, GradesPipe, ReservationFilterPipe, MaterialSelectComponent],
   exports: [
     CommonModule,
     BrowserAnimationsModule,
@@ -23,7 +24,8 @@ import { ReservationFilterPipe } from './pipes/reservation-filter.pipe';
     BubbleBackgroundComponent,
     TocDirective,
     GradesPipe,
-    ReservationFilterPipe
+    ReservationFilterPipe,
+    MaterialSelectComponent
   ]
 })
 export class SharedModule { }

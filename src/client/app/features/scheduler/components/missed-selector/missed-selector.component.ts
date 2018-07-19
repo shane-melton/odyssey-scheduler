@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlock, ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@client/core/auth/auth.service';
 import {StudentService} from '@client/core/student/student.service';
-import {IStudent} from '@server/modules/students/student.schema';
-import {Observable} from 'rxjs/Observable';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 @Component({
   selector: 'app-missed-selector',
@@ -15,7 +14,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class MissedSelectorComponent implements OnInit {
 
-  schoolDays: ISchoolDayDto[];
+  schoolDays: ISchoolDay[];
   student: IStudent;
 
   constructor(
@@ -30,7 +29,7 @@ export class MissedSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.scheduler.getRecentClasses().subscribe((days: ISchoolDayDto[]) => {
+    this.scheduler.getRecentClasses().subscribe((days: ISchoolDay[]) => {
       this.schoolDays = days;
     });
 
@@ -42,7 +41,7 @@ export class MissedSelectorComponent implements OnInit {
     });
   }
 
-  selectClass(block: IClassBlockDto, missedDate: Date) {
+  selectClass(block: IClassBlock, missedDate: Date) {
     this.scheduler.setMissedSelection(block, missedDate);
     return this.router.navigate(['../makeup']);
   }

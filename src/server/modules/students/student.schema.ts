@@ -1,23 +1,11 @@
-import * as mongoose from 'mongoose';
-import { Connection } from 'mongoose';
+import { Connection, Schema, Document } from 'mongoose';
 import { ProviderTokens } from '../../constants';
-import {IBlock} from '@server/modules/blocks/block.schema';
+import { BaseSchema } from '@server/helpers/BaseSchema';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
-export interface IStudent {
-  readonly studentNumber: string;
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly grade: number;
-  readonly birthDate: Date;
+export interface StudentDocument extends IStudent, Document { }
 
-  readonly block?: IBlock | string;
-  readonly blockDayOfWeek?: number;
-  readonly blockRoom: string;
-}
-
-export interface StudentDocument extends IStudent, mongoose.Document { }
-
-export const StudentSchema = new mongoose.Schema({
+export const StudentSchema = new BaseSchema({
   studentNumber: {
     type: String, required: true
   },
@@ -34,7 +22,7 @@ export const StudentSchema = new mongoose.Schema({
     type: Date, required: true
   },
   block: {
-    type: mongoose.Schema.Types.ObjectId, ref: ProviderTokens.Block
+    type: Schema.Types.ObjectId, ref: ProviderTokens.Block
   },
   blockDayOfWeek: {
     type: Number, required: false

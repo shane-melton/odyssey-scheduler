@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
-import { IClassBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlock, IClass, ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import { IApiResult } from '@shared/interfaces/api';
 import { SchedulingApi } from '@shared/api-endpoints';
 import { map } from 'rxjs/operators';
-import { IReservation } from '@server/modules/reservations/reservation.schema';
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
+import { IReservationDto } from '@client/dtos/IReservationDto';
 
 @Injectable()
 export class SchedulerService {
 
-  private _selectedMissedClass: IClassDto;
-  private _selectedMakeupClass: IClassDto;
+  private _selectedMissedClass: IClass;
+  private _selectedMakeupClass: IClass;
 
   constructor(private readonly http: HttpClient) { }
 
   // region Public Getters
 
-  get MissedSelection(): IClassDto {
+  get MissedSelection(): IClass {
     return this._selectedMissedClass;
   }
 
-  get MakeupSelection(): IClassDto {
+  get MakeupSelection(): IClass {
     return this._selectedMakeupClass;
   }
 
@@ -31,14 +30,14 @@ export class SchedulerService {
 
   // region Public Methods
 
-  setMissedSelection(block: IClassBlockDto, classDate: Date) {
+  setMissedSelection(block: IClassBlock, classDate: Date) {
     this._selectedMissedClass = {
       block,
       classDate
     };
   }
 
-  setMakeupSelection(block: IClassBlockDto, classDate: Date) {
+  setMakeupSelection(block: IClassBlock, classDate: Date) {
     this._selectedMakeupClass = {
       block,
       classDate
@@ -50,7 +49,7 @@ export class SchedulerService {
     this._selectedMakeupClass = null;
   }
 
-  getAvailableMakeupClasses(missedClass: IClassDto = null): Observable<ISchoolDayDto[]> {
+  getAvailableMakeupClasses(missedClass: IClass = null): Observable<ISchoolDay[]> {
     const mClass = missedClass || this._selectedMissedClass;
 
     if (mClass == null) {
@@ -61,17 +60,17 @@ export class SchedulerService {
       .set('date', moment(mClass.classDate).format('MM/DD/YYYY'))
       .set('blockId', mClass.block.blockId);
 
-    return this.http.get<IApiResult<ISchoolDayDto[]>>(SchedulingApi.getAvailableClasses, {params})
+    return this.http.get<IApiResult<ISchoolDay[]>>(SchedulingApi.getAvailableClasses, {params})
       .pipe(
         map(res => res.success ? res.data : [])
       );
   }
 
-  getRecentClasses(): Observable<ISchoolDayDto[]> {
+  getRecentClasses(): Observable<ISchoolDay[]> {
     const params = new HttpParams()
       .set('future', '1');
 
-    return this.http.get<IApiResult<ISchoolDayDto[]>>(SchedulingApi.getRecentClasses, {params})
+    return this.http.get<IApiResult<ISchoolDay[]>>(SchedulingApi.getRecentClasses, {params})
       .pipe(
         map(res => res.success ? res.data : [])
       );
@@ -81,7 +80,7 @@ export class SchedulerService {
     return this.makeReservation(this._selectedMissedClass, this._selectedMakeupClass);
   }
 
-  makeReservation(missedClass: IClassDto, makeupClass: IClassDto): Observable<IApiResult> {
+  makeReservation(missedClass: IClass, makeupClass: IClass): Observable<IApiResult> {
     if (missedClass == null) {
       throw Observable.throw('Missed class cannot be null!');
     }

@@ -3,14 +3,14 @@ import { SchedulerService } from '@server/modules/scheduler/scheduler.service';
 import { SchedulingApi } from '@shared/api-endpoints';
 import { IAuthToken } from '@shared/interfaces/Auth';
 import { FailureResult, IApiResult, SuccesResult } from '@shared/interfaces/api';
-import { ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
 import { Token } from '@server/decorators/token.decorator';
 import * as _ from 'underscore';
 import { ErrorMsg } from '@server/constants';
 import { RoleGuard } from '@server/modules/auth/role.guard';
 import { Roles } from '@server/decorators/role.decorator';
 import { AvailableRoles } from '@server/helpers/roles';
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
+import { IReservation } from '@shared/interfaces/models/IReservation';
 
 
 @Controller()
@@ -23,14 +23,14 @@ export class SchedulerController {
   @Get(SchedulingApi.getRecentClasses)
   async getEligibleRecentClasses(
     @Token() token: IAuthToken,
-    @Query('future') includeFuture: boolean): Promise<IApiResult<ISchoolDayDto[]>> {
+    @Query('future') includeFuture: boolean): Promise<IApiResult<ISchoolDay[]>> {
     if (token === null) {
       return new FailureResult(ErrorMsg.MissingToken);
     }
 
     const classes = await this.schedulerService.getEligibleMissedClasses(token.studentNumber, includeFuture);
 
-    return new SuccesResult<ISchoolDayDto[]>(classes);
+    return new SuccesResult<ISchoolDay[]>(classes);
   }
 
 
@@ -38,7 +38,7 @@ export class SchedulerController {
   async getEligibleMakeupClasses(
     @Token() token: IAuthToken,
     @Query('date') missedDate: string,
-    @Query('blockId') blockId: string): Promise<IApiResult<ISchoolDayDto[]>> {
+    @Query('blockId') blockId: string): Promise<IApiResult<ISchoolDay[]>> {
 
     if (token === null) {
       return new FailureResult(ErrorMsg.MissingToken);
@@ -54,7 +54,7 @@ export class SchedulerController {
 
     const classes = await this.schedulerService.getEligibleMakeupClasses(missedDate, blockId);
 
-    return new SuccesResult<ISchoolDayDto[]>(classes);
+    return new SuccesResult<ISchoolDay[]>(classes);
   }
 
   @Post(SchedulingApi.postReservation)
@@ -84,7 +84,7 @@ export class SchedulerController {
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
   @Get(SchedulingApi.getReservations)
-  async getReservations(@Query('date') makeupDate: string): Promise<IApiResult<IReservationDto[]>> {
+  async getReservations(@Query('date') makeupDate: string): Promise<IApiResult<IReservation[]>> {
     const result = await this.schedulerService.getReservations(makeupDate);
 
     return new SuccesResult(result);

@@ -4,13 +4,12 @@ import { Token } from '../../decorators/token.decorator';
 import { RoleGuard } from '@server/modules/auth/role.guard';
 import { IAuthToken } from '@shared/interfaces/Auth';
 import { FailureResult, IApiResult, SuccesResult } from '@shared/interfaces/api';
-import { IStudent } from '@server/modules/students/student.schema';
 import { Roles } from '@server/decorators/role.decorator';
 import { AvailableRoles } from '@server/helpers/roles';
-import {diskStorage} from 'multer';
-import {basename, extname} from 'path';
-import {IStudentUploadResult} from '@shared/interfaces/student/IStudentImportUpload';
+import { diskStorage } from 'multer';
+import { extname} from 'path';
 import {StudentApi} from '@shared/api-endpoints';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 
 @Controller()
@@ -93,6 +92,7 @@ export class StudentController {
   @Get(StudentApi.getStudent)
   async getStudent(@Query('studentNumber') studentNumber: string): Promise<IApiResult<IStudent>> {
     const student = await this.studentService.findByStudentNumber(studentNumber, true);
+
     if (student !== null) {
       return new SuccesResult(student);
     } else {

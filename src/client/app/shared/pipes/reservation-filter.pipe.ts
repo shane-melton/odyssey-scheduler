@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 import * as _ from 'underscore';
+import { IReservationDto } from '@client/dtos/IReservationDto';
 
 @Pipe({
   name: 'reservationFilter'

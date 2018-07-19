@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { IStudent } from '@server/modules/students/student.schema';
 import 'rxjs/add/operator/switchMap';
 import { StudentService } from '@client/core/student/student.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IBlockDto } from '@shared/interfaces/scheduler/IBlock';
-import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { BlockService } from '@client/core/blocks/block.service';
 import { FormSelect } from 'materialize-css';
-import * as moment from 'moment';
-import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
+import { IStudent } from '@shared/interfaces/models/IStudent';
+import { EditStudentModel } from '@client/features/admin/form-models/EditStudentModel';
+import { BlockDto } from '@client/dtos/BlockDto';
+import * as _ from 'underscore';
+import { type } from 'os';
+import { SelectOption } from '@client/shared/material-select/material-select.component';
 
 @Component({
   selector: 'app-admin-edit-student',
@@ -19,10 +20,10 @@ import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
 export class AdminEditStudentComponent implements OnInit {
 
   student: IStudent;
-  blocks: IBlockDto[];
+  blocks: BlockDto[];
   availableRooms: string[] = [];
 
-  studentForm: FormGroup;
+  studentModel: EditStudentModel;
 
   grades = [
     { value: 9, text: '9th' },
@@ -32,14 +33,20 @@ export class AdminEditStudentComponent implements OnInit {
   ];
 
   days = [
+    { value: 0, text: 'Sunday' },
     { value: 1, text: 'Monday' },
     { value: 2, text: 'Tuesday' },
     { value: 3, text: 'Wednesday' },
     { value: 4, text: 'Thursday' },
-    { value: 5, text: 'Friday' }
+    { value: 5, text: 'Friday' },
+    { value: 6, text: 'Saturday' }
   ];
 
   get studentName(): string {
+    if (!this.student) {
+      return '';
+    }
+
     return this.student.firstName + ' ' + this.student.lastName;
   }
 
@@ -48,6 +55,38 @@ export class AdminEditStudentComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly studentService: StudentService,
     private readonly blockService: BlockService) {
+  }
+
+  blockFilter(): SelectOption[] {
+    return _.map(_.filter(this.blocks, (block) => {
+      return _.contains(block.grades, +this.studentModel.grade);
+    }), (block): SelectOption => {
+      return {text: block.name, value: block.id};
+    });
+  }
+
+  dayFilter(): SelectOption[] {
+    const selectedBlock = _.findWhere(this.blocks, {id: this.studentModel.blockId});
+
+    if (!selectedBlock) {
+      return [];
+    }
+
+    return _.filter(this.days, (day) => {
+      return _.contains(selectedBlock.days, day.value);
+    });
+  }
+
+  roomFilter(): SelectOption[] {
+    const selectedBlock = _.findWhere(this.blocks, {id: this.studentModel.blockId});
+
+    if (!selectedBlock) {
+      return [];
+    }
+
+    return _.map(selectedBlock.rooms, (room) => {
+      return {text: room, value: room};
+    });
   }
 
   ngOnInit() {
@@ -62,13 +101,33 @@ export class AdminEditStudentComponent implements OnInit {
       }
     );
 
-    this.blockService.listBlocks().subscribe(blocks => {this.blocks = blocks; console.log(this.blocks);});
+    this.blockService.listBlocks().subscribe(blocks => { this.blocks = blocks; });
+  }
+
+  gradeChange(newGrade: number) {
+    this.studentModel.blockId = null;
+    this.studentModel.blockDayOfWeek = null;
+    this.studentModel.blockRoom = null;
+  }
+
+  blockChange(newBlockId: string) {
+    this.studentModel.blockDayOfWeek = null;
+    this.studentModel.blockRoom = null;
   }
 
   initFormControls() {
     const self = this;
     // Select Inputs
-    FormSelect.init(document.querySelectorAll('select'), {});
+    // FormSelect.init(document.querySelectorAll('select'), {});
+    //
+    // document.getElementById('grade').addEventListener('change', () => {
+    //   setTimeout(() => {
+    //     FormSelect.init(document.querySelectorAll('select'), {});
+    //     this.studentModel.Form.get('blockId').setValue(this.blockFilter()[0].id);
+    //   }, 10);
+    // });
+
+
 
 
     M.updateTextFields();
@@ -78,34 +137,7 @@ export class AdminEditStudentComponent implements OnInit {
   }
 
   createForm(student: IStudent = null) {
-    if (student == null) {
-      student = {
-        firstName: '',
-        lastName: '',
-        blockRoom: '',
-        block: null,
-        blockDayOfWeek: 0,
-        grade: null,
-        studentNumber: '',
-        birthDate: null
-      };
-    }
-
-
-
-    const formattedBirthDate = moment(student.birthDate).format('MM/DD/YYYY');
-    const blockId = student.block ? (<any>student.block)._id : null;
-
-    this.studentForm = this.fb.group({
-      firstName: [student.firstName, [Validators.required]],
-      lastName: [student.lastName, [Validators.required]],
-      blockRoom: [student.blockRoom, [Validators.required]],
-      block: [blockId, [Validators.required]],
-      blockDayOfWeek: [student.blockDayOfWeek, [Validators.required]],
-      grade: [student.grade, [Validators.required, Validators.min(9), Validators.max(12)]],
-      studentNumber: [student.studentNumber, Validators.required],
-      birthDate: [formattedBirthDate, [Validators.required, Validators.pattern('\\d{1,2}\\/\\d{1,2}\\/\\d{4}')]]
-    });
+    this.studentModel = new EditStudentModel(this.fb, student);
 
     setTimeout(() => { this.initFormControls(); }, 0);
   }
