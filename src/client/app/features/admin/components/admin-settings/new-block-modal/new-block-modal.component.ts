@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Modal, FormSelect, Timepicker, Chips, ChipData } from 'materialize-css';
 import * as _ from 'underscore';
 import { IApiResult } from '@shared/interfaces/api';
 import { BlockService } from '@client/core/blocks/block.service';
-import {IBlockDto} from '@shared/interfaces/scheduler/IBlock';
-import * as moment from 'moment';
+import { EditBlockModel } from '@client/features/admin/form-models/EditBlockModel';
+import { IBlock } from '@shared/interfaces/models/IBlock';
 
 @Component({
   selector: 'app-new-block-modal',
@@ -18,21 +18,21 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') private _modalRef: ElementRef;
   private _modal: Modal;
 
-  blockForm: FormGroup;
+  blockModel: EditBlockModel;
 
   grades = [
-    { value: 9, text: '9th' },
-    { value: 10, text: '10th' },
-    { value: 11, text: '11th' },
-    { value: 12, text: '12th' }
+    {value: 9, text: '9th'},
+    {value: 10, text: '10th'},
+    {value: 11, text: '11th'},
+    {value: 12, text: '12th'}
   ];
 
   days = [
-    { value: 1, text: 'Monday' },
-    { value: 2, text: 'Tuesday' },
-    { value: 3, text: 'Wednesday' },
-    { value: 4, text: 'Thursday' },
-    { value: 5, text: 'Friday' }
+    {value: 1, text: 'Monday'},
+    {value: 2, text: 'Tuesday'},
+    {value: 3, text: 'Wednesday'},
+    {value: 4, text: 'Thursday'},
+    {value: 5, text: 'Friday'}
   ];
 
   constructor(private fb: FormBuilder, private blockService: BlockService) {
@@ -62,7 +62,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
     Timepicker.init(document.querySelectorAll('.timepicker'), {
       container: 'body',
       autoClose: true,
-      onCloseEnd: function() {
+      onCloseEnd: function () {
         const event = new Event('input', {
           'bubbles': true,
           'cancelable': true
@@ -71,9 +71,9 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
       }
     });
 
-    const rooms: ChipData[] = _.map(this.blockForm.value.rooms, (room: string): ChipData => {
-        return {tag: room};
-      });
+    const rooms: ChipData[] = _.map(this.blockModel.rooms, (room: string): ChipData => {
+      return {tag: room};
+    });
 
     // Chips
     Chips.init(document.querySelectorAll('.chips'), {
@@ -86,7 +86,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
 
     // Function to update room selections since Chips do not automatically update form values
     function updateRooms() {
-      self.blockForm.patchValue({
+      self.blockModel.Form.patchValue({
         rooms: _.map(this.chipsData, (chipData: ChipData) => chipData.tag)
       });
     }
@@ -94,7 +94,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
     M.updateTextFields();
   }
 
-  public open(existingBlock: IBlockDto) {
+  public open(existingBlock: IBlock) {
     if (existingBlock) {
       this.createForm(existingBlock);
     } else {
@@ -104,8 +104,8 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
   }
 
   public submitForm() {
-    if (this.blockForm.value.id) {
-      this.blockService.updateBlock(this.blockForm.value).subscribe((result: IApiResult) => {
+    if (this.blockModel.id) {
+      this.blockService.updateBlock(this.blockModel.mapToModel()).subscribe((result: IApiResult) => {
         if (result.success) {
           M.toast({html: 'Block saved successfully!'});
           this.saved.emit();
@@ -115,7 +115,7 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
         }
       });
     } else {
-      this.blockService.createBlock(this.blockForm.value).subscribe((result: IApiResult) => {
+      this.blockService.createBlock(this.blockModel.mapToModel()).subscribe((result: IApiResult) => {
         if (result.success) {
           M.toast({html: 'Block created successfully!'});
           this.saved.emit();
@@ -127,44 +127,13 @@ export class NewBlockModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private createForm(block: IBlockDto = null) {
-    if (!block) {
-      block = {
-        name: '',
-        icSlug: '',
-        grades: [],
-        startTime: null,
-        endTime: null,
-        maxStudents: 0,
-        days: [],
-        makeupDays: [],
-        rooms: []
-      };
-    }
+  private createForm(block: IBlock = null) {
 
-    console.log(block.id);
+    this.blockModel = new EditBlockModel(this.fb, block);
 
-    function getInitTime(time: Date): string {
-      if (!time) {
-        return '';
-      }
-      return moment(time).format('HH:mm A');
-    }
-
-    this.blockForm = this.fb.group({
-      name: [block.name, Validators.required],
-      icSlug: [block.icSlug, Validators.required],
-      grades: [block.grades, Validators.required],
-      startTime: [getInitTime(block.startTime), Validators.required],
-      endTime: [getInitTime(block.endTime), Validators.required],
-      maxStudents: [block.maxStudents, [Validators.required, Validators.min(0)]],
-      days: [block.days, Validators.required],
-      makeupDays: [block.makeupDays, Validators.required],
-      rooms: [block.rooms, Validators.required],
-      id: [block.id]
-    });
-
-    setTimeout(() => { this.initFormControls(); }, 0);
+    setTimeout(() => {
+      this.initFormControls();
+    }, 0);
   }
 
 }

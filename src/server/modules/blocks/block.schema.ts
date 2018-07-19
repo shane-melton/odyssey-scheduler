@@ -1,18 +1,8 @@
 import { Document, Connection, Schema } from 'mongoose';
 import { ProviderTokens } from '@server/constants';
 import * as moment from 'moment';
-
-export interface IBlock {
-  readonly name: string;
-  readonly icSlug: string;
-  readonly days: number[];
-  readonly makeupDays: number[];
-  readonly grades: number[];
-  readonly startTime: Date;
-  readonly endTime: Date;
-  readonly maxStudents: number;
-  readonly rooms: string[];
-}
+import { IBlock } from '@shared/interfaces/models/IBlock';
+import { BaseSchema } from '@server/helpers/BaseSchema';
 
 export interface BlockDocument extends IBlock, Document {
   /**
@@ -23,7 +13,7 @@ export interface BlockDocument extends IBlock, Document {
   ReservationCount(classDate: Date): Promise<number>;
 }
 
-export const BlockSchema = new Schema({
+export const BlockSchema = new BaseSchema({
   name: {
     type: String, required: true
   },

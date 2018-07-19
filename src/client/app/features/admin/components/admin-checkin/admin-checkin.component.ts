@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import Datepicker = M.Datepicker;
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { Moment } from 'moment';
 import * as _ from 'underscore';
+import { IReservationDto } from '@client/dtos/IReservationDto';
 
 @Component({
   selector: 'app-admin-checkin',

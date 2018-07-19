@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { IApiResult, SuccesResult } from '@shared/interfaces/api';
-import { ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
 
 @Controller('api')
 export class ApiController {

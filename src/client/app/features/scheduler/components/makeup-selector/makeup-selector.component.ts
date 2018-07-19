@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { IClassBlockDto, IClassDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
+import { IClassBlock, IClass, ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
 import { AuthService } from '@client/core/auth/auth.service';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import {StudentService} from '@client/core/student/student.service';
-import {IStudent} from '@server/modules/students/student.schema';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 @Component({
   selector: 'app-makeup-selector',
@@ -14,8 +14,8 @@ import {IStudent} from '@server/modules/students/student.schema';
 })
 export class MakeupSelectorComponent implements OnInit {
 
-  missedClass: IClassDto;
-  schoolDays: ISchoolDayDto[];
+  missedClass: IClass;
+  schoolDays: ISchoolDay[];
   student: IStudent;
 
   constructor(
@@ -36,7 +36,7 @@ export class MakeupSelectorComponent implements OnInit {
       await this.router.navigate(['../missed']);
     }
 
-    this.scheduler.getAvailableMakeupClasses().subscribe((days: ISchoolDayDto[]) => {
+    this.scheduler.getAvailableMakeupClasses().subscribe((days: ISchoolDay[]) => {
       this.schoolDays = days;
     });
 
@@ -45,7 +45,7 @@ export class MakeupSelectorComponent implements OnInit {
     });
   }
 
-  async selectClass(block: IClassBlockDto, classDate: Date) {
+  async selectClass(block: IClassBlock, classDate: Date) {
     this.scheduler.setMakeupSelection(block, classDate);
     await this.router.navigate(['../confirm']);
   }

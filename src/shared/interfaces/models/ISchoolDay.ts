@@ -2,12 +2,12 @@
  * Represents a school day on a particular date and contains the list of available class blocks
  * available for that day.
  */
-export interface ISchoolDayDto {
+export interface ISchoolDay {
   classDate: Date;
-  blocks: IClassBlockDto[];
+  blocks: IClassBlock[];
 }
 
-export interface IClassBlockDto {
+export interface IClassBlock {
   blockId: string;
   name: string;
   startTime: Date;
@@ -18,7 +18,7 @@ export interface IClassBlockDto {
 /**
  * Represents a specific class instance which includes a specific date and block.
  */
-export interface IClassDto {
+export interface IClass {
   classDate: Date;
-  block: IClassBlockDto;
+  block: IClassBlock;
 }

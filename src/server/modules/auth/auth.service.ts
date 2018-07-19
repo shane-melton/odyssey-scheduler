@@ -3,10 +3,9 @@ import { IAdminCredentials, IAuthResult, IAuthToken } from '@shared/interfaces/A
 import {Constants, ProviderTokens} from '@server/constants';
 import * as jwt from 'jsonwebtoken';
 import { AvailableRoles } from '@server/helpers/roles';
-import {StudentService} from '@server/modules/students/student.service';
-import {FailureException, FailureResult, IApiResult} from '@shared/interfaces/api';
+import {FailureResult, IApiResult} from '@shared/interfaces/api';
 import * as moment from 'moment';
-import {Model} from "mongoose";
+import {Model} from 'mongoose';
 import {StudentDocument} from '@server/modules/students/student.schema';
 
 @Component()

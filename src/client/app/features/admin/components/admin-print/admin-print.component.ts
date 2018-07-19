@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import Datepicker = M.Datepicker;
 import * as moment from 'moment';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import printJs from 'print-js';
-import { BlockDto, IBlockDto } from '@shared/interfaces/scheduler/IBlock';
 import * as _ from 'underscore';
 import { Moment } from 'moment';
+import { IBlock } from '@shared/interfaces/models/IBlock';
+import { BlockDto } from '@client/dtos/BlockDto';
+import { IReservationDto } from '@client/dtos/IReservationDto';
 
 interface RoomRoster {
   roomName: string;
@@ -113,14 +114,14 @@ export class AdminPrintComponent implements OnInit {
   }
 
   formatOriginalDay(res: IReservationDto): string {
-    const block = BlockDto.fromIBlock(<IBlockDto> res.student.block);
+    const block = new BlockDto(<IBlock> res.student.block);
     const dayOfWeek = moment(res.missedDate).format('dddd');
 
     return dayOfWeek + ' ' + block.timeRange(true);
   }
 
   formatMakeupDay(res: IReservationDto): string {
-    const block = BlockDto.fromIBlock(<IBlockDto> res.block);
+    const block = new BlockDto(res.block);
     const dayOfWeek = moment(res.makeupDate).format('dddd');
 
     return dayOfWeek + ' ' + block.timeRange(true);

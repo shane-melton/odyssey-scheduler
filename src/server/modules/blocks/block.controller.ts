@@ -5,10 +5,8 @@ import { FailureException, FailureResult, IApiResult, SuccesResult } from '@shar
 import { AvailableRoles } from '@server/helpers/roles';
 import { RoleGuard } from '@server/modules/auth/role.guard';
 import { BlockApi } from '@shared/api-endpoints';
-import {BlockDto, IBlockDto} from '@shared/interfaces/scheduler/IBlock';
 import { ValidationError } from 'mongoose';
-import { BlockDocument } from '@server/modules/blocks/block.schema';
-import * as _ from 'underscore';
+import { IBlock } from '@shared/interfaces/models/IBlock';
 
 @Controller()
 export class BlockController {
@@ -19,9 +17,9 @@ export class BlockController {
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
   @Post(BlockApi.postCreateBlock)
-  async createBlock(@Body() createBlockDto: IBlockDto): Promise<IApiResult> {
+  async createBlock(@Body() createBlock: IBlock): Promise<IApiResult> {
     try {
-      const result = await this.blockService.createBlock(createBlockDto);
+      const result = await this.blockService.createBlock(createBlock);
 
       if (result) {
         return new SuccesResult();
@@ -39,7 +37,7 @@ export class BlockController {
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
   @Post(BlockApi.postUpdateBlock)
-  async updateBlock(@Body() updateBlockDto: IBlockDto): Promise<IApiResult> {
+  async updateBlock(@Body() updateBlockDto: IBlock): Promise<IApiResult> {
     try {
       const result = await this.blockService.updateBlock(updateBlockDto);
 
@@ -69,13 +67,13 @@ export class BlockController {
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
   @Get(BlockApi.getListBlocks)
-  async listBlocks(): Promise<IApiResult<BlockDto[]>> {
+  async listBlocks(): Promise<IApiResult<IBlock[]>> {
     const blocks = await this.blockService.listBlocks();
 
     if (!blocks) {
       return new FailureResult('Unable to retrieve block list!');
     }
 
-    return new SuccesResult(_.map(blocks, (doc: BlockDocument) => BlockDto.fromBlockDoc(doc)));
+    return new SuccesResult(blocks);
   }
 }

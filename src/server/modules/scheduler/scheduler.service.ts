@@ -4,14 +4,14 @@ import { Model } from 'mongoose';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { MinutesOfDay } from '../../helpers/moment-helpers';
-import { IStudent } from '@server/modules/students/student.schema';
 import { StudentService } from '@server/modules/students/student.service';
 import { BlockService } from '@server/modules/blocks/block.service';
-import { IReservation, ReservationDocument } from '@server/modules/reservations/reservation.schema';
-import { IClassBlockDto, ISchoolDayDto } from '@shared/interfaces/scheduler/ISchoolDay';
-import { BlockDocument, IBlock } from '@server/modules/blocks/block.schema';
-import Block = jasmine.Block;
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
+import { ReservationDocument } from '@server/modules/reservations/reservation.schema';
+import { IClassBlock, ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
+import { BlockDocument } from '@server/modules/blocks/block.schema';
+import { IStudent } from '@shared/interfaces/models/IStudent';
+import { IReservation } from '@shared/interfaces/models/IReservation';
+import { IBlock } from '@shared/interfaces/models/IBlock';
 
 const RESTRICT_STUDENT_DAY = true;
 
@@ -31,7 +31,7 @@ export class SchedulerService {
    * @param {string} studentNumber - The student number of the student to look up
    * @param {boolean} includeFuture - Flag to retrieve future classes that can be scheduled for makeup
    */
-  async getEligibleMissedClasses(studentNumber: string, includeFuture: boolean): Promise<ISchoolDayDto[]> {
+  async getEligibleMissedClasses(studentNumber: string, includeFuture: boolean): Promise<ISchoolDay[]> {
     const student = await this.studentService.findByStudentNumber(studentNumber);
 
     if (!student) {
@@ -60,11 +60,11 @@ export class SchedulerService {
    * @param {IStudent} student - The student trying to schedule the makeup
    * @param {BlockDocument[]} blocks - The blocks this student could have missed
    * @param {boolean} includeFuture - True to include future classes that can have makeup classes scheduled in advance
-   * @returns {ISchoolDayDto[]}
+   * @returns {ISchoolDay[]}
    * @private
    */
-  private _buildEligibleMissedClasses(student: IStudent, blocks: BlockDocument[], includeFuture: boolean): ISchoolDayDto[] {
-    const eligibleDays: ISchoolDayDto[] = [];
+  private _buildEligibleMissedClasses(student: IStudent, blocks: BlockDocument[], includeFuture: boolean): ISchoolDay[] {
+    const eligibleDays: ISchoolDay[] = [];
     const mToday = moment();
 
     // The maximum number of days to display
@@ -76,7 +76,7 @@ export class SchedulerService {
 
     while (count <= maxDays) {
       const dayOfWeek = mCurrentDay.isoWeekday();
-      const blockDtos: IClassBlockDto[] = [];
+      const blockDtos: IClassBlock[] = [];
 
       if (student.blockDayOfWeek && dayOfWeek !== student.blockDayOfWeek) {
         mCurrentDay.add(1, 'day');
@@ -166,7 +166,7 @@ export class SchedulerService {
    * @param {string} missedDate - The date of the missed class
    * @param {string} blockId - The blockId of the missed class
    */
-  async getEligibleMakeupClasses(missedDate: string, blockId: string): Promise<ISchoolDayDto[]> {
+  async getEligibleMakeupClasses(missedDate: string, blockId: string): Promise<ISchoolDay[]> {
     const mMissedDate = moment(missedDate, 'MM-DD-YYYY');
     const block = await this.blockService.getBlock(blockId);
 
@@ -177,9 +177,9 @@ export class SchedulerService {
     return await this._buildEligibleMakeupClasses(mMissedDate, block);
   }
 
-  private async _buildEligibleMakeupClasses(mMissedDate: moment.Moment, missedBlock: BlockDocument): Promise<ISchoolDayDto[]> {
+  private async _buildEligibleMakeupClasses(mMissedDate: moment.Moment, missedBlock: BlockDocument): Promise<ISchoolDay[]> {
     const mToday = moment();
-    const eligibleDays: ISchoolDayDto[] = [];
+    const eligibleDays: ISchoolDay[] = [];
     const mCurrentDate = moment(mToday).startOf('day');
 
     const maxEligibleDate = moment(mMissedDate).add(1, 'week').subtract(1, 'day');
@@ -300,7 +300,7 @@ export class SchedulerService {
   }
 
 
-  async getReservations(makeupDate: string): Promise<IReservationDto[]> {
+  async getReservations(makeupDate: string): Promise<IReservation[]> {
 
     const mMakeupDate = moment(makeupDate, 'MM/DD/YYYY');
 
@@ -313,7 +313,7 @@ export class SchedulerService {
       .populate('block')
       .exec();
 
-    return resDocuments.map((doc: ReservationDocument): IReservationDto => {
+    return resDocuments.map((doc: ReservationDocument): IReservation => {
       return {
         id: doc._id,
         block: <IBlock>doc.block,

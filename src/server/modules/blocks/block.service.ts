@@ -1,9 +1,8 @@
 import { Component, Inject } from '@nestjs/common';
 import { ProviderTokens } from '@server/constants';
-import { BlockDocument, IBlock } from './block.schema';
+import { BlockDocument } from './block.schema';
 import { Model } from 'mongoose';
-import {IBlockDto} from '@shared/interfaces/scheduler/IBlock';
-import * as moment from 'moment';
+import { IBlock } from '@shared/interfaces/models/IBlock';
 
 @Component()
 export class BlockService {
@@ -30,30 +29,19 @@ export class BlockService {
   }
 
   async listBlocks(): Promise<BlockDocument[]> {
-    return await this.blockModel.find().lean().exec();
+    return await this.blockModel.find().exec();
   }
 
-  async updateBlock(blockDto: IBlockDto): Promise<boolean> {
-    return this.blockModel.updateOne({_id: blockDto.id}, blockDto);
+  async updateBlock(block: IBlock): Promise<boolean> {
+    console.log(block);
+    return this.blockModel.updateOne({_id: block.id}, block);
   }
 
   async deleteBlock(blockId: string): Promise<boolean> {
     return this.blockModel.deleteOne({_id: blockId});
   }
 
-  async createBlock(newBlockDto: IBlockDto): Promise<boolean> {
-    const newBlock: IBlock = {
-      maxStudents: newBlockDto.maxStudents,
-      icSlug: newBlockDto.icSlug,
-      name: newBlockDto.name,
-      makeupDays: newBlockDto.makeupDays,
-      days: newBlockDto.days,
-      grades: newBlockDto.grades,
-      startTime: newBlockDto.startTime,
-      endTime: newBlockDto.endTime,
-      rooms: newBlockDto.rooms
-    };
-
+  async createBlock(newBlock: IBlock): Promise<boolean> {
     const blockDoc = await this.blockModel.create(newBlock);
 
     return !!blockDoc;

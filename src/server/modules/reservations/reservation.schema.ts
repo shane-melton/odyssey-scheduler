@@ -1,26 +1,16 @@
-import * as mongoose from 'mongoose';
-import { Connection } from 'mongoose';
+import { Connection, Schema, Document } from 'mongoose';
 import { ProviderTokens } from '../../constants';
-import { IStudent } from '@server/modules/students/student.schema';
-import { IBlock } from '@server/modules/blocks/block.schema';
+import { BaseSchema } from '@server/helpers/BaseSchema';
+import { IReservation } from '@shared/interfaces/models/IReservation';
 
-export interface IReservation {
-  readonly student: IStudent | string;
-  readonly block: IBlock | string;
-  readonly makeupDate: Date;
-  readonly missedDate: Date;
-  readonly createdDate: Date;
-  readonly checkedIn: boolean;
-}
+export interface ReservationDocument extends IReservation, Document { }
 
-export interface ReservationDocument extends IReservation, mongoose.Document { }
-
-export const ReservationSchema = new mongoose.Schema({
+export const ReservationSchema = new BaseSchema({
   student: {
-    type: mongoose.Schema.Types.ObjectId, ref: ProviderTokens.Student
+    type: Schema.Types.ObjectId, ref: ProviderTokens.Student
   },
   block: {
-    type: mongoose.Schema.Types.ObjectId, ref: ProviderTokens.Block
+    type: Schema.Types.ObjectId, ref: ProviderTokens.Block
   },
   makeupDate: Date,
   missedDate: Date,

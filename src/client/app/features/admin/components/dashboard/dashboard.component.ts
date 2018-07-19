@@ -1,12 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
-import { IReservationDto } from '@shared/interfaces/scheduler/IReservationDto';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import * as _ from 'underscore';
-import { Observable } from 'rxjs/Observable';
-import { merge } from 'rxjs/operators';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { IReservationDto } from '@client/dtos/IReservationDto';
 
 
 interface MakeupCounts {

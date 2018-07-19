@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {AuthService} from '@client/core/auth/auth.service';
-import {IStudent} from '@server/modules/students/student.schema';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {IApiResult} from '@shared/interfaces/api';
 import {StudentApi} from '@shared/api-endpoints';
@@ -8,6 +7,7 @@ import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import * as moment from 'moment';
+import { IStudent } from '@shared/interfaces/models/IStudent';
 
 @Injectable()
 export class StudentService {

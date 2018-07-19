@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ScrollSpy} from 'materialize-css';
-import { BlockDto } from '@shared/interfaces/scheduler/IBlock';
 import { BlockService } from '@client/core/blocks/block.service';
 import { IApiResult } from '@shared/interfaces/api';
+import { BlockDto } from '@client/dtos/BlockDto';
 
 @Component({
   selector: 'app-admin-settings',
