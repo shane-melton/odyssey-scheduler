@@ -14,6 +14,7 @@ export const SchedulingApi = {
   getAvailableClasses: schedulingBase + '/available-classes',
   postReservation: schedulingBase + '/reserve',
   getReservations: schedulingBase + '/reservations',
+  getStudentReservations: schedulingBase + '/student/reservations',
   updateReservationStatus: schedulingBase + '/reservation/update'
 };
 
@@ -34,5 +35,6 @@ export const StudentApi = {
   getMe: studentBase + '/me',
   getStudent: studentBase + 'get',
   postImport: studentBase + '/import',
-  postImportUpdate: studentBase + '/import-update'
+  postImportUpdate: studentBase + '/import-update',
+  postUpdate: studentBase + '/update'
 };

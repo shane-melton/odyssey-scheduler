@@ -1,6 +1,6 @@
-import { Injectable, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '@client/shared/shared.module';
 
 import {
@@ -12,10 +12,10 @@ import {
 import { NewBlockModalComponent } from './components/admin-settings/new-block-modal/new-block-modal.component';
 import { ManageStudentsComponent } from './components/manage-students/manage-students.component';
 import { AdminPrintComponent } from './components/admin-print/admin-print.component';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 import { AdminCheckinComponent } from './components/admin-checkin/admin-checkin.component';
-import { AdminEditStudentComponent } from '@client/features/admin/components/admin-edit-student/admin-edit-student.component';
+import { AdminViewStudentComponent } from '@client/features/admin/components/admin-view-student/admin-view-student.component';
+import { EditStudentModalComponent } from './components/admin-view-student/edit-student-modal/edit-student-modal.component';
 
 
 const adminRoutes: Routes = [
@@ -28,7 +28,7 @@ const adminRoutes: Routes = [
       {path: 'students', component: ManageStudentsComponent, data: {hideNav: false}},
       {path: 'print', component: AdminPrintComponent, data: {hideNav: false}},
       {path: 'checkin', component: AdminCheckinComponent, data: {hideNav: false}},
-      {path: 'students/:id/edit', component: AdminEditStudentComponent, data: {hideNav: false}},
+      {path: 'students/:id/view', component: AdminViewStudentComponent, data: {hideNav: false}},
     ]
   }
 ];
@@ -48,7 +48,8 @@ const adminRoutes: Routes = [
     ManageStudentsComponent,
     AdminPrintComponent,
     AdminCheckinComponent,
-    AdminEditStudentComponent],
+    AdminViewStudentComponent,
+    EditStudentModalComponent],
 })
 export class AdminModule {
 }

@@ -33,7 +33,6 @@ export class BlockService {
   }
 
   async updateBlock(block: IBlock): Promise<boolean> {
-    console.log(block);
     return this.blockModel.updateOne({_id: block.id}, block);
   }
 

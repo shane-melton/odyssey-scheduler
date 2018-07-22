@@ -1,0 +1,38 @@
+h4 {
+  margin: 20px auto;
+}
+
+h5 {
+  color: #9e9e9e;
+  line-height: 36px;
+  height: 36px;
+  margin: 0;
+  font-size: 15pt;
+}
+
+label {
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.value {
+  //font-weight: bold;
+  font-size: 110%;
+}
+
+table {
+  table-layout: fixed;
+  position: relative;
+}
+
+.large {
+  font-size: 200%;
+}
+
+.absolute-action-btn {
+  position: absolute;
+  top: -36px;
+  right: 16px;
+
+}

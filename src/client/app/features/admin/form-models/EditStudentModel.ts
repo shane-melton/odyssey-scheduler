@@ -1,12 +1,12 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { FormControlModel, Ignore, Required } from '@client/features/admin/form-models/FormControlModel';
+import { FormControlModel, Ignore, Optional, Required } from '@client/features/admin/form-models/FormControlModel';
 import { IMapTo } from '@client/interfaces/IMapTo';
 import { IStudent } from '@shared/interfaces/models/IStudent';
 import { getMongooseId } from '@shared/helpers/getMongooseId';
 import * as moment from 'moment';
 
 export class EditStudentModel extends FormControlModel<IStudent> {
-  @Ignore()
+  @Optional()
   id?: string;
 
   @Required()
@@ -51,7 +51,9 @@ export class EditStudentModel extends FormControlModel<IStudent> {
   }
 
   mapToModel(): IStudent {
-    return Object.assign({}, this, {
+    const formData = this._formGroup.value;
+
+    return Object.assign({}, formData, {
       block: this.blockId,
       birthDate: moment(this.birthDate, 'MM/DD/YYYY').toDate()
     });

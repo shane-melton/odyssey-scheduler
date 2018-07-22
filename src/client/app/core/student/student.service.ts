@@ -8,26 +8,27 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import * as moment from 'moment';
 import { IStudent } from '@shared/interfaces/models/IStudent';
+import { IStudentDto } from '@client/dtos/IStudentDto';
 
 @Injectable()
 export class StudentService {
 
-  private _student: IStudent;
+  private _student: IStudentDto;
 
   constructor(private readonly authService: AuthService,
               private readonly httpClient: HttpClient) {
     this.authService.AuthStatus$.subscribe((isLoggedIn: boolean) => {
       if (isLoggedIn && this.authService.isStudent) {
-        this._updateStudent().subscribe();
+        this._updateLoggedInStudent().subscribe();
       } else {
         this._student = null;
       }
     });
   }
 
-  private _updateStudent(): Observable<IStudent> {
-    return this.httpClient.get<IApiResult<IStudent>>(StudentApi.getMe).pipe(
-      map((result: IApiResult<IStudent>): IStudent => {
+  private _updateLoggedInStudent(): Observable<IStudentDto> {
+    return this.httpClient.get<IApiResult<IStudentDto>>(StudentApi.getMe).pipe(
+      map((result: IApiResult<IStudentDto>): IStudentDto => {
         if (result.success) {
           this._student = result.data;
           return result.data;
@@ -38,18 +39,18 @@ export class StudentService {
       }));
   }
 
-  getCurrentStudent(): Observable<IStudent> {
+  getCurrentStudent(): Observable<IStudentDto> {
     if (this.authService.isLoggedIn && this.authService.isStudent) {
       if (this._student) {
         return Observable.of(this._student);
       } else {
-        return this._updateStudent();
+        return this._updateLoggedInStudent();
       }
     }
     return Observable.of(null);
   }
 
-  getStudent(studentNumber: string): Observable<IStudent> {
+  getStudent(studentNumber: string): Observable<IStudentDto> {
 
     if (!studentNumber) {
       return Observable.of(null);
@@ -58,8 +59,8 @@ export class StudentService {
     const params = new HttpParams()
       .set('studentNumber', studentNumber);
 
-    return this.httpClient.get<IApiResult<IStudent>>(StudentApi.getStudent, {params}).pipe(
-      map( (result: IApiResult<IStudent>): IStudent => {
+    return this.httpClient.get<IApiResult<IStudentDto>>(StudentApi.getStudent, {params}).pipe(
+      map( (result: IApiResult<IStudentDto>): IStudentDto => {
         if (result.success) {
           return result.data;
         } else {
@@ -67,6 +68,10 @@ export class StudentService {
         }
       })
     );
+  }
+
+  updateStudent(student: IStudent): Observable<IApiResult> {
+    return this.httpClient.post<IApiResult>(StudentApi.postUpdate, student);
   }
 
 }

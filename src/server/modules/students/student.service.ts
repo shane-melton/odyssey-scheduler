@@ -81,7 +81,6 @@ export class StudentService {
     return new SuccesResult();
   }
 
-
   async importNewStudents(filePath: string): Promise<IApiResult> {
     if (!filePath || filePath.length === 0) {
       return new FailureResult('No input file!');
@@ -124,6 +123,10 @@ export class StudentService {
     }
 
     return new SuccesResult();
+  }
+
+  async updateStudent(student: IStudent): Promise<boolean> {
+    return this.studentModel.updateOne({_id: student.id}, student);
   }
 
   private validateCsvRow(student: ICsvStudent): boolean {

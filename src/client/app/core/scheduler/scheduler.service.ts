@@ -108,6 +108,16 @@ export class SchedulerService {
       );
   }
 
+  listReservationsForStudent(studentId: string): Observable<IReservationDto[]> {
+    const params = new HttpParams()
+      .set('id', studentId);
+
+    return this.http.get<IApiResult<IReservationDto[]>>(SchedulingApi.getStudentReservations, {params})
+      .pipe(
+        map(res => res.success ? res.data : [])
+      );
+  }
+
   updateReservationStatus(resId: string, status: boolean): Observable<boolean> {
     const requestBody = {
       id: resId,

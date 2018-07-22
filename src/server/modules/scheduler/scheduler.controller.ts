@@ -92,11 +92,20 @@ export class SchedulerController {
 
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
-  @Post(SchedulingApi.updateReservationStatus)
+  @Get(SchedulingApi.updateReservationStatus)
   async updateReservation(@Body('id') resId: string, @Body('status') newStatus: boolean): Promise<IApiResult> {
     const result = await this.schedulerService.updateReservationStatus(resId, newStatus);
 
     return result ? new SuccesResult() : new FailureResult('Failed to update status!');
+  }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Get(SchedulingApi.getStudentReservations)
+  async getStudentReservations(@Query('id') studentId: string): Promise<IApiResult<IReservation[]>> {
+    const result = await this.schedulerService.getStudentReservations(studentId);
+
+    return new SuccesResult(result);
   }
 
 }

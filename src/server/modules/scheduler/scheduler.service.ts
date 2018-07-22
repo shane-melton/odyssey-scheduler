@@ -327,6 +327,13 @@ export class SchedulerService {
 
   }
 
+  async getStudentReservations(studentId: string): Promise<IReservation[]> {
+    return await this.reservationModel
+      .find({'student': studentId})
+      .populate('block')
+      .exec();
+  }
+
   /**
    *
    * @param {string} resId

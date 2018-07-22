@@ -7,6 +7,8 @@ import { TocDirective } from './toc.directive';
 import { GradesPipe } from './pipes/grades.pipe';
 import { ReservationFilterPipe } from './pipes/reservation-filter.pipe';
 import { MaterialSelectComponent } from './material-select/material-select.component';
+import { DayOfWeekPipe } from './pipes/day-of-week.pipe';
+import { TruthyPipe } from './pipes/truthy.pipe';
 
 @NgModule({
   imports: [
@@ -15,7 +17,7 @@ import { MaterialSelectComponent } from './material-select/material-select.compo
     ReactiveFormsModule,
     FormsModule
   ],
-  declarations: [BubbleBackgroundComponent, TocDirective, GradesPipe, ReservationFilterPipe, MaterialSelectComponent],
+  declarations: [BubbleBackgroundComponent, TocDirective, GradesPipe, ReservationFilterPipe, MaterialSelectComponent, DayOfWeekPipe, TruthyPipe],
   exports: [
     CommonModule,
     BrowserAnimationsModule,
@@ -25,6 +27,8 @@ import { MaterialSelectComponent } from './material-select/material-select.compo
     TocDirective,
     GradesPipe,
     ReservationFilterPipe,
+    DayOfWeekPipe,
+    TruthyPipe,
     MaterialSelectComponent
   ]
 })

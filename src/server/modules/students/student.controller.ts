@@ -1,9 +1,9 @@
-import { Controller, Get, UseGuards, UploadedFile, UseInterceptors, FileInterceptor, Post, Query } from '@nestjs/common';
+import { Controller, Get, UseGuards, UploadedFile, UseInterceptors, FileInterceptor, Post, Query, Body } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { Token } from '../../decorators/token.decorator';
 import { RoleGuard } from '@server/modules/auth/role.guard';
 import { IAuthToken } from '@shared/interfaces/Auth';
-import { FailureResult, IApiResult, SuccesResult } from '@shared/interfaces/api';
+import { FailureException, FailureResult, IApiResult, SuccesResult } from '@shared/interfaces/api';
 import { Roles } from '@server/decorators/role.decorator';
 import { AvailableRoles } from '@server/helpers/roles';
 import { diskStorage } from 'multer';
@@ -75,11 +75,8 @@ export class StudentController {
       }
     })
   }))
-
-  @UseGuards(RoleGuard)
-  @Roles(AvailableRoles.ADMIN)
   @Post(StudentApi.postImportUpdate)
-  async studentUpdate(@UploadedFile() file_upload: Express.Multer.File): Promise<IApiResult> {
+  async studentImportUpdate(@UploadedFile() file_upload: Express.Multer.File): Promise<IApiResult> {
     if (!file_upload) {
       return new FailureResult('File not found!');
     }
@@ -97,6 +94,27 @@ export class StudentController {
       return new SuccesResult(student);
     } else {
       return new FailureResult('Not found!');
+    }
+  }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Post(StudentApi.postUpdate)
+  async updateStudent(@Body() student: IStudent): Promise<IApiResult> {
+    try {
+      const result = await this.studentService.updateStudent(student);
+
+      if (result) {
+        return new SuccesResult();
+      } else {
+        return new FailureResult('Failed to update student!');
+      }
+
+    } catch (exception) {
+      if (exception.name === 'ValidationError') {
+        return new FailureException(exception, 'Invalid student!');
+      }
+      return new FailureException(exception);
     }
   }
 

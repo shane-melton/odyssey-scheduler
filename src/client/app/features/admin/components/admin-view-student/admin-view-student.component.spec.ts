@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminEditStudentComponent } from './admin-edit-student.component';
+import { AdminViewStudentComponent } from './admin-view-student.component';
 
-describe('AdminEditStudentComponent', () => {
-  let component: AdminEditStudentComponent;
-  let fixture: ComponentFixture<AdminEditStudentComponent>;
+describe('AdminViewStudentComponent', () => {
+  let component: AdminViewStudentComponent;
+  let fixture: ComponentFixture<AdminViewStudentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminEditStudentComponent ]
+      declarations: [ AdminViewStudentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminEditStudentComponent);
+    fixture = TestBed.createComponent(AdminViewStudentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

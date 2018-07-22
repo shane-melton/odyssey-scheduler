@@ -1,0 +1,85 @@
+<div class="container">
+  <h4>{{studentName}}</h4>
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="col s8">
+          <h5>Student Details</h5>
+        </div>
+        <div class="col s4 right-align">
+          <button (click)="modal.open(student)" class="btn waves-effect waves-light theme">Edit</button>
+          <button class="btn waves-effect waves-light red lighten-2 white-text">Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m8">
+      <div class="row">
+        <div class="col m4">
+          <label>Student Number</label>
+          <span class="value">{{student.studentNumber}}</span>
+        </div>
+        <div class="col m4">
+          <label>Birth Date</label>
+          <span class="value">{{student.birthDate | date:"longDate"}}</span>
+        </div>
+        <div class="col m4">
+          <label>Grade</label>
+          <span class="value">{{student.grade | grades}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col m4">
+          <label>Assigned Block</label>
+          <span class="value">{{student.block?.name}}</span>
+        </div>
+        <div class="col m4">
+          <label>Assigned Weekday</label>
+          <span class="value">{{student.blockDayOfWeek | dayOfWeek}}</span>
+        </div>
+        <div class="col m4">
+          <label>Assigned Room</label>
+          <span class="value">{{student.blockRoom}}</span>
+        </div>
+      </div>
+      <app-edit-student-modal #modal (saved)="loadStudent()"></app-edit-student-modal>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="row pt-15" style="position: relative;">
+    <div class="col s12">
+      <div class="row">
+        <div class="col s8">
+          <h5>Scheduled Makeups</h5>
+        </div>
+        <div class="col s4 right-align">
+          <button class="btn waves-effect waves-light accent">Schedule Makeup Day</button>
+        </div>
+      </div>
+    </div>
+    <div class="col s12">
+      <table class="centered striped responsive-table">
+        <thead style="position: relative;">
+          <tr>
+            <th>Makeup Date</th>
+            <th>Missed Date</th>
+            <th>Created Date</th>
+            <th style="width: 160px;">Attended</th>
+            <th style="width: 80px;"></th>
+          </tr>
+        </thead>
+
+        <tbody #table>
+        <tr *ngFor="let res of reservations">
+          <td>{{res.makeupDate | date:'fullDate'}}</td>
+          <td>{{res.missedDate | date:'fullDate'}}</td>
+          <td>{{res.createdDate | date:'fullDate'}}</td>
+          <td>{{res.checkedIn | truthy:'yesno'}}</td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>
