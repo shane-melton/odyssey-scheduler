@@ -39,6 +39,7 @@ export const StudentApi = {
   getStudent: studentBase + 'get',
   postImport: studentBase + '/import',
   postImportUpdate: studentBase + '/import-update',
+  postCreate: studentBase + '/create',
   postUpdate: studentBase + '/update',
   postDelete: studentBase + '/delete'
 };

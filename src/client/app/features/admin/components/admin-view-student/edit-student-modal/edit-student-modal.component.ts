@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild }
 import { EditStudentModel } from '@client/features/admin/form-models/EditStudentModel';
 import { Modal } from 'materialize-css';
 import { IStudent } from '@shared/interfaces/models/IStudent';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import * as _ from 'underscore';
 import { SelectOption } from '@client/shared/material-select/material-select.component';
 import { BlockDto } from '@client/dtos/BlockDto';
@@ -84,17 +84,39 @@ export class EditStudentModalComponent implements AfterViewInit {
 
 
   submitForm() {
+    const studentNumber = this.studentModel.studentNumber;
     if (this.studentModel.id) {
       const model = this.studentModel.mapToModel();
       this.studentService.updateStudent(model).subscribe((result: IApiResult) => {
         if (result.success) {
           M.toast({html: 'Student saved successfully!'});
-          this.saved.emit();
+          this.saved.emit(this.studentModel.studentNumber);
           this._modal.close();
         }
       });
     } else {
-      // TODO: Student creation clientside logic
+      // TODO: Fix this monstrosity
+      const model = this.studentModel.mapToModel();
+      this.studentService.createStudent(model).subscribe((result: IApiResult) => {
+        if (result.success) {
+          M.toast({html: 'Student created successfully!'});
+          this.saved.emit(this.studentModel.studentNumber);
+          this._modal.close();
+        } else {
+          if (result.exception && (result.exception as any).code === 11000) {
+            M.toast({html: 'Duplicate student number!'});
+            this.studentModel.Form.controls['studentNumber'].setValidators((control: FormControl) => {
+              if (control.value === studentNumber) {
+                return {
+                  duplicate: 'Duplicate student number!'
+                };
+              }
+              return null;
+            });
+            this.studentModel.Form.controls['studentNumber'].updateValueAndValidity();
+          }
+        }
+      });
     }
   }
 

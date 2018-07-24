@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ScrollSpy} from 'materialize-css';
 import Modal = M.Modal;
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-students',
@@ -13,7 +14,12 @@ export class ManageStudentsComponent implements OnInit {
   private _uploadModal: Modal;
 
 
-  constructor() { }
+  constructor(private readonly router: Router) { }
+
+  goToStudent(studentNumber: string) {
+    console.log(studentNumber);
+    this.router.navigateByUrl(`/admin/students/${studentNumber}/view`);
+  }
 
   ngOnInit() {
     ScrollSpy.init(document.querySelectorAll('.scrollspy'), {

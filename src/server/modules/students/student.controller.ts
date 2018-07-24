@@ -120,6 +120,30 @@ export class StudentController {
 
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.ADMIN)
+  @Post(StudentApi.postCreate)
+  async createStudent(@Body() student: IStudent): Promise<IApiResult> {
+    try {
+      const result = await this.studentService.createStudent(student);
+
+      if (result) {
+        return new SuccesResult();
+      } else {
+        return new FailureResult('Failed to create student!');
+      }
+
+    } catch (exception) {
+      if (exception.name === 'ValidationError') {
+        return new FailureException(exception, 'Invalid student!');
+      }
+      if (exception.name === 'MongoError' && exception.code === 11000) {
+        return new FailureException(exception, 'Duplicate student number!');
+      }
+      return new FailureException(exception, 'Failed to create student!');
+    }
+  }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
   @Post(StudentApi.postDelete)
   async deleteStudent(@Body('studentId') studentId: string): Promise<IApiResult> {
     await this.studentService.deleteStudent(studentId);

@@ -74,6 +74,10 @@ export class StudentService {
     return this.httpClient.post<IApiResult>(StudentApi.postUpdate, student);
   }
 
+  createStudent(student: IStudent): Observable<IApiResult> {
+    return this.httpClient.post<IApiResult>(StudentApi.postCreate, student);
+  }
+
   deleteStudent(studentId: string): Observable<IApiResult> {
     return this.httpClient.post<IApiResult>(StudentApi.postDelete, {studentId});
   }

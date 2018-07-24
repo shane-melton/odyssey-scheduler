@@ -7,7 +7,7 @@ export interface StudentDocument extends IStudent, Document { }
 
 export const StudentSchema = new BaseSchema({
   studentNumber: {
-    type: String, required: true
+    type: String, required: true, unique: true
   },
   firstName: {
     type: String, required: true

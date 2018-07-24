@@ -129,6 +129,12 @@ export class StudentService {
     return this.studentModel.updateOne({_id: student.id}, student);
   }
 
+  async createStudent(student: IStudent): Promise<boolean> {
+    const newStudent = await this.studentModel.create(student);
+
+    return !!newStudent;
+  }
+
   async deleteStudent(studentId: string): Promise<boolean> {
     return this.studentModel.deleteOne({_id: studentId}).exec();
   }

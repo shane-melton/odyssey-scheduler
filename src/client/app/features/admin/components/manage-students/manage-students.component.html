@@ -6,7 +6,12 @@
         <p>
           This section will contain details regarding student counts and grades
         </p>
+        <a (click)="newStudentModal.open()" class="btn waves-effect waves-light theme">Create New Student</a>
+
+        <app-edit-student-modal #newStudentModal (saved)="goToStudent($event)"></app-edit-student-modal>
       </div>
+
+      <div class="divider"></div>
 
       <div id="bulk" class="section scrollspy">
         <h5>Bulk Operations</h5>
