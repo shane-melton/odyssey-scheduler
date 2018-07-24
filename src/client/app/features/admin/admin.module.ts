@@ -16,6 +16,7 @@ import 'rxjs/add/observable/empty';
 import { AdminCheckinComponent } from './components/admin-checkin/admin-checkin.component';
 import { AdminViewStudentComponent } from '@client/features/admin/components/admin-view-student/admin-view-student.component';
 import { EditStudentModalComponent } from './components/admin-view-student/edit-student-modal/edit-student-modal.component';
+import { ScheduleMakeupModalComponent } from './components/admin-view-student/schedule-makeup-modal/schedule-makeup-modal.component';
 
 
 const adminRoutes: Routes = [
@@ -49,7 +50,8 @@ const adminRoutes: Routes = [
     AdminPrintComponent,
     AdminCheckinComponent,
     AdminViewStudentComponent,
-    EditStudentModalComponent],
+    EditStudentModalComponent,
+    ScheduleMakeupModalComponent],
 })
 export class AdminModule {
 }

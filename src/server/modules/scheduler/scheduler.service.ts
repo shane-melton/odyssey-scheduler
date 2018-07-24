@@ -231,7 +231,7 @@ export class SchedulerService {
    * @param {string} missedDate - The date of the missed class
    * @param {string} blockId - The blockId of the makeup class
    */
-  async reserveMakeupClass(studentNumber: string, missedDate: string, makeupDate: string, blockId: string): Promise<boolean> {
+  async reserveMakeupClass(studentNumber: string, missedDate: string, makeupDate: string, blockId: string, validateDate: boolean): Promise<boolean> {
 
     const block = await this.blockService.getBlock(blockId);
 
@@ -248,7 +248,7 @@ export class SchedulerService {
     const mMissedDate = moment(missedDate, 'MM/DD/YYYY');
     const mMakeupDate = moment(makeupDate, 'MM/DD/YYYY');
 
-    if (!await this.validateReservation(student, mMissedDate, mMakeupDate, block)) {
+    if (!await this.validateReservation(student, mMissedDate, mMakeupDate, block, validateDate)) {
       return false;
     }
 
@@ -272,19 +272,21 @@ export class SchedulerService {
    * @param {moment.Moment} missedDate
    * @param {moment.Moment} makeupDate
    * @param {IBlock} block
+   * @param {boolean} validateDate
    * @returns {Promise<boolean>}
    */
   async validateReservation(
     student: IStudent,
     missedDate: moment.Moment,
     makeupDate: moment.Moment,
-    block: BlockDocument): Promise<boolean> {
+    block: BlockDocument,
+    validateDate: boolean): Promise<boolean> {
 
     if (!_.contains(block.grades, student.grade)) {
       return false;
     }
 
-    if (!_.contains(block.makeupDays, makeupDate.isoWeekday())) {
+    if (validateDate && !_.contains(block.makeupDays, makeupDate.isoWeekday())) {
       return false;
     }
 
@@ -292,13 +294,12 @@ export class SchedulerService {
       return false;
     }
 
-    if (moment(missedDate).add(1, 'week').isSameOrBefore(makeupDate)) {
+    if (validateDate && moment(missedDate).add(1, 'week').isSameOrBefore(makeupDate)) {
       return false;
     }
 
     return true;
   }
-
 
   async getReservations(makeupDate: string): Promise<IReservation[]> {
 
@@ -344,6 +345,10 @@ export class SchedulerService {
     const newRes = await this.reservationModel.findOneAndUpdate({_id: resId}, {checkedIn: status}, {new: true}).exec();
 
     return newRes && newRes.checkedIn === status;
+  }
+
+  async deleteReservation(resId: string): Promise<any> {
+    return await this.reservationModel.deleteOne({_id: resId}).exec();
   }
 
   // endregion

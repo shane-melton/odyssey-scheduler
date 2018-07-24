@@ -118,5 +118,12 @@ export class StudentController {
     }
   }
 
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Post(StudentApi.postDelete)
+  async deleteStudent(@Body('studentId') studentId: string): Promise<IApiResult> {
+    await this.studentService.deleteStudent(studentId);
+    return new SuccesResult();
+  }
 
 }

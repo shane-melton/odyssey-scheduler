@@ -17,6 +17,10 @@ thead {
   color: rgba(0,0,0,0.6);
 }
 
+.swal-button:focus {
+  background-color: inherit;
+}
+
 @import "colors";
 
 @import "scheduler";

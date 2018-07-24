@@ -11,8 +11,11 @@ const schedulingBase = BaseApi + '/scheduler';
 
 export const SchedulingApi = {
   getRecentClasses: schedulingBase + '/recent-classes',
+  getRecentClassesAdmin: schedulingBase + '/recent-classes-admin',
   getAvailableClasses: schedulingBase + '/available-classes',
   postReservation: schedulingBase + '/reserve',
+  postReservationAdmin: schedulingBase + '/admin/reserve',
+  postDeleteReservation: schedulingBase + '/reservation/delete',
   getReservations: schedulingBase + '/reservations',
   getStudentReservations: schedulingBase + '/student/reservations',
   updateReservationStatus: schedulingBase + '/reservation/update'
@@ -36,5 +39,6 @@ export const StudentApi = {
   getStudent: studentBase + 'get',
   postImport: studentBase + '/import',
   postImportUpdate: studentBase + '/import-update',
-  postUpdate: studentBase + '/update'
+  postUpdate: studentBase + '/update',
+  postDelete: studentBase + '/delete'
 };

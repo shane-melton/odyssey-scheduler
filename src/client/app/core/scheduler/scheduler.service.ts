@@ -76,6 +76,17 @@ export class SchedulerService {
       );
   }
 
+  getRecentClassesForStudent(studentNumber: string): Observable<ISchoolDay[]> {
+    const params = new HttpParams()
+      .set('future', '1')
+      .set('studentNumber', studentNumber);
+
+    return this.http.get<IApiResult<ISchoolDay[]>>(SchedulingApi.getRecentClassesAdmin, {params})
+      .pipe(
+        map(res => res.success ? res.data : [])
+      );
+  }
+
   makeReservationForCurrentSelection(): Observable<IApiResult> {
     return this.makeReservation(this._selectedMissedClass, this._selectedMakeupClass);
   }
@@ -96,6 +107,35 @@ export class SchedulerService {
     };
 
     return this.http.post<IApiResult>(SchedulingApi.postReservation, requestBody);
+  }
+
+  adminMakeReservation(studentNumber: string, missedDate: Date, makeupDate: Date, blockId: string, dateRestriction: boolean): Observable<IApiResult> {
+    if (missedDate == null) {
+      throw Observable.throw('Missed date cannot be null!');
+    }
+
+    if (makeupDate == null) {
+      throw Observable.throw('Makeup date cannot be null!');
+    }
+
+    if (blockId == null) {
+      throw Observable.throw('Block cannot be null!');
+    }
+
+    const requestBody = {
+      studentNumber,
+      missedDate: moment(missedDate).format('MM/DD/YYYY'),
+      makeupDate: moment(makeupDate).format('MM/DD/YYYY'),
+      blockId,
+      dateRestriction
+    };
+
+    return this.http.post<IApiResult>(SchedulingApi.postReservationAdmin, requestBody);
+
+  }
+
+  deleteReservation(resId: string): Observable<IApiResult> {
+    return this.http.post<IApiResult>(SchedulingApi.postDeleteReservation, {resId});
   }
 
   listReservations(makeupDate: Date): Observable<IReservationDto[]> {

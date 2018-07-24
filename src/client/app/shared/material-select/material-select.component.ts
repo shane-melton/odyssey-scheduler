@@ -60,17 +60,20 @@ export class MaterialSelectComponent implements AfterViewInit, OnChanges, Contro
   @ViewChild('select') selectRef: ElementRef;
 
   private _selectedValue: any;
-  private _propagateChange = (__: any) => {
-  };
+  private _propagateChange = (__: any) => {}
 
-  get selectedValue() {
+  @Output() selectedChange = new EventEmitter<any>();
+
+  @Input()
+  get selected() {
     return this._selectedValue;
   }
 
-  set selectedValue(val) {
+  set selected(val) {
     this._selectedValue = val;
-    this._propagateChange(this.selectedValue);
-    this.change.emit(this.selectedValue);
+    this._propagateChange(this.selected);
+    this.change.emit(this.selected);
+    this.selectedChange.emit(this.selected);
   }
 
   constructor() {

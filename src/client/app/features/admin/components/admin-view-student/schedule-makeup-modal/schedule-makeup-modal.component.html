@@ -1,0 +1,47 @@
+<div #modal class="modal">
+    <div class="modal-content">
+      <h4>Schedule Makeup for {{StudentName}}</h4>
+      <div class="row">
+        <div class="col m4 center-align">
+          <label>Assigned Block</label>
+          <span class="value">{{student.block?.name}}</span>
+        </div>
+        <div class="col m4 center-align">
+          <label>Assigned Weekday</label>
+          <span class="value">{{student.blockDayOfWeek | dayOfWeek}}</span>
+        </div>
+        <div class="col m4 center-align">
+          <label>Assigned Room</label>
+          <span class="value">{{student.blockRoom}}</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row mt-30">
+        <div class="col s12 m4">
+          <label>Missed Date</label>
+          <input type="text" #missedDayPicker placeholder="Select a date">
+        </div>
+        <div class="col s12 m4">
+          <label>Makeup Date</label>
+          <input type="text" #makeupDayPicker
+                 [placeholder]="selectedMissedDay ? 'Select a makeup date' : 'Please select a missed date first'"
+                 [disabled]="selectedMissedDay === null">
+        </div>
+        <div class="col s12 m4">
+          <label>Date Restrictions</label>
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" [checked]="dateRestrictions" (click)="toggleDateRestrictions()">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect btn-flat">Cancel</a>
+      <button class="waves-effect waves-light btn accent" (click)="submitForm()">Save</button>
+    </div>
+</div>

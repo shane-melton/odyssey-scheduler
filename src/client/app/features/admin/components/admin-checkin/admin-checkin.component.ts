@@ -5,6 +5,8 @@ import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { Moment } from 'moment';
 import * as _ from 'underscore';
 import { IReservationDto } from '@client/dtos/IReservationDto';
+import { ConfirmDelete } from '@client/helpers/swal-helpers';
+import { IApiResult } from '@shared/interfaces/api';
 
 @Component({
   selector: 'app-admin-checkin',
@@ -63,6 +65,17 @@ export class AdminCheckinComponent implements OnInit {
     });
 
     this.updateTable();
+  }
+
+  async deleteReservation(res: IReservationDto) {
+    if (!await ConfirmDelete('Are you sure you want to delete this scheduled makeup?')) {
+      return;
+    }
+    this.schedulerService.deleteReservation(res.id).subscribe((result: IApiResult) => {
+      if (result.success) {
+        this.updateDate(this.date);
+      }
+    });
   }
 
   filterReservations() {

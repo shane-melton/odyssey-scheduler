@@ -15,15 +15,15 @@ import { IReservation } from '@shared/interfaces/models/IReservation';
 
 @Controller()
 export class SchedulerController {
-  constructor(private readonly schedulerService: SchedulerService) {}
+  constructor(private readonly schedulerService: SchedulerService) {
+  }
 
   // region Student Scheduling Routes
   @UseGuards(RoleGuard)
   @Roles(AvailableRoles.STUDENT)
   @Get(SchedulingApi.getRecentClasses)
-  async getEligibleRecentClasses(
-    @Token() token: IAuthToken,
-    @Query('future') includeFuture: boolean): Promise<IApiResult<ISchoolDay[]>> {
+  async getEligibleRecentClasses(@Token() token: IAuthToken,
+                                 @Query('future') includeFuture: boolean): Promise<IApiResult<ISchoolDay[]>> {
     if (token === null) {
       return new FailureResult(ErrorMsg.MissingToken);
     }
@@ -33,12 +33,21 @@ export class SchedulerController {
     return new SuccesResult<ISchoolDay[]>(classes);
   }
 
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Get(SchedulingApi.getRecentClassesAdmin)
+  async getEligibleRecentClassesForStudent(@Query('future') includeFuture: boolean,
+                                           @Query('studentNumber') studentNumber: string): Promise<IApiResult<ISchoolDay[]>> {
+    const classes = await this.schedulerService.getEligibleMissedClasses(studentNumber, includeFuture);
+
+    return new SuccesResult<ISchoolDay[]>(classes);
+  }
+
 
   @Get(SchedulingApi.getAvailableClasses)
-  async getEligibleMakeupClasses(
-    @Token() token: IAuthToken,
-    @Query('date') missedDate: string,
-    @Query('blockId') blockId: string): Promise<IApiResult<ISchoolDay[]>> {
+  async getEligibleMakeupClasses(@Token() token: IAuthToken,
+                                 @Query('date') missedDate: string,
+                                 @Query('blockId') blockId: string): Promise<IApiResult<ISchoolDay[]>> {
 
     if (token === null) {
       return new FailureResult(ErrorMsg.MissingToken);
@@ -58,11 +67,10 @@ export class SchedulerController {
   }
 
   @Post(SchedulingApi.postReservation)
-  async reserveMakeupClass(
-    @Token() token: IAuthToken,
-    @Body('missedDate') missedDate: string,
-    @Body('makeupDate') makeupDate: string,
-    @Body('blockId') blockId: string): Promise<IApiResult> {
+  async reserveMakeupClass(@Token() token: IAuthToken,
+                           @Body('missedDate') missedDate: string,
+                           @Body('makeupDate') makeupDate: string,
+                           @Body('blockId') blockId: string): Promise<IApiResult> {
     if (token === null) {
       return new FailureResult(ErrorMsg.MissingToken);
     }
@@ -75,10 +83,44 @@ export class SchedulerController {
       return new FailureResult(ErrorMsg.MissingBlock);
     }
 
-    const result = await this.schedulerService.reserveMakeupClass(token.studentNumber, missedDate, makeupDate, blockId);
+    const result = await this.schedulerService.reserveMakeupClass(token.studentNumber, missedDate, makeupDate, blockId, true);
 
     return result ? new SuccesResult() : new FailureResult('There was a problem reserving that class!');
   }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Post(SchedulingApi.postReservationAdmin)
+  async reserveMakeupClassAdmin(@Body('missedDate') missedDate: string,
+                                @Body('makeupDate') makeupDate: string,
+                                @Body('studentNumber') studentNumber: string,
+                                @Body('blockId') blockId: string,
+                                @Body('dateRestriction') dateRestriction: boolean): Promise<IApiResult> {
+    if (_.isEmpty(studentNumber)) {
+      return new FailureResult('Missing student number!');
+    }
+
+    if (_.isEmpty(makeupDate) || _.isEmpty(missedDate)) {
+      return new FailureResult(ErrorMsg.MissingDate);
+    }
+
+    if (_.isEmpty(blockId)) {
+      return new FailureResult(ErrorMsg.MissingBlock);
+    }
+
+    const result = await this.schedulerService.reserveMakeupClass(studentNumber, missedDate, makeupDate, blockId, dateRestriction);
+
+    return result ? new SuccesResult() : new FailureResult('There was a problem reserving that class!');
+  }
+
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Post(SchedulingApi.postDeleteReservation)
+  async deleteReservation(@Body('resId') resId: string): Promise<IApiResult> {
+    await this.schedulerService.deleteReservation(resId);
+    return new SuccesResult();
+  }
+
   // endregion
 
   @UseGuards(RoleGuard)

@@ -129,6 +129,10 @@ export class StudentService {
     return this.studentModel.updateOne({_id: student.id}, student);
   }
 
+  async deleteStudent(studentId: string): Promise<boolean> {
+    return this.studentModel.deleteOne({_id: studentId}).exec();
+  }
+
   private validateCsvRow(student: ICsvStudent): boolean {
     for (const key of Object.keys(EmptyCsvStudent)) {
       if (!student[key]) {

@@ -1,5 +1,5 @@
 <div class="input-field">
-  <select #select [(ngModel)]="selectedValue">
+  <select #select [(ngModel)]="selected">
     <option [value]="null" disabled>{{placeHolder}}</option>
     <option *ngFor="let o of options; trackBy: trackOptions" [value]="o.value">{{o.text}}</option>
   </select>

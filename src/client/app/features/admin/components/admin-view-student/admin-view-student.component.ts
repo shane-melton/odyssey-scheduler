@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { StudentService } from '@client/core/student/student.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +14,9 @@ import { SelectOption } from '@client/shared/material-select/material-select.com
 import { IStudentDto } from '@client/dtos/IStudentDto';
 import { SchedulerService } from '@client/core/scheduler/scheduler.service';
 import { IReservationDto } from '@client/dtos/IReservationDto';
+import { ISchoolDay } from '@shared/interfaces/models/ISchoolDay';
+import { IApiResult } from '@shared/interfaces/api';
+import { ConfirmDelete } from '@client/helpers/swal-helpers';
 
 @Component({
   selector: 'app-admin-edit-student',
@@ -34,6 +37,7 @@ export class AdminViewStudentComponent implements OnInit {
   }
 
   constructor(
+    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly studentService: StudentService,
     private readonly schedulerService: SchedulerService) {
@@ -43,6 +47,33 @@ export class AdminViewStudentComponent implements OnInit {
 
   ngOnInit() {
     this.loadStudent();
+  }
+
+  async deleteReservation(resId: string) {
+    if (!await ConfirmDelete('Are you sure you want to delete this scheduled makeup?')) {
+      return;
+    }
+
+    this.schedulerService.deleteReservation(resId).subscribe((result: IApiResult) => {
+      if (result.success) {
+        M.toast({html: 'Reservation deleted!'});
+        this.loadReservations();
+      }
+    });
+  }
+
+  async deleteStudent() {
+    if (!await ConfirmDelete('Are you sure you want to delete this student?')) {
+      return;
+    }
+
+
+    this.studentService.deleteStudent(this.student.id).subscribe((result: IApiResult) => {
+      if (result.success) {
+        M.toast({html: 'Student deleted!'});
+        this.router.navigate(['/admin/dash']);
+      }
+    });
 
   }
 
@@ -50,6 +81,11 @@ export class AdminViewStudentComponent implements OnInit {
     this.activatedRoute.paramMap
       .switchMap( (params: ParamMap) =>
         this.studentService.getStudent(params.get('id'))).subscribe((student: IStudentDto) => {
+          if (student == null) {
+            M.toast({html: 'Student not found!'});
+            this.router.navigate(['/admin/dash']);
+            return;
+          }
         this.student = student;
         this.loadReservations();
       }

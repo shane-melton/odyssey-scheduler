@@ -7,8 +7,8 @@
           <h5>Student Details</h5>
         </div>
         <div class="col s4 right-align">
-          <button (click)="modal.open(student)" class="btn waves-effect waves-light theme">Edit</button>
-          <button class="btn waves-effect waves-light red lighten-2 white-text">Delete</button>
+          <button (click)="editModal.open(student)" class="btn waves-effect waves-light theme">Edit</button>
+          <button (click)="deleteStudent()" class="btn waves-effect waves-light red lighten-2 white-text">Delete</button>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
           <span class="value">{{student.blockRoom}}</span>
         </div>
       </div>
-      <app-edit-student-modal #modal (saved)="loadStudent()"></app-edit-student-modal>
+      <app-edit-student-modal #editModal (saved)="loadStudent()"></app-edit-student-modal>
     </div>
   </div>
   <div class="divider"></div>
@@ -52,7 +52,7 @@
           <h5>Scheduled Makeups</h5>
         </div>
         <div class="col s4 right-align">
-          <button class="btn waves-effect waves-light accent">Schedule Makeup Day</button>
+          <button class="btn waves-effect waves-light accent" (click)="scheduleModal.open()">Schedule Makeup Day</button>
         </div>
       </div>
     </div>
@@ -74,12 +74,17 @@
           <td>{{res.missedDate | date:'fullDate'}}</td>
           <td>{{res.createdDate | date:'fullDate'}}</td>
           <td>{{res.checkedIn | truthy:'yesno'}}</td>
-          <td></td>
+          <td> <a (click)="deleteReservation(res.id)" title="Delete this make-up reservation">
+            <i class="material-icons theme-text waves-effect">delete</i>
+          </a></td>
+        </tr>
+        <tr *ngIf="!reservations || !reservations.length">
+          <td colspan="5"><i>No Scheduled Makeups Found</i></td>
         </tr>
         </tbody>
       </table>
 
     </div>
-
+    <app-schedule-makeup-modal #scheduleModal (saved)="loadReservations()" [student]="student"></app-schedule-makeup-modal>
   </div>
 </div>

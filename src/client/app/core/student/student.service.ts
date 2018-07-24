@@ -74,4 +74,8 @@ export class StudentService {
     return this.httpClient.post<IApiResult>(StudentApi.postUpdate, student);
   }
 
+  deleteStudent(studentId: string): Observable<IApiResult> {
+    return this.httpClient.post<IApiResult>(StudentApi.postDelete, {studentId});
+  }
+
 }
