@@ -41,7 +41,7 @@
           <span class="value">{{student.blockRoom}}</span>
         </div>
       </div>
-      <app-edit-student-modal #editModal (saved)="loadStudent()"></app-edit-student-modal>
+      <app-edit-student-modal #editModal (saved)="updatePage($event)"></app-edit-student-modal>
     </div>
   </div>
   <div class="divider"></div>

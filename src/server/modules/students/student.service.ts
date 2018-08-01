@@ -147,4 +147,16 @@ export class StudentService {
     }
     return true;
   }
+
+  async searchStudent(query: string): Promise<IStudent[]> {
+    const results = await this.studentModel.find({
+      $or: [
+        {'lastName': new RegExp('^' + query, 'i')},
+        {'firstName': new RegExp('^' + query, 'i')},
+        {'studentNumber': new RegExp('^' + query, 'i')}
+      ]
+    }).exec();
+
+    return results;
+  }
 }

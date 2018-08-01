@@ -32,6 +32,12 @@ export const StudentSchema = new BaseSchema({
   }
 });
 
+StudentSchema.index({
+  studentNumber: 'text',
+  firstName: 'text',
+  lastName: 'text'
+});
+
 export const studentProviders = [
   {
     provide: ProviderTokens.Student,

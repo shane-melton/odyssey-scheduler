@@ -13,14 +13,21 @@
         </ul>
       </div>
       <form class="search" [ngClass]="{'hide-search': !showSearch}">
-        <div class="input-field">
-          <input #search id="search" type="search" required>
+        <div class="input-field search">
+          <input #search id="search" name="search" type="search" autocomplete="off" (keyup)="runSearch(search.value)">
           <label class="label-icon" for="search"><i class="material-icons">search</i></label>
           <i (click)="setSearch(false)" class="material-icons">close</i>
+          <div class="collection" *ngIf="searchResults && searchResults.length">
+            <div *ngFor="let student of searchResults">
+              <a (click)="navigateTo(student)" class="collection-item" >{{student.firstName}} {{student.lastName}}</a>
+            </div>
+          </div>
         </div>
       </form>
     </div>
   </nav>
+
+  <div id="overlay" [ngClass]="{'hide-search': !showSearch}"></div>
 
   <router-outlet></router-outlet>
 </div>

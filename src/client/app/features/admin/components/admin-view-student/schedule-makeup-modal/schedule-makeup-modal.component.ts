@@ -130,8 +130,13 @@ export class ScheduleMakeupModalComponent implements OnInit, AfterViewInit {
 
   private initMakeupDayPicker() {
 
-    const minDate = _.max([new Date(), moment(this.selectedMissedDay).subtract(6, 'day').toDate()]);
-    const maxDate = moment(this.selectedMissedDay).add(6, 'day').toDate();
+    let minDate = _.max([new Date(), moment(this.selectedMissedDay).subtract(6, 'day').toDate()]);
+    let maxDate = moment(this.selectedMissedDay).add(6, 'day').toDate();
+
+    if (!this.dateRestrictions) {
+      minDate = null;
+      maxDate = null;
+    }
 
     Datepicker.init(this._makeupDayPickerRef.nativeElement, {
       container: document.body,

@@ -82,4 +82,18 @@ export class StudentService {
     return this.httpClient.post<IApiResult>(StudentApi.postDelete, {studentId});
   }
 
+  searchStudents(query: string): Observable<IStudent[]> {
+    const params = new HttpParams()
+      .set('q', query);
+    return this.httpClient.get<IApiResult<IStudent[]>>(StudentApi.getSearch, {params}).pipe(
+      map( (result: IApiResult<IStudentDto[]>): IStudentDto[] => {
+        if (result.success) {
+          return result.data;
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
 }

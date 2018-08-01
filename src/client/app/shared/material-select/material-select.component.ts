@@ -5,7 +5,7 @@ import {
   ControlValueAccessor, NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
-import FormSelect = M.FormSelect;
+import { FormSelect } from 'materialize-css';
 import * as _ from 'underscore';
 
 /**

@@ -92,6 +92,15 @@ export class AdminViewStudentComponent implements OnInit {
     );
   }
 
+  updatePage(newStudentNumber: string) {
+    console.log(newStudentNumber, this.student.studentNumber);
+    if (newStudentNumber === this.student.studentNumber) {
+      this.loadStudent();
+    } else {
+      this.router.navigateByUrl(`/admin/students/${newStudentNumber}/view`);
+    }
+  }
+
   loadReservations() {
     if (!this.student) {
       return;

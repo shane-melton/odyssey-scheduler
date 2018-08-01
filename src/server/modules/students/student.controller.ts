@@ -150,4 +150,13 @@ export class StudentController {
     return new SuccesResult();
   }
 
+  @UseGuards(RoleGuard)
+  @Roles(AvailableRoles.ADMIN)
+  @Get(StudentApi.getSearch)
+  async searchStudents(@Query('q') query: string): Promise<IApiResult<IStudent[]>> {
+    const students = await this.studentService.searchStudent(query);
+
+    return new SuccesResult(students);
+  }
+
 }
