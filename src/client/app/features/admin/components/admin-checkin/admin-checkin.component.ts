@@ -100,7 +100,7 @@ export class AdminCheckinComponent implements OnInit {
 
   }
 
-  ngOnInit() {http://178.128.191.54
+  ngOnInit() {
     this.picker = Datepicker.init(
       document.querySelector('.datepicker'),
       {
