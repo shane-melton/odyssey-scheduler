@@ -7,6 +7,7 @@ import * as _ from 'underscore';
 import { IReservationDto } from '@client/dtos/IReservationDto';
 import { ConfirmDelete } from '@client/helpers/swal-helpers';
 import { IApiResult } from '@shared/interfaces/api';
+import * as copy from 'copy-to-clipboard';
 
 @Component({
   selector: 'app-admin-checkin',
@@ -120,6 +121,30 @@ export class AdminCheckinComponent implements OnInit {
       this.reservations = reservations;
       this.updateTable();
     });
+  }
+
+  copyCheckedInToClipboard() {
+    const text = _.chain(this.reservations)
+      .filter(res => res.checkedIn)
+      .groupBy(res => res.student.blockRoom)
+      .reduce((memo: string, resList: IReservationDto[], room: any): string => {
+        let val = 'Room ' + room + '\n';
+
+        _.each(resList, res => {
+          val += `\t ${res.student.firstName} ${res.student.lastName}\n`;
+        });
+
+        return memo + val;
+      }, '').value();
+
+    if (text && text.length) {
+      copy(text);
+      M.toast({html: 'Students copied to clipboard!'});
+    } else {
+      M.toast({html: 'Nothing copied! Is anyone checked in?'});
+    }
+
+
   }
 
   openDatePicker() {

@@ -29,6 +29,9 @@
           <div class="switch"><label>Hide<input type="checkbox" [(ngModel)]="showCheckedIn" (change)="updateTable()">
             <span class="lever"></span>Show</label></div>
         </div>
+        <div class="col s2">
+          <button (click)="copyCheckedInToClipboard()" class="btn waves-effect waves-light accent">Copy Checked In Students</button>
+        </div>
       </div>
 
       <div class="row">
